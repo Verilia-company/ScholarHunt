@@ -816,21 +816,25 @@ export const analyticsService = {
 };
 
 // Utility function for error handling
-export const handleFirebaseError = (error: any): string => {
+export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  switch (error.code) {
-    case "permission-denied":
-      return "You do not have permission to perform this action.";
-    case "not-found":
-      return "The requested resource was not found.";
-    case "already-exists":
-      return "This resource already exists.";
-    case "unavailable":
-      return "Service is temporarily unavailable. Please try again later.";
-    default:
-      return "An unexpected error occurred. Please try again.";
+  if (error && typeof error === 'object' && 'code' in error) {
+    switch ((error as { code: string }).code) {
+      case "permission-denied":
+        return "You do not have permission to perform this action.";
+      case "not-found":
+        return "The requested resource was not found.";
+      case "already-exists":
+        return "This resource already exists.";
+      case "unavailable":
+        return "Service is temporarily unavailable. Please try again later.";
+      default:
+        return "An unexpected error occurred. Please try again.";
+    }
   }
+  
+  return "An unexpected error occurred. Please try again.";
 };
 
 // Export all services

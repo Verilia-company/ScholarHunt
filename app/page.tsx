@@ -531,7 +531,16 @@ export default function Home() {
                   animate={{ opacity: blogInView ? 1 : 0, y: blogInView ? 0 : 50 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
                 >
-                  <BlogCard post={{ ...post, date: post.publishedAt?.toDate?.()?.toISOString() || new Date().toISOString(), readTime: post.readTime ? `${post.readTime} min read` : undefined }} />
+                  <BlogCard post={{ 
+                    ...post, 
+                    date: post.publishedAt && 
+                      typeof post.publishedAt === "object" && 
+                      "toDate" in post.publishedAt && 
+                      typeof (post.publishedAt as { toDate: unknown }).toDate === "function"
+                        ? (post.publishedAt as { toDate: () => Date }).toDate().toISOString()
+                        : new Date(post.publishedAt as string | number | Date).toISOString(), 
+                    readTime: post.readTime ? `${post.readTime} min read` : undefined 
+                  }} />
                 </motion.div>
               ))
             )}

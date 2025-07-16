@@ -2,7 +2,6 @@ import {
   collection,
   addDoc,
   updateDoc,
-  doc as firestoreDoc,
   getDocs,
   query,
   where,
@@ -11,7 +10,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { trackEvents } from './analytics';
 
 export interface UserActivity {
   id?: string;
@@ -137,12 +135,12 @@ class UserTrackingService {
       await this.updateSession();
 
       // Also track in Google Analytics
-      trackEvents.adminActionPerformed({
-        action: activity.action,
-        resource: activity.resource,
-        resourceId: activity.resourceId,
-        success: true,
-      });
+      // trackEvents.adminActionPerformed({
+      //   action: activity.action,
+      //   resource: activity.resource,
+      //   resourceId: activity.resourceId,
+      //   success: true,
+      // });
     } catch (error) {
       console.error('Error tracking user activity:', error);
     }
@@ -166,7 +164,7 @@ class UserTrackingService {
     }
   }
 
-  async trackScholarshipInteraction(action: string, scholarshipId: string, metadata?: Record<string, any>) {
+  async trackScholarshipInteraction(action: string, scholarshipId: string, metadata?: Record<string, unknown>) {
     await this.trackActivity({
       action: `scholarship_${action}`,
       resource: 'scholarship',
@@ -175,7 +173,7 @@ class UserTrackingService {
     });
   }
 
-  async trackBlogInteraction(action: string, blogId: string, metadata?: Record<string, any>) {
+  async trackBlogInteraction(action: string, blogId: string, metadata?: Record<string, unknown>) {
     await this.trackActivity({
       action: `blog_${action}`,
       resource: 'blog',
@@ -184,7 +182,7 @@ class UserTrackingService {
     });
   }
 
-  async trackSearchActivity(searchTerm: string, resultsCount: number, filters?: Record<string, any>) {
+  async trackSearchActivity(searchTerm: string, resultsCount: number, filters?: Record<string, unknown>) {
     await this.trackActivity({
       action: 'search',
       resource: 'search',
@@ -196,7 +194,7 @@ class UserTrackingService {
     });
   }
 
-  async trackWhatsAppInteraction(action: string, metadata?: Record<string, any>) {
+  async trackWhatsAppInteraction(action: string, metadata?: Record<string, unknown>) {
     await this.trackActivity({
       action: `whatsapp_${action}`,
       resource: 'whatsapp',
@@ -334,13 +332,13 @@ export function useUserTracking() {
   const trackPageView = (page: string) => userTracker.trackPageView(page);
   const trackActivity = (activity: Omit<UserActivity, 'sessionId' | 'timestamp'>) => 
     userTracker.trackActivity(activity);
-  const trackScholarshipInteraction = (action: string, scholarshipId: string, metadata?: Record<string, any>) =>
+  const trackScholarshipInteraction = (action: string, scholarshipId: string, metadata?: Record<string, unknown>) =>
     userTracker.trackScholarshipInteraction(action, scholarshipId, metadata);
-  const trackBlogInteraction = (action: string, blogId: string, metadata?: Record<string, any>) =>
+  const trackBlogInteraction = (action: string, blogId: string, metadata?: Record<string, unknown>) =>
     userTracker.trackBlogInteraction(action, blogId, metadata);
-  const trackSearchActivity = (searchTerm: string, resultsCount: number, filters?: Record<string, any>) =>
+  const trackSearchActivity = (searchTerm: string, resultsCount: number, filters?: Record<string, unknown>) =>
     userTracker.trackSearchActivity(searchTerm, resultsCount, filters);
-  const trackWhatsAppInteraction = (action: string, metadata?: Record<string, any>) =>
+  const trackWhatsAppInteraction = (action: string, metadata?: Record<string, unknown>) =>
     userTracker.trackWhatsAppInteraction(action, metadata);
 
   return {

@@ -10,13 +10,39 @@ import {
   updateDoc,
   deleteDoc,
   query,
-  where,
   orderBy,
-  limit,
   serverTimestamp,
+  QueryConstraint,
+  where,
+  limit,
 } from "firebase/firestore";
 import { db } from "../firebase";
-import { BlogPost } from "./services";
+
+// Types
+export interface BlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  category: string;
+  tags: string[];
+  status: "published" | "draft" | "archived";
+  featured: boolean;
+  published: boolean;
+  image?: string;
+  readTime: number;
+  createdAt: unknown;
+  updatedAt: unknown;
+  publishedAt?: unknown;
+  views?: number;
+  metaTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  socialImage?: string;
+}
 
 export const tempBlogService = {
   async createBlogPost(
@@ -42,39 +68,36 @@ export const tempBlogService = {
     return null;
   },
 
-  // Simplified query - fetch all and filter client-side (temporary solution)
-  async getPublishedPosts(): Promise<BlogPost[]> {
-    try {
-      // Simple query without composite index requirement
-      const q = query(collection(db, "blog"), orderBy("createdAt", "desc"));
-      const querySnapshot = await getDocs(q);
+  async getBlogPosts(filters?: {
+    status?: string;
+    category?: string;
+    limit?: number;
+  }): Promise<BlogPost[]> {
+    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
 
-      const allPosts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as BlogPost[];
-
-      // Filter for published posts client-side
-      return allPosts.filter((post) => post.status === "published");
-    } catch (error) {
-      console.warn("Query failed, falling back to simple fetch:", error);
-
-      // Fallback: Get all documents and filter client-side
-      const querySnapshot = await getDocs(collection(db, "blog"));
-      const allPosts = querySnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      })) as BlogPost[];
-
-      return allPosts
-        .filter((post) => post.status === "published")
-        .sort((a, b) => {
-          // Client-side sorting by createdAt
-          const aTime = a.createdAt?.toDate?.() || new Date(0);
-          const bTime = b.createdAt?.toDate?.() || new Date(0);
-          return bTime.getTime() - aTime.getTime();
-        });
+    if (filters?.status) {
+      constraints.push(where("status", "==", filters.status));
     }
+    if (filters?.category) {
+      constraints.push(where("category", "==", filters.category));
+    }
+    if (filters?.limit) {
+      constraints.push(limit(filters.limit));
+    }
+
+    const q = query(collection(db, "blog"), ...constraints);
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map((doc) => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        createdAt: data.createdAt,
+        updatedAt: data.updatedAt,
+        publishedAt: data.publishedAt,
+      } as BlogPost;
+    });
   },
 
   async getAllPosts(): Promise<BlogPost[]> {
@@ -96,8 +119,12 @@ export const tempBlogService = {
       })) as BlogPost[];
 
       return allPosts.sort((a, b) => {
-        const aTime = a.createdAt?.toDate?.() || new Date(0);
-        const bTime = b.createdAt?.toDate?.() || new Date(0);
+        const aTime = (a.createdAt && typeof a.createdAt === "object" && a.createdAt !== null && "toDate" in a.createdAt && typeof (a.createdAt as { toDate: unknown }).toDate === "function")
+          ? (a.createdAt as { toDate: () => Date }).toDate()
+          : new Date(a.createdAt as string | number | Date);
+        const bTime = (b.createdAt && typeof b.createdAt === "object" && b.createdAt !== null && "toDate" in b.createdAt && typeof (b.createdAt as { toDate: unknown }).toDate === "function")
+          ? (b.createdAt as { toDate: () => Date }).toDate()
+          : new Date(b.createdAt as string | number | Date);
         return bTime.getTime() - aTime.getTime();
       });
     }
@@ -108,7 +135,7 @@ export const tempBlogService = {
     updates: Partial<BlogPost>
   ): Promise<void> {
     const docRef = doc(db, "blog", postId);
-    const updateData: any = {
+    const updateData: Partial<BlogPost> = {
       ...updates,
       updatedAt: serverTimestamp(),
     };

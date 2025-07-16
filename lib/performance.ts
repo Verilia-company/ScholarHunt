@@ -5,30 +5,29 @@ import React from "react";
 export function useIntersectionObserver(
   elementRef: React.RefObject<Element | null>,
   {
-    threshold = 0,
-    root = null,
-    rootMargin = "0%",
   }: IntersectionObserverInit = {}
 ): boolean {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const element = elementRef.current;
-    if (!element) return;
+    if (!elementRef.current) return;
 
     const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        });
       },
-      { threshold, root, rootMargin }
+      { threshold: 0.1 }
     );
 
-    observer.observe(element);
+    observer.observe(elementRef.current);
 
-    return () => {
-      observer.unobserve(element);
-    };
-  }, [threshold, root, rootMargin]);
+    return () => observer.disconnect();
+  }, [elementRef]);
 
   return isVisible;
 }

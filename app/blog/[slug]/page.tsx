@@ -99,12 +99,27 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     }
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date: unknown) => {
+    if (!date) return "Unknown date";
+    
+    let dateObj: Date;
+    
+    // Handle Firestore Timestamp objects
+    if (typeof date === "object" && date !== null && "toDate" in date && typeof (date as { toDate: unknown }).toDate === "function") {
+      dateObj = (date as { toDate: () => Date }).toDate();
+    } else if (date instanceof Date) {
+      dateObj = date;
+    } else if (typeof date === "string" || typeof date === "number") {
+      dateObj = new Date(date);
+    } else {
+      return "Unknown date";
+    }
+    
     return new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
-    }).format(new Date(date));
+    }).format(dateObj);
   };
 
   if (loading) {

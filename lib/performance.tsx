@@ -124,8 +124,8 @@ export function usePerformanceMonitor() {
     const clsObserver = new PerformanceObserver((entryList) => {
       let cls = 0;
       for (const entry of entryList.getEntries()) {
-        if (!(entry as any).hadRecentInput) {
-          cls += (entry as any).value;
+        if (!(entry as unknown as { hadRecentInput: boolean }).hadRecentInput) {
+          cls += (entry as unknown as { value: number }).value;
         }
       }
       setMetrics((prev) => ({ ...prev, cls }));

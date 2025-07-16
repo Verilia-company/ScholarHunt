@@ -47,7 +47,12 @@ export default function ScholarshipDetailPage() {
   const handleApplyClick = () => {
     if (scholarship) {
       // Track the apply action
-      trackEvents.scholarshipApply(scholarship.id, scholarship.title);
+      trackEvents.scholarshipApply({
+        scholarshipId: scholarship.id,
+        scholarshipName: scholarship.title,
+        provider: scholarship.provider,
+        type: scholarship.type,
+      });
 
       // Open application URL if available, otherwise show fallback message
       if (scholarship.applicationUrl) {
@@ -140,7 +145,12 @@ export default function ScholarshipDetailPage() {
         if (data) {
           setScholarship(data);
           // Track scholarship view
-          trackEvents.scholarshipView(data.id, data.title);
+          trackEvents.scholarshipView({
+            scholarshipId: data.id,
+            scholarshipName: data.title,
+            provider: data.provider,
+            type: data.type,
+          });
 
           // Increment view count - don't fail the whole component if this fails
           try {

@@ -10,12 +10,9 @@ import {
   where,
   orderBy,
   limit,
-  startAfter,
   serverTimestamp,
-  DocumentSnapshot,
   QueryConstraint,
   setDoc,
-  writeBatch,
 } from "firebase/firestore";
 import { db } from "../firebase";
 
@@ -26,8 +23,8 @@ export interface User {
   displayName?: string;
   role: "admin" | "user";
   isActive: boolean;
-  createdAt: any;
-  lastLoginAt?: any;
+  createdAt: unknown;
+  lastLoginAt?: unknown;
   profilePicture?: string;
   bio?: string;
 }
@@ -50,8 +47,8 @@ export interface Scholarship {
   type?: string;
   applicationUrl?: string;
   contactEmail?: string;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: unknown;
+  updatedAt: unknown;
   createdBy?: string;
   views?: number;
   tags?: string[];
@@ -71,9 +68,9 @@ export interface BlogPost {
   published: boolean;
   image?: string;
   readTime: number;
-  createdAt: any;
-  updatedAt: any;
-  publishedAt?: any;
+  createdAt: unknown;
+  updatedAt: unknown;
+  publishedAt?: unknown;
   views?: number;
   metaTitle?: string;
   metaDescription?: string;
@@ -84,9 +81,9 @@ export interface BlogPost {
 
 export interface NewsletterSubscription {
   email: string;
-  subscribedAt: any;
+  subscribedAt: unknown;
   isActive: boolean;
-  unsubscribedAt?: any;
+  unsubscribedAt?: unknown;
   source?: string;
 }
 
@@ -109,8 +106,8 @@ export interface ScholarshipSubmission {
   submitterOrganization?: string;
   additionalNotes?: string;
   status: "pending" | "approved" | "rejected";
-  submittedAt: any;
-  reviewedAt?: any;
+  submittedAt: unknown;
+  reviewedAt?: unknown;
   reviewedBy?: string;
   reviewNotes?: string;
 }
@@ -123,8 +120,8 @@ export interface Activity {
   resourceId?: string;
   userId?: string;
   userName?: string;
-  timestamp: any;
-  metadata?: any;
+  timestamp: unknown;
+  metadata?: unknown;
 }
 
 export interface AdminStats {
@@ -174,7 +171,7 @@ export const analyticsService = {
     item: string;
     resourceType: "scholarship" | "blog" | "user" | "application";
     resourceId?: string;
-    metadata?: any;
+    metadata?: unknown;
   }): Promise<void> {
     await addDoc(collection(db, "activities"), {
       ...activity,
@@ -377,7 +374,7 @@ export const scholarshipService = {
     country?: string;
     limit?: number;
   }): Promise<Scholarship[]> {
-    let constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
 
     if (filters?.status) {
       constraints.push(where("status", "==", filters.status));
@@ -490,7 +487,7 @@ export const blogService = {
     updates: Partial<BlogPost>
   ): Promise<void> {
     const docRef = doc(db, "blog", postId);
-    const updateData: any = {
+    const updateData: Partial<BlogPost> = {
       ...updates,
       updatedAt: serverTimestamp(),
     };
@@ -512,7 +509,7 @@ export const blogService = {
     category?: string;
     limit?: number;
   }): Promise<BlogPost[]> {
-    let constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
 
     if (filters?.status) {
       constraints.push(where("status", "==", filters.status));
@@ -630,7 +627,7 @@ export const submissionService = {
     updates: Partial<ScholarshipSubmission>
   ): Promise<void> {
     const docRef = doc(db, "scholarshipSubmissions", submissionId);
-    const updateData: any = { ...updates };
+    const updateData: Partial<ScholarshipSubmission> = { ...updates };
 
     if (updates.status && ["approved", "rejected"].includes(updates.status)) {
       updateData.reviewedAt = serverTimestamp();
@@ -640,7 +637,7 @@ export const submissionService = {
   },
 
   async getSubmissions(status?: string): Promise<ScholarshipSubmission[]> {
-    let constraints: QueryConstraint[] = [orderBy("submittedAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("submittedAt", "desc")];
 
     if (status) {
       constraints.push(where("status", "==", status));
@@ -734,21 +731,25 @@ export const backupService = {
 };
 
 // Utility function for error handling
-export const handleFirebaseError = (error: any): string => {
+export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  switch (error.code) {
-    case "permission-denied":
-      return "You do not have permission to perform this action.";
-    case "not-found":
-      return "The requested resource was not found.";
-    case "already-exists":
-      return "This resource already exists.";
-    case "unavailable":
-      return "Service is temporarily unavailable. Please try again later.";
-    default:
-      return "An unexpected error occurred. Please try again.";
+  if (error && typeof error === 'object' && 'code' in error) {
+    switch ((error as { code: string }).code) {
+      case "permission-denied":
+        return "You do not have permission to perform this action.";
+      case "not-found":
+        return "The requested resource was not found.";
+      case "already-exists":
+        return "This resource already exists.";
+      case "unavailable":
+        return "Service is temporarily unavailable. Please try again later.";
+      default:
+        return "An unexpected error occurred. Please try again.";
+    }
   }
+  
+  return "An unexpected error occurred. Please try again.";
 };
 
 // Export all services

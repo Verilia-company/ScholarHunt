@@ -50,7 +50,13 @@ export default function BlogPage() {
         // Transform posts to include date property for BlogCard compatibility
         const transformedPosts = fetchedPosts.map(post => ({
           ...post,
-          date: post.publishedAt?.toDate?.()?.toISOString() || new Date().toISOString(),
+          date:
+            post.publishedAt &&
+            typeof post.publishedAt === "object" &&
+            "toDate" in post.publishedAt &&
+            typeof (post.publishedAt as { toDate: unknown }).toDate === "function"
+              ? (post.publishedAt as { toDate: () => Date }).toDate().toISOString()
+              : new Date(post.publishedAt as string | number | Date).toISOString(),
           readTime: post.readTime ? `${post.readTime} min read` : undefined,
         }));
         

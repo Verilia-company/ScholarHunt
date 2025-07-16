@@ -86,7 +86,7 @@ export default function UserManagement() {
         setUsers(usersWithPresence);
       }
     }
-  }, [onlineUsers, userPresence]);
+  }, [onlineUsers, userPresence, users]);
   const loadUsers = async () => {
     try {
       setLoading(true);
@@ -423,9 +423,9 @@ export default function UserManagement() {
                         <Clock className="w-3 h-3 text-gray-400 mr-1" />
                         <span className="text-gray-900">
                           {user.createdAt
-                            ? user.createdAt.toDate
-                              ? user.createdAt.toDate().toLocaleDateString()
-                              : new Date(user.createdAt).toLocaleDateString()
+                            ? (typeof user.createdAt === "object" && user.createdAt !== null && "toDate" in user.createdAt && typeof (user.createdAt as { toDate: unknown }).toDate === "function")
+                              ? (user.createdAt as { toDate: () => Date }).toDate().toLocaleDateString()
+                              : new Date(user.createdAt as string | number | Date).toLocaleDateString()
                             : "Unknown"}
                         </span>
                       </div>
@@ -515,16 +515,16 @@ export default function UserManagement() {
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {user.createdAt
-                            ? user.createdAt.toDate
-                              ? user.createdAt.toDate().toLocaleDateString()
-                              : new Date(user.createdAt).toLocaleDateString()
+                            ? (typeof user.createdAt === "object" && user.createdAt !== null && "toDate" in user.createdAt && typeof (user.createdAt as { toDate: unknown }).toDate === "function")
+                              ? (user.createdAt as { toDate: () => Date }).toDate().toLocaleDateString()
+                              : new Date(user.createdAt as string | number | Date).toLocaleDateString()
                             : "Unknown"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                           {user.lastLoginAt
-                            ? user.lastLoginAt.toDate
-                              ? user.lastLoginAt.toDate().toLocaleDateString()
-                              : new Date(user.lastLoginAt).toLocaleDateString()
+                            ? (typeof user.lastLoginAt === "object" && user.lastLoginAt !== null && "toDate" in user.lastLoginAt && typeof (user.lastLoginAt as { toDate: unknown }).toDate === "function")
+                              ? (user.lastLoginAt as { toDate: () => Date }).toDate().toLocaleDateString()
+                              : new Date(user.lastLoginAt as string | number | Date).toLocaleDateString()
                             : "Never"}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
