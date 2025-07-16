@@ -1,12 +1,12 @@
 import {
   ref,
   onDisconnect,
-  push,
   serverTimestamp,
   onValue,
   off,
   set,
   remove,
+  DatabaseReference,
 } from "firebase/database";
 import { rtdb } from "../firebase";
 
@@ -17,7 +17,7 @@ export interface PresenceData {
   photoURL?: string;
   role?: "admin" | "user";
   isOnline: boolean;
-  lastSeen: any;
+  lastSeen: unknown;
   userAgent?: string;
   location?: string; // Page/section they're viewing
 }
@@ -30,8 +30,8 @@ export interface ActiveUserStats {
 }
 
 class PresenceService {
-  private presenceRef: any = null;
-  private connectedRef: any = null;
+  private presenceRef: DatabaseReference | null = null;
+  private connectedRef: DatabaseReference | null = null;
   private isInitialized = false;
 
   /**
@@ -70,7 +70,7 @@ class PresenceService {
 
       // When connected, update presence
       onValue(this.connectedRef, (snapshot) => {
-        if (snapshot.val() === true) {
+        if (snapshot.val() === true && this.presenceRef) {
           // Set user as online
           set(this.presenceRef, presenceData);
 
@@ -339,14 +339,16 @@ class PresenceService {
 export const presenceService = new PresenceService();
 
 // Export utility functions
-export const formatLastSeen = (lastSeen: any): string => {
+export const formatLastSeen = (lastSeen: unknown): string => {
   if (!lastSeen) return "Never";
 
   const now = Date.now();
   const lastSeenTime =
     typeof lastSeen === "number"
       ? lastSeen
-      : lastSeen.toDate?.()?.getTime() || now;
+      : (typeof lastSeen === "object" && lastSeen !== null && "toDate" in lastSeen && typeof (lastSeen as { toDate: unknown }).toDate === "function")
+        ? (lastSeen as { toDate: () => Date }).toDate()?.getTime() || now
+        : now;
   const diff = now - lastSeenTime;
 
   if (diff < 60000) return "Just now";
@@ -357,7 +359,7 @@ export const formatLastSeen = (lastSeen: any): string => {
 
 export const getOnlineStatusColor = (
   isOnline: boolean,
-  lastSeen?: any
+  lastSeen?: unknown
 ): string => {
   if (isOnline) return "text-green-500";
 
@@ -367,7 +369,9 @@ export const getOnlineStatusColor = (
   const lastSeenTime =
     typeof lastSeen === "number"
       ? lastSeen
-      : lastSeen.toDate?.()?.getTime() || 0;
+      : (typeof lastSeen === "object" && lastSeen !== null && "toDate" in lastSeen && typeof (lastSeen as { toDate: unknown }).toDate === "function")
+        ? (lastSeen as { toDate: () => Date }).toDate()?.getTime() || 0
+        : 0;
   const diff = now - lastSeenTime;
 
   if (diff < 300000) return "text-yellow-500"; // 5 minutes

@@ -104,21 +104,28 @@ function AdminDashboardContent() {
   };
 
   // Format time for activities
-  const formatTimeAgo = (timestamp: any): string => {
+  const formatTimeAgo = (timestamp: unknown): string => {
     if (!timestamp) return "Unknown";
 
     const now = new Date();
     let activityTime: Date;
 
     // Handle Firestore Timestamp objects
-    if (timestamp.toDate && typeof timestamp.toDate === "function") {
-      activityTime = timestamp.toDate();
+    if (
+      typeof timestamp === "object" &&
+      timestamp !== null &&
+      "toDate" in timestamp &&
+      typeof (timestamp as { toDate: unknown }).toDate === "function"
+    ) {
+      activityTime = (timestamp as { toDate: () => Date }).toDate();
     } else if (timestamp instanceof Date) {
       activityTime = timestamp;
+    } else if (typeof timestamp === "string" || typeof timestamp === "number") {
+      activityTime = new Date(timestamp);
     } else {
       // Try to convert to Date
       try {
-        activityTime = new Date(timestamp);
+        return "Unknown";
       } catch (error) {
         console.warn("Error converting timestamp:", error);
         return "Unknown";

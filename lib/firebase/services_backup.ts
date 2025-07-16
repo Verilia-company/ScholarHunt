@@ -10,9 +10,7 @@ import {
   where,
   orderBy,
   limit,
-  startAfter,
   serverTimestamp,
-  DocumentSnapshot,
   QueryConstraint,
   setDoc,
   writeBatch,
@@ -23,11 +21,11 @@ import { db } from "../firebase";
 export interface User {
   id: string;
   email: string;
-  displayName?: string; // Use displayName to match Firebase Auth
+  displayName?: string;
   role: "admin" | "user";
   isActive: boolean;
-  createdAt: any;
-  lastLoginAt?: any;
+  createdAt: unknown;
+  lastLoginAt?: unknown;
   profilePicture?: string;
   bio?: string;
 }
@@ -50,8 +48,8 @@ export interface Scholarship {
   type?: string;
   applicationUrl?: string;
   contactEmail?: string;
-  createdAt: any;
-  updatedAt: any;
+  createdAt: unknown;
+  updatedAt: unknown;
   createdBy?: string;
   views?: number;
   tags?: string[];
@@ -67,24 +65,26 @@ export interface BlogPost {
   category: string;
   tags: string[];
   status: "published" | "draft" | "archived";
-  featuredImage: string;
-  readTime: string;
-  createdAt: any;
-  updatedAt: any;
-  publishedAt?: any;
+  featured: boolean;
+  published: boolean;
+  image?: string;
+  readTime: number;
+  createdAt: unknown;
+  updatedAt: unknown;
+  publishedAt?: unknown;
   views?: number;
-  seo: {
-    metaTitle: string;
-    metaDescription: string;
-    keywords: string[];
-  };
+  metaTitle?: string;
+  metaDescription?: string;
+  focusKeyword?: string;
+  canonicalUrl?: string;
+  socialImage?: string;
 }
 
 export interface NewsletterSubscription {
   email: string;
-  subscribedAt: any;
+  subscribedAt: unknown;
   isActive: boolean;
-  unsubscribedAt?: any;
+  unsubscribedAt?: unknown;
   source?: string;
 }
 
@@ -107,8 +107,8 @@ export interface ScholarshipSubmission {
   submitterOrganization?: string;
   additionalNotes?: string;
   status: "pending" | "approved" | "rejected";
-  submittedAt: any;
-  reviewedAt?: any;
+  submittedAt: unknown;
+  reviewedAt?: unknown;
   reviewedBy?: string;
   reviewNotes?: string;
 }
@@ -243,7 +243,7 @@ export const scholarshipService = {
     country?: string;
     limit?: number;
   }): Promise<Scholarship[]> {
-    let constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
 
     if (filters?.status) {
       constraints.push(where("status", "==", filters.status));
@@ -344,12 +344,11 @@ export const blogService = {
     updates: Partial<BlogPost>
   ): Promise<void> {
     const docRef = doc(db, "blog", postId);
-    const updateData: any = {
+    const updateData: Partial<BlogPost> = {
       ...updates,
       updatedAt: serverTimestamp(),
     };
 
-    // Set publishedAt when status changes to published
     if (updates.status === "published") {
       updateData.publishedAt = serverTimestamp();
     }
@@ -367,7 +366,7 @@ export const blogService = {
     category?: string;
     limit?: number;
   }): Promise<BlogPost[]> {
-    let constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
 
     if (filters?.status) {
       constraints.push(where("status", "==", filters.status));
@@ -490,7 +489,7 @@ export const submissionService = {
     updates: Partial<ScholarshipSubmission>
   ): Promise<void> {
     const docRef = doc(db, "scholarshipSubmissions", submissionId);
-    const updateData: any = { ...updates };
+    const updateData: Partial<ScholarshipSubmission> = { ...updates };
 
     if (updates.status && ["approved", "rejected"].includes(updates.status)) {
       updateData.reviewedAt = serverTimestamp();
@@ -500,7 +499,7 @@ export const submissionService = {
   },
 
   async getSubmissions(status?: string): Promise<ScholarshipSubmission[]> {
-    let constraints: QueryConstraint[] = [orderBy("submittedAt", "desc")];
+    const constraints: QueryConstraint[] = [orderBy("submittedAt", "desc")];
 
     if (status) {
       constraints.push(where("status", "==", status));
@@ -657,12 +656,12 @@ export interface Activity {
   id: string;
   action: string;
   item: string;
-  resourceType: 'scholarship' | 'blog' | 'user' | 'application';
+  resourceType: "scholarship" | "blog" | "user" | "application";
   resourceId?: string;
   userId?: string;
   userName?: string;
-  timestamp: any;
-  metadata?: any;
+  timestamp: unknown;
+  metadata?: unknown;
 }
 
 export interface AdminStats {
@@ -683,11 +682,25 @@ export const analyticsService = {
     userName?: string;
     action: string;
     item: string;
-    resourceType: 'scholarship' | 'blog' | 'user' | 'application';
+    resourceType: "scholarship" | "blog" | "user" | "application";
     resourceId?: string;
-    metadata?: any;
+    metadata?: unknown;
   }): Promise<void> {
     await addDoc(collection(db, "activities"), {
+      ...activity,
+      timestamp: serverTimestamp(),
+    });
+  },
+
+  async logUserActivity(activity: {
+    userId: string;
+    sessionId: string;
+    action: string;
+    resource: string;
+    resourceId?: string;
+    metadata?: unknown;
+  }): Promise<void> {
+    await addDoc(collection(db, "userActivity"), {
       ...activity,
       timestamp: serverTimestamp(),
     });
@@ -696,6 +709,21 @@ export const analyticsService = {
   async getRecentActivities(limitCount: number = 10): Promise<Activity[]> {
     const q = query(
       collection(db, "activities"),
+      orderBy("timestamp", "desc"),
+      limit(limitCount)
+    );
+    const querySnapshot = await getDocs(q);
+
+    return querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    })) as Activity[];
+  },
+
+  async getUserActivity(userId: string, limitCount: number = 50): Promise<Activity[]> {
+    const q = query(
+      collection(db, "userActivity"),
+      where("userId", "==", userId),
       orderBy("timestamp", "desc"),
       limit(limitCount)
     );
@@ -760,7 +788,7 @@ export const analyticsService = {
     action: string;
     resource: string;
     resourceId?: string;
-    metadata?: any;
+    metadata?: unknown;
   }): Promise<void> {
     await addDoc(collection(db, "userActivity"), {
       ...activity,

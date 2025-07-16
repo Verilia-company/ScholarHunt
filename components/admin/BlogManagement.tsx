@@ -22,21 +22,32 @@ import { useAuth } from "@/contexts/AuthContext";
 import ShareButtons from "@/components/ShareButtons";
 
 // Utility function to format Firestore timestamps
-const formatDate = (timestamp: any): string => {
+const formatDate = (timestamp: unknown): string => {
   if (!timestamp) return new Date().toLocaleDateString();
 
   // Handle Firestore Timestamp objects
-  if (timestamp.toDate && typeof timestamp.toDate === "function") {
-    return timestamp.toDate().toLocaleDateString();
+  if (
+    typeof timestamp === "object" &&
+    timestamp !== null &&
+    "toDate" in timestamp &&
+    typeof (timestamp as { toDate: unknown }).toDate === "function"
+  ) {
+    return (timestamp as { toDate: () => Date }).toDate().toLocaleDateString();
   }
 
   // Handle regular Date objects or date strings
-  try {
-    return new Date(timestamp).toLocaleDateString();
-  } catch (error) {
-    console.warn("Error formatting date:", error);
-    return new Date().toLocaleDateString();
+  if (timestamp instanceof Date) {
+    return timestamp.toLocaleDateString();
+  } else if (typeof timestamp === "string" || typeof timestamp === "number") {
+    try {
+      return new Date(timestamp).toLocaleDateString();
+    } catch (error) {
+      console.warn("Error formatting date:", error);
+      return new Date().toLocaleDateString();
+    }
   }
+
+  return new Date().toLocaleDateString();
 };
 
 export default function BlogManagement() {

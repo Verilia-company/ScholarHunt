@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
-    dataLayer: any[];
+    gtag: (...args: unknown[]) => void;
+    dataLayer: unknown[];
   }
 }
 
@@ -82,7 +82,7 @@ const enhancedEvent = (eventData: {
   category: string;
   label?: string;
   value?: number;
-  customParameters?: Record<string, any>;
+  customParameters?: Record<string, unknown>;
 }) => {
   const context = getUserContext();
   
@@ -473,22 +473,22 @@ export function useTimeTracking() {
 }
 
 // Utility function to throttle events
-function throttle(func: Function, delay: number) {
+function throttle(func: (...args: unknown[]) => void, delay: number) {
   let timeoutId: NodeJS.Timeout;
   let lastExecTime = 0;
 
-  return function (this: any, ...args: any[]) {
-    const currentTime = Date.now();
+  return function (this: unknown, ...args: unknown[]) {
+    const now = Date.now();
 
-    if (currentTime - lastExecTime > delay) {
+    if (now - lastExecTime >= delay) {
       func.apply(this, args);
-      lastExecTime = currentTime;
+      lastExecTime = now;
     } else {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
         func.apply(this, args);
         lastExecTime = Date.now();
-      }, delay - (currentTime - lastExecTime));
+      }, delay - (now - lastExecTime));
     }
   };
 }

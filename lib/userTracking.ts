@@ -1,5 +1,16 @@
-import { db } from './firebase';
-import { collection, addDoc, query, where, orderBy, limit, getDocs, updateDoc, doc, serverTimestamp, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  addDoc,
+  updateDoc,
+  doc as firestoreDoc,
+  getDocs,
+  query,
+  where,
+  orderBy,
+  limit,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "./firebase";
 import { trackEvents } from './analytics';
 
 export interface UserActivity {
@@ -9,7 +20,7 @@ export interface UserActivity {
   action: string;
   resource: string;
   resourceId?: string;
-  metadata?: Record<string, any>;
+  metadata?: Record<string, unknown>;
   timestamp: Date;
   userAgent?: string;
   ipAddress?: string;

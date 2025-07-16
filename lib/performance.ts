@@ -139,8 +139,9 @@ export function usePerformanceMonitor() {
           try {
             let cls = 0;
             for (const entry of entryList.getEntries()) {
-              if (!(entry as any).hadRecentInput) {
-                cls += (entry as any).value;
+              const layoutShiftEntry = entry as unknown as { hadRecentInput: boolean; value: number };
+              if (!layoutShiftEntry.hadRecentInput) {
+                cls += layoutShiftEntry.value;
               }
             }
             setMetrics((prev) => ({ ...prev, cls }));
@@ -197,17 +198,6 @@ export function useLazyImage(src: string, placeholder: string = "") {
   }, [isVisible, src]);
 
   return [imageRef, imageSrc] as const;
-}
-
-// Optimized image component props
-interface OptimizedImageProps {
-  src: string;
-  alt: string;
-  width?: number;
-  height?: number;
-  className?: string;
-  placeholder?: string;
-  priority?: boolean;
 }
 
 // Note: OptimizedImage component is available in performance.tsx
