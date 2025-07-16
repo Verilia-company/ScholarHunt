@@ -17,6 +17,7 @@ import NewsletterSubscription from "./NewsletterSubscription";
 import { usePageTracking } from "../lib/analytics";
 import { ToastContainer, useToast } from "./Toast";
 import WhatsAppWidget from "./WhatsAppWidget";
+import Image from "next/image";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -464,10 +465,11 @@ export default function Layout({ children }: LayoutProps) {
                       >
                         <div className="w-7 h-7 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
                           {user.photoURL ? (
-                            <img
+                            <Image
                               src={user.photoURL}
                               alt="Profile"
-                              className="w-7 h-7 rounded-full object-cover"
+                              width={48}
+                              height={48}
                             />
                           ) : (
                             <User className="w-4 h-4 text-white" />
@@ -483,10 +485,11 @@ export default function Layout({ children }: LayoutProps) {
                       {/* Profile Dropdown */}
                       {showProfileDropdown && (
                         <div
-                          className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border py-2 z-50"
+                          className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border py-2"
                           style={{
                             backgroundColor: "var(--surface)",
                             borderColor: "var(--border)",
+                            zIndex: 9999,
                           }}
                         >
                           {/* User Info */}
@@ -497,10 +500,11 @@ export default function Layout({ children }: LayoutProps) {
                             <div className="flex items-center space-x-3">
                               <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
                                 {user.photoURL ? (
-                                  <img
+                                  <Image
                                     src={user.photoURL}
                                     alt="Profile"
-                                    className="w-12 h-12 rounded-full object-cover"
+                                    width={48}
+                                    height={48}
                                   />
                                 ) : (
                                   <User className="w-6 h-6 text-white" />
@@ -697,10 +701,11 @@ export default function Layout({ children }: LayoutProps) {
                         >
                           <div className="w-10 h-10 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
                             {user.photoURL ? (
-                              <img
+                              <Image
                                 src={user.photoURL}
                                 alt="Profile"
-                                className="w-10 h-10 rounded-full object-cover"
+                                width={48}
+                                height={48}
                               />
                             ) : (
                               <User className="w-5 h-5 text-white" />

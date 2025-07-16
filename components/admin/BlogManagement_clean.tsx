@@ -13,6 +13,7 @@ import {
   X,
 } from "lucide-react";
 import RichTextEditor from "./RichTextEditor";
+import Image from "next/image";
 
 interface BlogPost {
   id: string;
@@ -769,10 +770,11 @@ export default function BlogManagement() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                       {post.image && (
                         <div className="w-full sm:w-12 h-8 sm:h-12 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
-                          <img
+                          <Image
                             src={post.image}
                             alt={post.title}
-                            className="w-full h-full object-cover"
+                            width={48}
+                            height={48}
                           />
                         </div>
                       )}

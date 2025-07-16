@@ -20,6 +20,7 @@ import {
 } from "@/lib/firebase/services";
 import { useAuth } from "@/contexts/AuthContext";
 import ShareButtons from "@/components/ShareButtons";
+import Image from "next/image";
 
 // Utility function to format Firestore timestamps
 const formatDate = (timestamp: unknown): string => {
@@ -845,10 +846,11 @@ export default function BlogManagement() {
                     <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
                       {post.image && (
                         <div className="w-full sm:w-12 h-8 sm:h-12 bg-gray-200 rounded flex-shrink-0 overflow-hidden">
-                          <img
+                          <Image
                             src={post.image}
                             alt={post.title}
-                            className="w-full h-full object-cover"
+                            width={48}
+                            height={48}
                           />
                         </div>
                       )}
