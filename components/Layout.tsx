@@ -787,7 +787,7 @@ export default function Layout({ children }: LayoutProps) {
         
         {/* WhatsApp Widget for Expert Advice */}
         <WhatsAppWidget 
-          phoneNumber="+256700000000"
+          phoneNumber="+256759058245"
           message="Hi! I need expert advice about scholarships 🎓"
           position="bottom-right"
         />
