@@ -1,0 +1,88 @@
+{
+  "name": "ScholarHunt Uganda - Find Your Perfect Scholarship",
+  "short_name": "ScholarHunt",
+  "description": "Discover scholarship opportunities for Ugandan students. Get access to international scholarships, study abroad programs, and educational funding opportunities.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4F94FE",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "en-UG",
+  "icons": [
+    {
+      "src": "/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "categories": [
+    "education",
+    "productivity",
+    "utilities"
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "/screenshot-narrow.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Browse Scholarships",
+      "short_name": "Opportunities",
+      "description": "Browse all available scholarship opportunities",
+      "url": "/opportunities",
+      "icons": [
+        {
+          "src": "/shortcut-search.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Read Blog",
+      "short_name": "Blog",
+      "description": "Read latest scholarship tips and guides",
+      "url": "/blog",
+      "icons": [
+        {
+          "src": "/shortcut-blog.png",
+          "sizes": "192x192"
+        }
+      ]
+    },
+    {
+      "name": "Submit Scholarship",
+      "short_name": "Submit",
+      "description": "Submit a new scholarship opportunity",
+      "url": "/submit",
+      "icons": [
+        {
+          "src": "/shortcut-submit.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ]
+}

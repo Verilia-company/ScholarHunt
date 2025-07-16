@@ -1,0 +1,32 @@
+User-agent: *
+Allow: /
+
+# High crawl-rate pages
+Crawl-delay: 0
+
+# Sitemap location
+Sitemap: https://scholarhunt.ug/sitemap.xml
+
+# Block access to API routes and admin areas (if any)
+Disallow: /api/
+Disallow: /_next/
+Disallow: /admin/
+
+# Allow important pages
+Allow: /
+Allow: /opportunities
+Allow: /blog
+Allow: /scholarships/
+Allow: /about
+Allow: /submit
+
+# SEO optimizations
+# Allow CSS and JS files for better indexing
+Allow: *.css
+Allow: *.js
+Allow: *.png
+Allow: *.jpg
+Allow: *.jpeg
+Allow: *.gif
+Allow: *.svg
+Allow: *.webp

@@ -1,0 +1,15 @@
+{
+  "name": "Post-Edit Validation Hook",
+  "description": "After finishing a task, grep through the whole file for any suspicious issues, paying attention to type errors before moving on to the next task",
+  "trigger": {
+    "type": "file_saved",
+    "filePattern": "**/*.{ts,tsx,js,jsx}"
+  },
+  "actions": [
+    {
+      "type": "agent_request",
+      "prompt": "I just saved a file. Please:\n1. Grep through the entire file for any suspicious issues\n2. Pay special attention to TypeScript type errors\n3. Check for unused variables, missing dependencies, and other linting issues\n4. Run terminal commands to check the performance and compilation of the file I edited\n5. Fix any critical issues found before moving to the next task\n\nFile that was saved: {{filePath}}\n\nPlease analyze this file thoroughly and fix any issues you find."
+    }
+  ],
+  "enabled": true
+}

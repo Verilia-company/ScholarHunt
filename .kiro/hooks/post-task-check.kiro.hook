@@ -1,0 +1,19 @@
+{
+  "enabled": true,
+  "name": "Post-Task Quality Check",
+  "description": "After finishing a task, grep through the whole file for any suspicious issues, paying attention to type errors before moving on to the next task. Can run terminal commands to check the performance of the file that was edited.",
+  "version": "1",
+  "when": {
+    "type": "fileEdited",
+    "patterns": [
+      "**/*.tsx",
+      "**/*.ts",
+      "**/*.js",
+      "**/*.jsx"
+    ]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "I just finished editing a file. Please thoroughly review the entire file for any suspicious issues, with special attention to:\n\n1. Type errors and TypeScript issues\n2. Import/export problems\n3. Syntax errors\n4. Logic inconsistencies\n5. Performance concerns\n\nAfter reviewing the code, run appropriate terminal commands to:\n- Check TypeScript compilation (`npx tsc --noEmit`)\n- Run linting (`npm run lint`)\n- Test the build process if needed (`npm run build`)\n\nProvide a summary of any issues found and suggest fixes before I move on to the next task."
+  }
+}
