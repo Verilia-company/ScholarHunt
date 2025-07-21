@@ -10,7 +10,7 @@ interface WhatsAppWidgetProps {
 }
 
 export default function WhatsAppWidget({ 
-  phoneNumber = "+256759058245", 
+  phoneNumber = "256759058245", // Removed the '+' sign
   message = "Hi! I need expert advice about scholarships 🎓",
   position = "bottom-right" 
 }: WhatsAppWidgetProps) {
