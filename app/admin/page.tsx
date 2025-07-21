@@ -307,7 +307,7 @@ function AdminDashboardContent() {
         >
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
                 <currentTabData.icon className="w-8 h-8 text-white" />
               </div>
               <div>
@@ -362,7 +362,7 @@ function AdminDashboardContent() {
                         : "hover:bg-opacity-80"
                     }`}
                     style={{
-                      background: isActive ? 'var(--gradient-brand)' : 'var(--bg-glass)',
+                      background: isActive ? 'var(--brand-primary)' : 'var(--bg-glass)',
                       color: isActive ? 'white' : 'var(--text-secondary)'
                     }}
                     title={`${tab.description} (Alt+${index + 1})`}
@@ -443,7 +443,7 @@ function AdminDashboardContent() {
                         whileHover={{ y: -5 }}
                       >
                         <div className="flex items-center gap-4">
-                          <div className={`w-14 h-14 bg-gradient-to-r ${stat.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow`}>
+                          <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow" style={{ background: 'var(--brand-primary)' }}>
                             <Icon className="w-7 h-7 text-white" />
                           </div>
                           <div className="flex-1">
@@ -483,7 +483,7 @@ function AdminDashboardContent() {
               transition={{ duration: 0.6, delay: 0.8 }}
             >
               <div className="flex items-center gap-3 mb-8">
-                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center">
+                <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--brand-primary)' }}>
                   <Zap className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -533,7 +533,7 @@ function AdminDashboardContent() {
                     animate={{ opacity: overviewInView ? 1 : 0, y: overviewInView ? 0 : 20 }}
                     transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
                   >
-                    <div className={`w-12 h-12 bg-gradient-to-r ${item.gradient} rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform" style={{ background: 'var(--brand-primary)' }}>
                       <item.icon className="w-6 h-6 text-white" />
                     </div>
                     <h3 className="font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
@@ -555,7 +555,7 @@ function AdminDashboardContent() {
             >
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-gradient-to-r from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'var(--brand-secondary)' }}>
                     <ActivityIcon className="w-6 h-6 text-white" />
                   </div>
                   <div>
@@ -609,7 +609,7 @@ function AdminDashboardContent() {
                       transition={{ duration: 0.4, delay: 1.3 + index * 0.1 }}
                     >
                       <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: 'var(--brand-primary)' }}>
                           <ActivityIcon className="w-5 h-5 text-white" />
                         </div>
                         <div className="flex-1 min-w-0">

@@ -34,20 +34,16 @@ export default function BlogCard({ post }: BlogCardProps) {
           border: '1px solid var(--border-primary)'
         }}
       >
-        {/* Premium Image Section */}
+        {/* Clean Image Section */}
         {post.image && (
           <div className="relative h-48 overflow-hidden">
-            <div 
-              className="absolute inset-0 opacity-10"
-              style={{ background: 'var(--gradient-brand)' }}
-            />
             <Image
               src={post.image}
               alt={post.title}
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
             
             {post.category && (
               <div className="absolute top-4 left-4">
@@ -80,7 +76,7 @@ export default function BlogCard({ post }: BlogCardProps) {
           {/* Meta Information */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-indigo-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
                 <Calendar className="h-5 w-5 text-white" />
               </div>
               <div>
@@ -125,7 +121,7 @@ export default function BlogCard({ post }: BlogCardProps) {
           {/* Author Section */}
           {post.author && (
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-gradient-to-r from-purple-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
+              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
                 <User className="h-5 w-5 text-white" />
               </div>
               <div>

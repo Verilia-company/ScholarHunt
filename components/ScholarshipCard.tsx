@@ -65,14 +65,8 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
           border: '1px solid var(--border-primary)'
         }}
       >
-        {/* Premium Header */}
+        {/* Clean Header */}
         <div className="relative p-6 pb-4">
-          {/* Background Gradient */}
-          <div 
-            className="absolute inset-0 opacity-5"
-            style={{ background: 'var(--gradient-brand)' }}
-          />
-          
           <div className="relative">
             <div className="flex justify-between items-start mb-4">
               <div className="flex gap-2 flex-wrap">
@@ -149,7 +143,7 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
           <div className="space-y-4 mb-8">
             {/* Amount */}
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-xl flex items-center justify-center shadow-lg">
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-accent)' }}>
                 <DollarSign className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
@@ -161,7 +155,7 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 </p>
                 <p 
                   className="font-bold text-lg"
-                  style={{ color: 'var(--brand-success)' }}
+                  style={{ color: 'var(--brand-accent)' }}
                 >
                   {scholarship.amount}
                 </p>
@@ -170,13 +164,13 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
 
             {/* Deadline */}
             <div className="flex items-center gap-4">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-lg ${
-                isUndisclosed
-                  ? "bg-gradient-to-r from-gray-400 to-gray-500"
+              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{
+                background: isUndisclosed
+                  ? 'var(--text-quaternary)'
                   : isUrgent
-                  ? "bg-gradient-to-r from-red-400 to-pink-500"
-                  : "bg-gradient-to-r from-blue-400 to-indigo-500"
-              }`}>
+                  ? 'var(--brand-error)'
+                  : 'var(--brand-primary)'
+              }}>
                 <Calendar className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
@@ -217,7 +211,7 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
               <div className="grid grid-cols-1 gap-4">
                 {scholarship.level && (
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-violet-400 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
                       <GraduationCap className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1">
@@ -238,7 +232,7 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 )}
                 {scholarship.location && (
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-gradient-to-r from-orange-400 to-red-500 rounded-xl flex items-center justify-center shadow-lg">
+                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
                       <MapPin className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1">

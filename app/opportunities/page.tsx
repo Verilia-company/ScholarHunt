@@ -161,10 +161,10 @@ function OpportunitiesContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-3 sm:px-4">
+      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
         <div className="text-center max-w-md">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading scholarship opportunities...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--brand-primary)' }}></div>
+          <p style={{ color: 'var(--text-secondary)' }}>Loading scholarship opportunities...</p>
         </div>
       </div>
     );
@@ -172,17 +172,17 @@ function OpportunitiesContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-3 sm:px-4">
+      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
         <div className="text-center max-w-md">
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+          <h1 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
             Unable to Load Scholarships
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
+          <p className="text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             {error}. Please try refreshing the page.
           </p>
           <button
             onClick={() => window.location.reload()}
-            className="btn-primary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
+            className="btn btn-primary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
           >
             Refresh Page
           </button>
@@ -193,28 +193,23 @@ function OpportunitiesContent() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Revolutionary Header */}
-      <div className="relative overflow-hidden py-20" style={{ background: 'var(--gradient-mesh)' }}>
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-20 right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-float"></div>
-          <div className="absolute bottom-20 left-20 w-48 h-48 bg-white/10 rounded-full blur-2xl animate-float" style={{ animationDelay: '2s' }}></div>
-        </div>
-
+      {/* Clean Header */}
+      <div className="relative overflow-hidden py-20" style={{ background: 'var(--brand-primary)' }}>
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 glass-strong rounded-full px-6 py-3 mb-8">
-            <Search className="w-5 h-5" style={{ color: 'var(--brand-primary)' }} />
-            <span className="font-medium" style={{ color: 'var(--text-primary)' }}>
+          <div className="inline-flex items-center gap-2 rounded-full px-6 py-3 mb-8" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
+            <Search className="w-5 h-5 text-white" />
+            <span className="font-medium text-white">
               Discover Your Future
             </span>
           </div>
 
-          <h1 className="text-display mb-6" style={{ color: 'var(--text-primary)' }}>
+          <h1 className="text-display mb-6 text-white">
             Scholarship
             <br />
-            <span className="text-gradient animate-gradient">Opportunities</span>
+            <span className="text-white opacity-90">Opportunities</span>
           </h1>
 
-          <p className="text-subtitle max-w-4xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+          <p className="text-subtitle max-w-4xl mx-auto text-white opacity-80">
             Discover scholarship opportunities that match your academic goals and background.
             Use our advanced filters to find the perfect scholarships for you.
           </p>
@@ -223,12 +218,10 @@ function OpportunitiesContent() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-12">
         {/* Revolutionary Search and Filters */}
         <div className="card-glass p-8 mb-12">
-          {/* Premium Search Bar */}
+          {/* Clean Search Bar */}
           <div className="mb-8">
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-              <div className="relative glass-strong rounded-2xl p-2">
+            <div className="relative">
+              <div className="glass-strong rounded-2xl p-2 border" style={{ borderColor: 'var(--border-primary)' }}>
                 <div className="flex items-center">
                   <div className="flex items-center pl-6">
                     <Search
@@ -243,7 +236,7 @@ function OpportunitiesContent() {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none placeholder-opacity-60 focus-ring"
+                    className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none focus-ring"
                     style={{
                       color: 'var(--text-primary)'
                     }}
@@ -383,8 +376,7 @@ function OpportunitiesContent() {
                 </button>
                 <button
                   onClick={() => setShowFilters(false)}
-                  className="glass-strong rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:bg-opacity-80 focus-ring"
-                  style={{ background: 'var(--gradient-brand)', color: 'white' }}
+                  className="btn btn-primary"
                 >
                   Apply Filters
                 </button>
@@ -405,14 +397,14 @@ function OpportunitiesContent() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="card-glass p-6 animate-pulse"
               >
-                <div className="h-4 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-4"></div>
-                <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-2"></div>
-                <div className="h-3 bg-gradient-to-r from-gray-200 to-gray-300 rounded mb-4 w-3/4"></div>
+                <div className="h-4 rounded mb-4" style={{ background: 'var(--bg-glass)' }}></div>
+                <div className="h-3 rounded mb-2" style={{ background: 'var(--bg-glass)' }}></div>
+                <div className="h-3 rounded mb-4 w-3/4" style={{ background: 'var(--bg-glass)' }}></div>
                 <div className="flex gap-2 mb-4">
-                  <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full w-16"></div>
-                  <div className="h-6 bg-gradient-to-r from-gray-200 to-gray-300 rounded-full w-20"></div>
+                  <div className="h-6 rounded-full w-16" style={{ background: 'var(--bg-glass)' }}></div>
+                  <div className="h-6 rounded-full w-20" style={{ background: 'var(--bg-glass)' }}></div>
                 </div>
-                <div className="h-10 bg-gradient-to-r from-gray-200 to-gray-300 rounded-lg"></div>
+                <div className="h-10 rounded-lg" style={{ background: 'var(--bg-glass)' }}></div>
               </motion.div>
             ))
           ) : currentScholarships.length > 0 ? (
@@ -437,7 +429,7 @@ function OpportunitiesContent() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="w-20 h-20 bg-gradient-to-r from-gray-400 to-gray-500 rounded-full flex items-center justify-center mx-auto mb-6">
+              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--text-quaternary)' }}>
                 <Search className="w-10 h-10 text-white" />
               </div>
               <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
@@ -448,8 +440,7 @@ function OpportunitiesContent() {
               </p>
               <button
                 onClick={resetFilters}
-                className="glass-strong rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:bg-opacity-80 focus-ring"
-                style={{ background: 'var(--gradient-brand)', color: 'white' }}
+                className="btn btn-primary"
               >
                 Reset All Filters
               </button>
@@ -479,7 +470,7 @@ function OpportunitiesContent() {
                     className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-300 ${isActive ? 'text-white' : ''
                       }`}
                     style={{
-                      background: isActive ? 'var(--gradient-brand)' : 'transparent',
+                      background: isActive ? 'var(--brand-primary)' : 'transparent',
                       color: isActive ? 'white' : 'var(--text-secondary)'
                     }}
                   >
@@ -516,13 +507,13 @@ function OpportunitiesContent() {
                   className="flex-1 px-4 py-3 bg-transparent border-0 outline-none text-sm focus-ring rounded-lg"
                   style={{ color: 'var(--text-primary)' }}
                 />
-                <button className="glass-strong rounded-lg px-6 py-3 font-medium transition-all duration-200 hover:bg-opacity-80 focus-ring whitespace-nowrap" style={{ background: 'var(--gradient-brand)', color: 'white' }}>
+                <button className="btn btn-primary">
                   Subscribe Now
                 </button>
               </div>
             </div>
             <div className="md:w-1/3 flex justify-center">
-              <div className="w-24 h-24 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: 'var(--brand-primary)' }}>
                 <Bell className="w-12 h-12 text-white" />
               </div>
             </div>

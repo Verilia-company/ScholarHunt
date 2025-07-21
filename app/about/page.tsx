@@ -53,51 +53,36 @@ export default function AboutPage() {
   }, []);
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Revolutionary Hero Section */}
+      {/* Clean Hero Section */}
       <motion.section
         ref={heroRef}
         className="relative overflow-hidden py-32"
-        style={{ background: 'var(--gradient-mesh)' }}
+        style={{ background: 'var(--brand-primary)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: heroInView ? 1 : 0 }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 0.8 }}
       >
-        {/* Sophisticated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-20 right-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"
-            animate={{ rotate: [0, 360], scale: [1, 1.2, 1] }}
-            transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          />
-          <motion.div
-            className="absolute bottom-20 left-20 w-48 h-48 bg-white/10 rounded-full blur-2xl"
-            animate={{ x: [0, 30, 0], y: [0, -30, 0] }}
-            transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 50, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <div className="inline-flex items-center gap-3 glass-strong rounded-full px-6 py-3 mb-8">
-              <Heart className="w-5 h-5" style={{ color: 'var(--brand-error)' }} />
-              <span className="font-medium" style={{ color: 'var(--text-primary)' }}>
+            <div className="inline-flex items-center gap-3 rounded-full px-6 py-3 mb-8" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
+              <Heart className="w-5 h-5 text-white" />
+              <span className="font-medium text-white">
                 Our Story & Mission
               </span>
             </div>
             
-            <h1 className="text-display mb-8" style={{ color: 'var(--text-primary)' }}>
+            <h1 className="text-display mb-8 text-white">
               Transforming Dreams Into
               <br />
-              <span className="text-gradient animate-gradient">Reality</span>
+              <span className="text-white opacity-90">Reality</span>
             </h1>
             
             <p 
-              className="text-subtitle max-w-4xl mx-auto leading-relaxed"
-              style={{ color: 'var(--text-secondary)' }}
+              className="text-subtitle max-w-4xl mx-auto leading-relaxed text-white opacity-80"
             >
               Born from struggle, built with purpose. We&apos;re revolutionizing how students 
               discover and access life-changing scholarship opportunities.
@@ -115,11 +100,7 @@ export default function AboutPage() {
         animate={{ opacity: storyInView ? 1 : 0, y: storyInView ? 0 : 50 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 left-0 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-gradient-to-r from-emerald-500/5 to-cyan-500/5 rounded-full blur-3xl"></div>
-        </div>
+
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -165,7 +146,7 @@ export default function AboutPage() {
                                 className="w-full h-full object-cover"
                               />
                             ) : (
-                              <div className="w-full h-full bg-gradient-to-br from-indigo-400 to-purple-500 flex items-center justify-center">
+                              <div className="w-full h-full flex items-center justify-center" style={{ background: 'var(--brand-primary)' }}>
                                 <Users className="h-8 w-8 text-white" />
                               </div>
                             )}
@@ -195,7 +176,7 @@ export default function AboutPage() {
                         transition={{ duration: 0.6, delay: 0.4 }}
                       >
                         <div className="card-glass p-6 group-hover:scale-105 transition-all duration-300">
-                          <div className="w-20 h-20 bg-gradient-to-br from-indigo-400 to-purple-500 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
+                          <div className="w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
                             <Users className="h-8 w-8 text-white" />
                           </div>
                           <h3 
@@ -219,7 +200,7 @@ export default function AboutPage() {
                         transition={{ duration: 0.6, delay: 0.5 }}
                       >
                         <div className="card-glass p-6 group-hover:scale-105 transition-all duration-300">
-                          <div className="w-20 h-20 bg-gradient-to-br from-emerald-400 to-cyan-500 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg">
+                          <div className="w-20 h-20 rounded-2xl mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
                             <Users className="h-8 w-8 text-white" />
                           </div>
                           <h3 
@@ -253,7 +234,7 @@ export default function AboutPage() {
                 <h2 className="text-hero" style={{ color: 'var(--text-primary)' }}>
                   Our Story
                 </h2>
-                <div className="w-12 h-12 bg-gradient-to-r from-emerald-400 to-cyan-400 rounded-full flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'var(--brand-accent)' }}>
                   <Sparkles className="w-6 h-6 text-white" />
                 </div>
               </div>
@@ -305,11 +286,7 @@ export default function AboutPage() {
         animate={{ opacity: valuesInView ? 1 : 0, y: valuesInView ? 0 : 50 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/3 right-0 w-96 h-96 bg-gradient-to-r from-violet-500/5 to-purple-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/3 left-0 w-96 h-96 bg-gradient-to-r from-cyan-500/5 to-blue-500/5 rounded-full blur-3xl"></div>
-        </div>
+
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           {/* Mission & Vision */}
@@ -322,7 +299,7 @@ export default function AboutPage() {
             >
               <div className="card-glass p-8 h-full">
                 <div className="flex items-center justify-center lg:justify-start mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-red-400 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
                     <Target className="h-8 w-8 text-white" />
                   </div>
                 </div>
@@ -345,7 +322,7 @@ export default function AboutPage() {
             >
               <div className="card-glass p-8 h-full">
                 <div className="flex items-center justify-center lg:justify-start mb-6">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg">
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
                     <Globe className="h-8 w-8 text-white" />
                   </div>
                 </div>
@@ -398,7 +375,7 @@ export default function AboutPage() {
                   transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
                 >
                   <div className="card-glass p-6 group-hover:scale-105 transition-all duration-300">
-                    <div className={`w-16 h-16 bg-gradient-to-r ${value.gradient} rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow`}>
+                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:shadow-xl transition-shadow" style={{ background: index % 2 === 0 ? 'var(--brand-primary)' : 'var(--brand-secondary)' }}>
                       <span className="text-white font-bold text-sm">
                         {value.icon}
                       </span>
@@ -425,11 +402,7 @@ export default function AboutPage() {
         animate={{ opacity: contactInView ? 1 : 0, y: contactInView ? 0 : 50 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 right-0 w-96 h-96 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 rounded-full blur-3xl"></div>
-        </div>
+
 
         <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -492,7 +465,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.6, delay: contact.delay }}
               >
                 <div className="card-glass p-8 group-hover:scale-105 transition-all duration-300">
-                  <div className={`w-16 h-16 bg-gradient-to-r ${contact.gradient} rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-shadow`}>
+                  <div className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg group-hover:shadow-xl transition-shadow" style={{ background: index === 0 ? 'var(--brand-primary)' : index === 1 ? 'var(--brand-accent)' : 'var(--brand-secondary)' }}>
                     <contact.icon className="h-8 w-8 text-white" />
                   </div>
                   <h3 
@@ -563,7 +536,7 @@ export default function AboutPage() {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    <div className={`w-14 h-14 bg-gradient-to-r ${social.gradient} rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300`}>
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300" style={{ background: index % 2 === 0 ? 'var(--brand-primary)' : 'var(--brand-secondary)' }}>
                       <social.component className="h-6 w-6 text-white" />
                     </div>
                   </motion.a>
@@ -574,30 +547,15 @@ export default function AboutPage() {
         </div>
       </motion.section>
 
-      {/* Revolutionary CTA Section */}
+      {/* Clean CTA Section */}
       <motion.section
         className="py-32 relative overflow-hidden"
-        style={{ background: 'var(--gradient-brand)' }}
+        style={{ background: 'var(--brand-primary)' }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        {/* Sophisticated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 25,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        </div>
 
         <div className="relative max-w-5xl mx-auto px-6 lg:px-8 text-center">
           <motion.div
