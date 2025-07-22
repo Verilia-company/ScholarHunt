@@ -1,68 +1,64 @@
 @import "tailwindcss";
 
 :root {
-  /* Revolutionary Design System - Inspired by Linear, Stripe, Vercel */
-  
-  /* Core Colors - Dark Mode First */
-  --bg-primary: #0a0a0a;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1a1a1a;
-  --bg-elevated: #1f1f1f;
-  --bg-glass: rgba(255, 255, 255, 0.03);
-  --bg-glass-strong: rgba(255, 255, 255, 0.08);
-  
-  /* Light Mode Override */
-  --bg-light-primary: #ffffff;
-  --bg-light-secondary: #fafafa;
-  --bg-light-tertiary: #f5f5f5;
-  --bg-light-elevated: #ffffff;
-  --bg-light-glass: rgba(0, 0, 0, 0.02);
-  --bg-light-glass-strong: rgba(0, 0, 0, 0.05);
-  
+  /* Simplified Design System - Clean & Professional */
+
+  /* Core Colors - Light Mode First */
+  --bg-primary: #ffffff;
+  --bg-secondary: #e3eafc;
+  --bg-tertiary: #c7d2fe;
+  --bg-elevated: #ffffff;
+  --bg-glass: rgba(26, 35, 126, 0.02);
+  --bg-glass-strong: rgba(26, 35, 126, 0.08);
+
+  /* Dark Mode Override */
+  --bg-dark-primary: #0f172a;
+  --bg-dark-secondary: #1e293b;
+  --bg-dark-tertiary: #334155;
+  --bg-dark-elevated: #1e293b;
+  --bg-dark-glass: rgba(255, 255, 255, 0.05);
+  --bg-dark-glass-strong: rgba(255, 255, 255, 0.1);
+
   /* Text Colors */
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-tertiary: #71717a;
-  --text-quaternary: #52525b;
-  
-  /* Light Mode Text */
-  --text-light-primary: #09090b;
-  --text-light-secondary: #71717a;
-  --text-light-tertiary: #a1a1aa;
-  --text-light-quaternary: #d4d4d8;
-  
-  /* Brand Colors - Sophisticated Palette */
-  --brand-primary: #6366f1; /* Indigo */
-  --brand-secondary: #8b5cf6; /* Violet */
-  --brand-accent: #06b6d4; /* Cyan */
-  --brand-success: #10b981; /* Emerald */
-  --brand-warning: #f59e0b; /* Amber */
-  --brand-error: #ef4444; /* Red */
-  
-  /* Gradients - Premium Feel */
-  --gradient-brand: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-  --gradient-warm: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-  --gradient-cool: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
-  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);
-  --gradient-mesh: radial-gradient(at 40% 20%, #6366f1 0px, transparent 50%), 
-                   radial-gradient(at 80% 0%, #8b5cf6 0px, transparent 50%), 
-                   radial-gradient(at 0% 50%, #06b6d4 0px, transparent 50%);
-  
+  --text-primary: #1a237e;
+  --text-secondary: #475569;
+  --text-tertiary: #64748b;
+  --text-quaternary: #94a3b8;
+
+  /* Dark Mode Text */
+  --text-dark-primary: #f8fafc;
+  --text-dark-secondary: #cbd5e1;
+  --text-dark-tertiary: #94a3b8;
+  --text-dark-quaternary: #64748b;
+
+  /* Simplified Brand Colors - Only 3 Main Colors */
+  --brand-primary: #1a237e;
+  --brand-secondary: #1976d2;
+  --brand-accent: #10b981; /* Green for success states */
+  --brand-warning: #f59e0b; /* Amber for warnings */
+  --brand-error: #ef4444; /* Red for errors */
+
+  /* Simplified Gradients - Minimal Use */
+  --gradient-primary: linear-gradient(135deg, #1a237e 0%, #1976d2 100%);
+  --gradient-secondary: linear-gradient(135deg, #1976d2 0%, #1a237e 100%);
+
   /* Borders */
-  --border-primary: #27272a;
-  --border-secondary: #3f3f46;
-  --border-light-primary: #e4e4e7;
-  --border-light-secondary: #d4d4d8;
-  
+  --border-primary: #e2e8f0;
+  --border-secondary: #cbd5e1;
+  --border-dark-primary: #334155;
+  --border-dark-secondary: #475569;
+
   /* Shadows - Dramatic & Elegant */
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
   --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --shadow-glow: 0 0 20px rgb(99 102 241 / 0.3);
   --shadow-glow-strong: 0 0 40px rgb(99 102 241 / 0.4);
-  
+
   /* Spacing Scale */
   --space-xs: 0.25rem;
   --space-sm: 0.5rem;
@@ -73,7 +69,7 @@
   --space-3xl: 4rem;
   --space-4xl: 6rem;
   --space-5xl: 8rem;
-  
+
   /* Border Radius */
   --radius-xs: 0.25rem;
   --radius-sm: 0.375rem;
@@ -83,25 +79,31 @@
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
   --radius-full: 9999px;
+
+  --color-primary: #1a237e;
+  --color-secondary: #ffffff;
+  --color-accent: #1976d2;
+  --color-bg: #ffffff;
+  --color-text: #1a237e;
 }
 
-/* Light Mode */
-@media (prefers-color-scheme: light) {
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
   :root {
-    --bg-primary: var(--bg-light-primary);
-    --bg-secondary: var(--bg-light-secondary);
-    --bg-tertiary: var(--bg-light-tertiary);
-    --bg-elevated: var(--bg-light-elevated);
-    --bg-glass: var(--bg-light-glass);
-    --bg-glass-strong: var(--bg-light-glass-strong);
-    
-    --text-primary: var(--text-light-primary);
-    --text-secondary: var(--text-light-secondary);
-    --text-tertiary: var(--text-light-tertiary);
-    --text-quaternary: var(--text-light-quaternary);
-    
-    --border-primary: var(--border-light-primary);
-    --border-secondary: var(--border-light-secondary);
+    --bg-primary: var(--bg-dark-primary);
+    --bg-secondary: var(--bg-dark-secondary);
+    --bg-tertiary: var(--bg-dark-tertiary);
+    --bg-elevated: var(--bg-dark-elevated);
+    --bg-glass: var(--bg-dark-glass);
+    --bg-glass-strong: var(--bg-dark-glass-strong);
+
+    --text-primary: var(--text-dark-primary);
+    --text-secondary: var(--text-dark-secondary);
+    --text-tertiary: var(--text-dark-tertiary);
+    --text-quaternary: var(--text-dark-quaternary);
+
+    --border-primary: var(--border-dark-primary);
+    --border-secondary: var(--border-dark-secondary);
   }
 }
 
@@ -118,12 +120,15 @@ html {
 body {
   background: var(--bg-primary);
   color: var(--text-primary);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   font-feature-settings: "rlig" 1, "calt" 1;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  background-color: var(--color-bg);
+  color: var(--color-text);
 }
 
 /* Typography Scale */
@@ -181,29 +186,17 @@ body {
   border: 1px solid var(--border-secondary);
 }
 
-/* Gradient Utilities */
-.gradient-brand {
-  background: var(--gradient-brand);
+/* Simplified Gradient Utilities */
+.gradient-primary {
+  background: var(--gradient-primary);
 }
 
-.gradient-warm {
-  background: var(--gradient-warm);
+.gradient-secondary {
+  background: var(--gradient-secondary);
 }
 
-.gradient-cool {
-  background: var(--gradient-cool);
-}
-
-.gradient-purple {
-  background: var(--gradient-purple);
-}
-
-.gradient-mesh {
-  background: var(--gradient-mesh);
-}
-
-.gradient-text {
-  background: var(--gradient-brand);
+.text-gradient {
+  background: var(--gradient-primary);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -230,14 +223,17 @@ body {
 }
 
 .btn-primary {
-  background: var(--gradient-brand);
+  background: var(--brand-primary);
   color: white;
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-md);
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-xl), var(--shadow-glow);
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
 }
 
 .btn-secondary {
@@ -336,23 +332,42 @@ body {
 
 /* Animations */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.6); }
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+  }
 }
 
 @keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .animate-float {
@@ -364,7 +379,12 @@ body {
 }
 
 .animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, rgba(255, 255, 255, 0.1) 50%, transparent 75%);
+  background: linear-gradient(
+    90deg,
+    transparent 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 75%
+  );
   background-size: 200% 100%;
   animation: shimmer 2s infinite;
 }
@@ -375,13 +395,6 @@ body {
 }
 
 /* Utility Classes */
-.text-gradient {
-  background: var(--gradient-brand);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
 .border-gradient {
   position: relative;
   background: var(--bg-elevated);
@@ -389,11 +402,11 @@ body {
 }
 
 .border-gradient::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   padding: 1px;
-  background: var(--gradient-brand);
+  background: var(--gradient-primary);
   border-radius: inherit;
   mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
   mask-composite: xor;
@@ -441,7 +454,7 @@ body {
     padding: 0.625rem 1.25rem;
     font-size: 0.8125rem;
   }
-  
+
   .card {
     padding: var(--space-md);
   }

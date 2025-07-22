@@ -223,23 +223,23 @@ export default function ScholarshipDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-3 sm:px-4">
+      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
         <div className="text-center max-w-md">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading scholarship details...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--brand-primary)' }}></div>
+          <p style={{ color: 'var(--text-secondary)' }}>Loading scholarship details...</p>
         </div>
       </div>
     );
   }
   if (error || !scholarship) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center px-3 sm:px-4">
+      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
         <div className="text-center max-w-md">
-          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
+          <AlertTriangle className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--brand-error)' }} />
+          <h1 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
             {error || "Scholarship Not Found"}
           </h1>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6 leading-relaxed">
+          <p className="text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             {error === "Scholarship not found"
               ? "The scholarship you're looking for doesn't exist or may have been removed."
               : error?.includes("Network")
@@ -249,7 +249,11 @@ export default function ScholarshipDetailPage() {
 
           {/* Debug info for mobile */}
           {typeof window !== "undefined" && (
-            <div className="text-xs text-gray-400 mb-4 p-2 bg-gray-100 rounded">
+            <div className="text-xs mb-4 p-2 rounded" style={{ 
+              color: 'var(--text-tertiary)', 
+              background: 'var(--bg-glass)',
+              border: '1px solid var(--border-primary)'
+            }}>
               <p>Debug Info:</p>
               <p>ID: {id}</p>
               <p>
@@ -266,14 +270,14 @@ export default function ScholarshipDetailPage() {
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <button
               onClick={retryFetch}
-              className="btn-secondary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
+              className="btn btn-secondary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
               disabled={loading}
             >
               {loading ? "Retrying..." : "Try Again"}
             </button>
             <Link
               href="/opportunities"
-              className="btn-primary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
+              className="btn btn-primary w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
             >
               Browse All Scholarships
             </Link>
@@ -424,7 +428,7 @@ export default function ScholarshipDetailPage() {
         `
       }} />
       
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
         {/* Fixed Share Button */}
         <div className="fixed top-20 right-4 sm:right-6 z-50">
           <button
@@ -526,7 +530,7 @@ export default function ScholarshipDetailPage() {
       )}
 
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border-primary)' }}>
         <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-6">
           <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
             <Link

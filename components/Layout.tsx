@@ -283,93 +283,14 @@ export default function Layout({ children }: LayoutProps) {
         className="min-h-screen"
         style={{ backgroundColor: "var(--background)" }}
       >
-        {/* Revolutionary Header */}
+        {/* Clean Header */}
         <header 
-          className="sticky top-0 z-50 transition-all duration-300 relative overflow-hidden"
+          className="sticky top-0 z-50 transition-all duration-300 relative"
           style={{ 
-            background: 'linear-gradient(90deg, #3B82F6 0%, #8B5CF6 50%, #EC4899 100%)',
-            boxShadow: '0 4px 20px rgba(59, 130, 246, 0.3), 0 0 40px rgba(139, 92, 246, 0.2)'
+            background: 'var(--brand-primary)',
+            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
           }}
         >
-          {/* Glowing overlay effect */}
-          <div 
-            className="absolute inset-0 opacity-20"
-            style={{
-              background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.4) 0%, rgba(139, 92, 246, 0.4) 50%, rgba(236, 72, 153, 0.4) 100%)',
-              filter: 'blur(20px)'
-            }}
-          />
-          {/* Animated gradient overlay */}
-          <div 
-            className="absolute inset-0 opacity-30"
-            style={{
-              background: 'linear-gradient(90deg, rgba(59, 130, 246, 0.6) 0%, rgba(139, 92, 246, 0.6) 50%, rgba(236, 72, 153, 0.6) 100%)',
-              animation: 'gradient-shift 8s ease-in-out infinite'
-            }}
-          />
-          
-          {/* Animated floating glow elements */}
-          <div className="absolute inset-0 overflow-hidden pointer-events-none" style={{ zIndex: 0 }}>
-            {/* Glow element 1 */}
-            <div 
-              className="absolute w-32 h-32 rounded-full opacity-20 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.8) 0%, transparent 70%)',
-                animation: 'float-glow-1 12s ease-in-out infinite',
-                top: '20%',
-                left: '10%',
-                zIndex: 0
-              }}
-            />
-            
-            {/* Glow element 2 */}
-            <div 
-              className="absolute w-24 h-24 rounded-full opacity-30 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, rgba(139, 92, 246, 0.8) 0%, transparent 70%)',
-                animation: 'float-glow-2 15s ease-in-out infinite',
-                top: '60%',
-                right: '15%',
-                zIndex: 0
-              }}
-            />
-            
-            {/* Glow element 3 */}
-            <div 
-              className="absolute w-40 h-40 rounded-full opacity-15 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, rgba(236, 72, 153, 0.8) 0%, transparent 70%)',
-                animation: 'float-glow-3 18s ease-in-out infinite',
-                top: '30%',
-                left: '70%',
-                zIndex: 0
-              }}
-            />
-            
-            {/* Glow element 4 */}
-            <div 
-              className="absolute w-20 h-20 rounded-full opacity-25 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, rgba(59, 130, 246, 0.6) 0%, transparent 70%)',
-                animation: 'float-glow-4 10s ease-in-out infinite',
-                bottom: '20%',
-                left: '50%',
-                zIndex: 0
-              }}
-            />
-            
-            {/* Glow element 5 */}
-            <div 
-              className="absolute w-28 h-28 rounded-full opacity-20 pointer-events-none"
-              style={{
-                background: 'radial-gradient(circle, rgba(139, 92, 246, 0.7) 0%, transparent 70%)',
-                animation: 'float-glow-5 14s ease-in-out infinite',
-                top: '10%',
-                right: '40%',
-                zIndex: 0
-              }}
-            />
-          </div>
           {" "}
           <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
             <div className="flex justify-between items-center h-14 sm:h-16">
@@ -787,7 +708,7 @@ export default function Layout({ children }: LayoutProps) {
         
         {/* WhatsApp Widget for Expert Advice */}
         <WhatsAppWidget 
-          phoneNumber="+256700000000"
+          phoneNumber="+256759058245"
           message="Hi! I need expert advice about scholarships 🎓"
           position="bottom-right"
         />
