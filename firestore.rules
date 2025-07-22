@@ -17,7 +17,7 @@ service cloud.firestore {
 
     // Helper function to check if user is a super admin (godlike permissions)
     function isSuperAdmin() {
-      return isAuthenticated() && request.auth.token.email == 'mutaawe38@gmail.com';
+      return isAuthenticated() && request.auth.token.email == 'mutaawe39@gmail.com';
     }
     
     // Helper function to check if user owns the document
@@ -89,12 +89,10 @@ service cloud.firestore {
     // Blog posts collection  
     match /blog/{postId} {
       // Anyone can read published blog posts
-      allow read: if resource.data.status == 'published' || isAdmin();
+      allow read: if resource.data.status == "published" || isAdmin();
       
       // Admins can create, update, and delete blog posts
-      allow create: if isAdmin() && isValidBlogPost(request.resource.data);
-      allow update: if isAdmin() && isValidBlogPost(request.resource.data);
-      allow delete: if isAdmin();
+      allow write: if isAdmin();
       
       // Blog comments subcollection
       match /comments/{commentId} {

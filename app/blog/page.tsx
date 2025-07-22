@@ -9,9 +9,9 @@ import { BlogCardSkeleton } from "@/components/LoadingSpinner";
 import BlogCard from "@/components/BlogCard";
 
 // Extended BlogPost type for BlogCard compatibility
-interface BlogPostWithDate extends Omit<BlogPost, 'readTime'> {
+interface BlogPostWithDate extends Omit<BlogPost, "readTime"> {
   date: string;
-  readTime?: string; // Override the number type from BlogPost
+  readTime?: string;
 }
 
 export default function BlogPage() {
@@ -30,7 +30,6 @@ export default function BlogPage() {
     triggerOnce: true,
   });
 
-  // Categories for filtering
   const categories = [
     "All",
     "Scholarships",
@@ -42,47 +41,56 @@ export default function BlogPage() {
   ];
 
   useEffect(() => {
-    const loadPosts = async () => {
+    async function loadPosts() {
+      setLoading(true);
       try {
-        setLoading(true);
-        const fetchedPosts = await blogService.getBlogPosts();
-        
-        // Transform posts to include date property for BlogCard compatibility
-        const transformedPosts = fetchedPosts.map(post => ({
-          ...post,
-          date:
-            post.publishedAt &&
-            typeof post.publishedAt === "object" &&
-            "toDate" in post.publishedAt &&
-            typeof (post.publishedAt as { toDate: unknown }).toDate === "function"
-              ? (post.publishedAt as { toDate: () => Date }).toDate().toISOString()
-              : new Date(post.publishedAt as string | number | Date).toISOString(),
-          readTime: post.readTime ? `${post.readTime} min read` : undefined,
-        }));
-        
-        setPosts(transformedPosts);
-        setTotalPages(Math.ceil(transformedPosts.length / postsPerPage));
+        const posts = await blogService.getPublishedPosts();
+        setPosts(
+          posts.map((post) => ({
+            ...post,
+            date:
+              typeof post.publishedAt === "object" &&
+              post.publishedAt !== null &&
+              typeof (post.publishedAt as { toDate?: () => Date }).toDate ===
+                "function"
+                ? (post.publishedAt as { toDate: () => Date })
+                    .toDate()
+                    .toISOString()
+                : post.publishedAt &&
+                  (typeof post.publishedAt === "string" ||
+                    typeof post.publishedAt === "number" ||
+                    post.publishedAt instanceof Date)
+                ? new Date(post.publishedAt).toISOString()
+                : "",
+            readTime: post.readTime ? `${post.readTime} min read` : undefined,
+          }))
+        );
+        setError(null);
       } catch (err) {
         setError("Failed to load blog posts");
-        console.error("Error loading posts:", err);
+        setPosts([]);
+        console.error(err);
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     loadPosts();
   }, []);
 
   // Filter and paginate posts
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch = post.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
       selectedCategory === "All" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  useEffect(() => {
+    setTotalPages(Math.max(1, Math.ceil(filteredPosts.length / postsPerPage)));
+    setCurrentPage(1);
+  }, [filteredPosts.length, selectedCategory, searchTerm]);
 
   const paginatedPosts = filteredPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -129,13 +137,18 @@ export default function BlogPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
+      <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+            <h1
+              className="text-2xl font-bold mb-4"
+              style={{ color: "var(--text-primary)" }}
+            >
               Error Loading Blog
             </h1>
-            <p className="mb-4" style={{ color: 'var(--text-secondary)' }}>{error}</p>
+            <p className="mb-4" style={{ color: "var(--text-secondary)" }}>
+              {error}
+            </p>
             <button
               onClick={() => window.location.reload()}
               className="btn btn-primary"
@@ -149,9 +162,12 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
+    <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
       {/* Clean Hero Section */}
-      <div className="text-white" style={{ background: 'var(--brand-primary)' }}>
+      <div
+        className="text-white"
+        style={{ background: "var(--brand-primary)" }}
+      >
         <div className="container mx-auto px-4 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -166,8 +182,8 @@ export default function BlogPage() {
               Insights, Tips, and Stories from the World of Scholarships
             </p>
             <p className="text-lg opacity-80 max-w-3xl mx-auto">
-              Discover valuable insights, expert advice, and inspiring stories to
-              help you navigate your educational journey and find the perfect
+              Discover valuable insights, expert advice, and inspiring stories
+              to help you navigate your educational journey and find the perfect
               scholarship opportunities.
             </p>
           </motion.div>
@@ -176,7 +192,13 @@ export default function BlogPage() {
 
       {/* Search and Filter Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="rounded-xl shadow-lg p-6 mb-8" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-primary)' }}>
+        <div
+          className="rounded-xl shadow-lg p-6 mb-8"
+          style={{
+            background: "var(--bg-elevated)",
+            border: "1px solid var(--border-primary)",
+          }}
+        >
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Search Bar */}
             <div className="flex-1">
@@ -187,10 +209,10 @@ export default function BlogPage() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="w-full pl-10 pr-4 py-3 rounded-lg focus-ring"
-                  style={{ 
-                    border: '1px solid var(--border-primary)',
-                    background: 'var(--bg-primary)',
-                    color: 'var(--text-primary)'
+                  style={{
+                    border: "1px solid var(--border-primary)",
+                    background: "var(--bg-primary)",
+                    color: "var(--text-primary)",
                   }}
                 />
               </form>
@@ -204,9 +226,15 @@ export default function BlogPage() {
                   onClick={() => handleCategoryChange(category)}
                   className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                   style={{
-                    background: selectedCategory === category ? 'var(--brand-primary)' : 'var(--bg-glass)',
-                    color: selectedCategory === category ? 'white' : 'var(--text-primary)',
-                    border: '1px solid var(--border-primary)'
+                    background:
+                      selectedCategory === category
+                        ? "var(--brand-primary)"
+                        : "var(--bg-glass)",
+                    color:
+                      selectedCategory === category
+                        ? "white"
+                        : "var(--text-primary)",
+                    border: "1px solid var(--border-primary)",
                   }}
                 >
                   {category}
@@ -220,11 +248,15 @@ export default function BlogPage() {
                 onClick={() => handleViewModeChange("grid")}
                 className="p-2 rounded-lg transition-colors"
                 style={{
-                  background: viewMode === "grid" ? 'var(--brand-primary)' : 'var(--bg-glass)',
-                  color: viewMode === "grid" ? 'white' : 'var(--text-primary)',
-                  border: '1px solid var(--border-primary)'
+                  background:
+                    viewMode === "grid"
+                      ? "var(--brand-primary)"
+                      : "var(--bg-glass)",
+                  color: viewMode === "grid" ? "white" : "var(--text-primary)",
+                  border: "1px solid var(--border-primary)",
                 }}
               >
+                {/* grid icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -247,11 +279,15 @@ export default function BlogPage() {
                 onClick={() => handleViewModeChange("list")}
                 className="p-2 rounded-lg transition-colors"
                 style={{
-                  background: viewMode === "list" ? 'var(--brand-primary)' : 'var(--bg-glass)',
-                  color: viewMode === "list" ? 'white' : 'var(--text-primary)',
-                  border: '1px solid var(--border-primary)'
+                  background:
+                    viewMode === "list"
+                      ? "var(--brand-primary)"
+                      : "var(--bg-glass)",
+                  color: viewMode === "list" ? "white" : "var(--text-primary)",
+                  border: "1px solid var(--border-primary)",
                 }}
               >
+                {/* list icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -275,7 +311,7 @@ export default function BlogPage() {
 
         {/* Results Count */}
         <div className="mb-6">
-          <p style={{ color: 'var(--text-secondary)' }}>
+          <p style={{ color: "var(--text-secondary)" }}>
             Showing {paginatedPosts.length} of {filteredPosts.length} articles
           </p>
         </div>
@@ -295,7 +331,7 @@ export default function BlogPage() {
           </div>
         ) : paginatedPosts.length === 0 ? (
           <div className="text-center py-12">
-            <div className="mb-4" style={{ color: 'var(--text-tertiary)' }}>
+            <div className="mb-4" style={{ color: "var(--text-tertiary)" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="64"
@@ -313,10 +349,13 @@ export default function BlogPage() {
                 <path d="M10 14L21 3" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
+            <h3
+              className="text-xl font-semibold mb-2"
+              style={{ color: "var(--text-primary)" }}
+            >
               No articles found
             </h3>
-            <p style={{ color: 'var(--text-secondary)' }}>
+            <p style={{ color: "var(--text-secondary)" }}>
               Try adjusting your search terms or filters.
             </p>
           </div>
@@ -350,10 +389,10 @@ export default function BlogPage() {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
                 className="p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ 
-                  border: '1px solid var(--border-primary)',
-                  background: 'var(--bg-elevated)',
-                  color: 'var(--text-primary)'
+                style={{
+                  border: "1px solid var(--border-primary)",
+                  background: "var(--bg-elevated)",
+                  color: "var(--text-primary)",
                 }}
               >
                 <svg
@@ -379,9 +418,13 @@ export default function BlogPage() {
                     onClick={() => handlePageChange(page)}
                     className="px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                     style={{
-                      background: currentPage === page ? 'var(--brand-primary)' : 'var(--bg-elevated)',
-                      color: currentPage === page ? 'white' : 'var(--text-primary)',
-                      border: '1px solid var(--border-primary)'
+                      background:
+                        currentPage === page
+                          ? "var(--brand-primary)"
+                          : "var(--bg-elevated)",
+                      color:
+                        currentPage === page ? "white" : "var(--text-primary)",
+                      border: "1px solid var(--border-primary)",
                     }}
                   >
                     {page}
@@ -393,10 +436,10 @@ export default function BlogPage() {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
                 className="p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ 
-                  border: '1px solid var(--border-primary)',
-                  background: 'var(--bg-elevated)',
-                  color: 'var(--text-primary)'
+                style={{
+                  border: "1px solid var(--border-primary)",
+                  background: "var(--bg-elevated)",
+                  color: "var(--text-primary)",
                 }}
               >
                 <svg

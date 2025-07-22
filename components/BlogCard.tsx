@@ -27,24 +27,24 @@ export default function BlogCard({ post }: BlogCardProps) {
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div 
+      <div
         className="card-glass h-full flex flex-col overflow-hidden group-hover:border-opacity-50 transition-all duration-500"
-        style={{ 
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-primary)'
+        style={{
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border-primary)",
         }}
       >
         {/* Clean Image Section */}
         {post.image && (
           <div className="relative h-48 overflow-hidden">
             <Image
-              src={post.image}
+              src={post.image?.trim() ?? ""}
               alt={post.title}
               fill
               className="object-cover group-hover:scale-110 transition-transform duration-700"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
-            
+
             {post.category && (
               <div className="absolute top-4 left-4">
                 <span className="badge badge-primary glass-strong">
@@ -53,15 +53,18 @@ export default function BlogCard({ post }: BlogCardProps) {
                 </span>
               </div>
             )}
-            
+
             {/* Floating Read Time */}
             {post.readTime && (
               <div className="absolute top-4 right-4">
                 <div className="glass-strong rounded-full px-3 py-1 flex items-center gap-2">
-                  <Clock className="w-3 h-3" style={{ color: 'var(--text-primary)' }} />
-                  <span 
+                  <Clock
+                    className="w-3 h-3"
+                    style={{ color: "var(--text-primary)" }}
+                  />
+                  <span
                     className="text-xs font-medium"
-                    style={{ color: 'var(--text-primary)' }}
+                    style={{ color: "var(--text-primary)" }}
                   >
                     {post.readTime}
                   </span>
@@ -76,19 +79,22 @@ export default function BlogCard({ post }: BlogCardProps) {
           {/* Meta Information */}
           <div className="flex items-center gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                style={{ background: "var(--brand-primary)" }}
+              >
                 <Calendar className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p 
+                <p
                   className="text-micro uppercase tracking-wider font-semibold"
-                  style={{ color: 'var(--text-tertiary)' }}
+                  style={{ color: "var(--text-tertiary)" }}
                 >
                   Published
                 </p>
-                <p 
+                <p
                   className="font-medium text-sm"
-                  style={{ color: 'var(--text-secondary)' }}
+                  style={{ color: "var(--text-secondary)" }}
                 >
                   {new Date(post.date).toLocaleDateString("en-US", {
                     month: "short",
@@ -101,9 +107,9 @@ export default function BlogCard({ post }: BlogCardProps) {
           </div>
 
           {/* Title */}
-          <h3 
+          <h3
             className="text-title font-bold mb-4 group-hover:text-gradient transition-all duration-300 line-clamp-2 leading-tight"
-            style={{ color: 'var(--text-primary)' }}
+            style={{ color: "var(--text-primary)" }}
           >
             <Link href={`/blog/${post.slug}`} className="hover:underline">
               {post.title}
@@ -111,9 +117,9 @@ export default function BlogCard({ post }: BlogCardProps) {
           </h3>
 
           {/* Excerpt */}
-          <p 
+          <p
             className="text-body line-clamp-3 leading-relaxed mb-6 flex-grow"
-            style={{ color: 'var(--text-secondary)' }}
+            style={{ color: "var(--text-secondary)" }}
           >
             {post.excerpt}
           </p>
@@ -121,19 +127,22 @@ export default function BlogCard({ post }: BlogCardProps) {
           {/* Author Section */}
           {post.author && (
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
+              <div
+                className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                style={{ background: "var(--brand-secondary)" }}
+              >
                 <User className="h-5 w-5 text-white" />
               </div>
               <div>
-                <p 
+                <p
                   className="text-micro uppercase tracking-wider font-semibold"
-                  style={{ color: 'var(--text-tertiary)' }}
+                  style={{ color: "var(--text-tertiary)" }}
                 >
                   Written by
                 </p>
-                <p 
+                <p
                   className="font-medium text-sm"
-                  style={{ color: 'var(--text-primary)' }}
+                  style={{ color: "var(--text-primary)" }}
                 >
                   {post.author}
                 </p>

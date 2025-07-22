@@ -814,7 +814,7 @@ export const backupService = {
 export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  if (error && typeof error === 'object' && 'code' in error) {
+  if (error && typeof error === "object" && "code" in error) {
     switch ((error as { code: string }).code) {
       case "permission-denied":
         return "You do not have permission to perform this action.";
@@ -828,7 +828,7 @@ export const handleFirebaseError = (error: unknown): string => {
         return "An unexpected error occurred. Please try again.";
     }
   }
-  
+
   return "An unexpected error occurred. Please try again.";
 };
 
