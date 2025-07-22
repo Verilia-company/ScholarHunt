@@ -82,60 +82,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Revolutionary Hero Section - World-Class Design */}
+      {/* Clean Hero Section */}
       <motion.section
         ref={heroRef}
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
         style={{ background: 'var(--bg-primary)' }}
         initial={{ opacity: 0 }}
         animate={{ opacity: heroInView ? 1 : 0 }}
-        transition={{ duration: 1.2 }}
+        transition={{ duration: 0.8 }}
       >
-        {/* Sophisticated Background Mesh */}
+        {/* Simple Background Pattern */}
         <div className="absolute inset-0 overflow-hidden">
           <div 
-            className="absolute inset-0 opacity-40"
-            style={{ background: 'var(--gradient-mesh)' }}
-          />
-          
-          {/* Floating Geometric Elements */}
-          <motion.div
-            className="absolute top-20 left-20 w-32 h-32 rounded-full border border-white/10"
-            animate={{ 
-              rotate: [0, 360],
-              scale: [1, 1.1, 1]
-            }}
-            transition={{ 
-              duration: 20, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-          />
-          
-          <motion.div
-            className="absolute bottom-32 right-32 w-24 h-24 rounded-lg border border-white/10"
-            animate={{ 
-              rotate: [360, 0],
-              y: [0, -20, 0]
-            }}
-            transition={{ 
-              duration: 15, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
-          />
-          
-          <motion.div
-            className="absolute top-1/2 right-20 w-16 h-16 rounded-full bg-gradient-to-r from-indigo-500/20 to-purple-500/20"
-            animate={{ 
-              x: [0, 30, 0],
-              opacity: [0.3, 0.7, 0.3]
-            }}
-            transition={{ 
-              duration: 8, 
-              repeat: Infinity, 
-              ease: "easeInOut" 
-            }}
+            className="absolute inset-0 opacity-5"
+            style={{ background: 'var(--gradient-primary)' }}
           />
         </div>
 
@@ -182,7 +142,7 @@ export default function Home() {
             </p>
           </motion.div>
 
-          {/* Revolutionary Search Experience */}
+          {/* Clean Search Experience */}
           <motion.form
             onSubmit={handleSearch}
             className="max-w-4xl mx-auto mb-12"
@@ -190,10 +150,8 @@ export default function Home() {
             animate={{ y: heroInView ? 0 : 30, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              <div className="relative glass-strong rounded-2xl p-2">
+            <div className="relative">
+              <div className="glass-strong rounded-2xl p-2 border" style={{ borderColor: 'var(--border-primary)' }}>
                 <div className="flex items-center">
                   <div className="flex items-center pl-6">
                     <Search 
@@ -208,7 +166,7 @@ export default function Home() {
                     type="text"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none placeholder-opacity-60 focus-ring"
+                    className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none focus-ring"
                     style={{ 
                       color: 'var(--text-primary)'
                     }}
@@ -284,7 +242,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Revolutionary Stats Section */}
+      {/* Clean Stats Section */}
       <motion.section
         ref={statsRef}
         className="py-32 relative overflow-hidden"
@@ -293,11 +251,6 @@ export default function Home() {
         animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 50 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-full blur-3xl"></div>
-        </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -359,7 +312,7 @@ export default function Home() {
                 transition={{ duration: 0.8, delay: stat.delay }}
               >
                 <div className="card-glass p-8 group-hover:scale-105 transition-all duration-500">
-                  <div className={`inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r ${stat.gradient} rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300" style={{ background: 'var(--brand-primary)' }}>
                     <stat.icon className="w-8 h-8 text-white" />
                   </div>
                   
@@ -385,7 +338,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Revolutionary Featured Scholarships */}
+      {/* Clean Featured Scholarships */}
       <motion.section
         ref={scholarshipsRef}
         className="py-32 relative overflow-hidden"
@@ -394,11 +347,6 @@ export default function Home() {
         animate={{ opacity: scholarshipsInView ? 1 : 0 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/4 right-0 w-96 h-96 bg-gradient-to-r from-purple-500/5 to-pink-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-cyan-500/5 rounded-full blur-3xl"></div>
-        </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -469,7 +417,7 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Revolutionary Blog Section */}
+      {/* Clean Blog Section */}
       <motion.section
         ref={blogRef}
         className="py-32 relative overflow-hidden"
@@ -478,11 +426,6 @@ export default function Home() {
         animate={{ opacity: blogInView ? 1 : 0 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-1/3 left-0 w-96 h-96 bg-gradient-to-r from-emerald-500/5 to-teal-500/5 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-1/3 right-0 w-96 h-96 bg-gradient-to-r from-orange-500/5 to-red-500/5 rounded-full blur-3xl"></div>
-        </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
@@ -562,42 +505,15 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Revolutionary Newsletter CTA */}
+      {/* Clean Newsletter CTA */}
       <motion.section
         className="py-32 relative overflow-hidden"
-        style={{ background: 'var(--gradient-brand)' }}
+        style={{ background: 'var(--brand-primary)' }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        {/* Sophisticated Background Elements */}
-        <div className="absolute inset-0 overflow-hidden">
-          <motion.div
-            className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              rotate: [0, 180, 360],
-            }}
-            transition={{
-              duration: 30,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/10 rounded-full blur-2xl"
-            animate={{
-              x: [0, 50, 0],
-              y: [0, -30, 0],
-            }}
-            transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
 
         <div className="relative max-w-5xl mx-auto px-6 lg:px-8 text-center">
           <motion.div

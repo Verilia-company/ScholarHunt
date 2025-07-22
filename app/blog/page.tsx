@@ -9,7 +9,7 @@ import { BlogCardSkeleton } from "@/components/LoadingSpinner";
 import BlogCard from "@/components/BlogCard";
 
 // Extended BlogPost type for BlogCard compatibility
-interface BlogPostWithDate extends Omit<BlogPost, 'readTime'> {
+interface BlogPostWithDate extends Omit<BlogPost, "readTime"> {
   date: string;
   readTime?: string; // Override the number type from BlogPost
 }
@@ -46,20 +46,28 @@ export default function BlogPage() {
       try {
         setLoading(true);
         const fetchedPosts = await blogService.getBlogPosts();
-        
+
+        // Only include published posts
+        const publishedPosts = fetchedPosts.filter((post) => post.published);
+
         // Transform posts to include date property for BlogCard compatibility
-        const transformedPosts = fetchedPosts.map(post => ({
+        const transformedPosts = publishedPosts.map((post) => ({
           ...post,
           date:
             post.publishedAt &&
             typeof post.publishedAt === "object" &&
             "toDate" in post.publishedAt &&
-            typeof (post.publishedAt as { toDate: unknown }).toDate === "function"
-              ? (post.publishedAt as { toDate: () => Date }).toDate().toISOString()
-              : new Date(post.publishedAt as string | number | Date).toISOString(),
+            typeof (post.publishedAt as { toDate: unknown }).toDate ===
+              "function"
+              ? (post.publishedAt as { toDate: () => Date })
+                  .toDate()
+                  .toISOString()
+              : new Date(
+                  post.publishedAt as string | number | Date
+                ).toISOString(),
           readTime: post.readTime ? `${post.readTime} min read` : undefined,
         }));
-        
+
         setPosts(transformedPosts);
         setTotalPages(Math.ceil(transformedPosts.length / postsPerPage));
       } catch (err) {
@@ -75,9 +83,8 @@ export default function BlogPage() {
 
   // Filter and paginate posts
   const filteredPosts = posts.filter((post) => {
-    const matchesSearch = post.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase()) ||
+    const matchesSearch =
+      post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory =
       selectedCategory === "All" || post.category === selectedCategory;
@@ -129,16 +136,21 @@ export default function BlogPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-4">
+            <h1
+              className="text-2xl font-bold mb-4"
+              style={{ color: "var(--text-primary)" }}
+            >
               Error Loading Blog
             </h1>
-            <p className="text-gray-600 mb-4">{error}</p>
+            <p className="mb-4" style={{ color: "var(--text-secondary)" }}>
+              {error}
+            </p>
             <button
               onClick={() => window.location.reload()}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              className="btn btn-primary"
             >
               Try Again
             </button>
@@ -149,9 +161,12 @@ export default function BlogPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
-      {/* Hero Section */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+    <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      {/* Clean Hero Section */}
+      <div
+        className="text-white"
+        style={{ background: "var(--brand-primary)" }}
+      >
         <div className="container mx-auto px-4 py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -162,12 +177,12 @@ export default function BlogPage() {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">
               ScholarHunt Blog
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            <p className="text-xl md:text-2xl mb-8 opacity-90">
               Insights, Tips, and Stories from the World of Scholarships
             </p>
-            <p className="text-lg text-blue-200 max-w-3xl mx-auto">
-              Discover valuable insights, expert advice, and inspiring stories to
-              help you navigate your educational journey and find the perfect
+            <p className="text-lg opacity-80 max-w-3xl mx-auto">
+              Discover valuable insights, expert advice, and inspiring stories
+              to help you navigate your educational journey and find the perfect
               scholarship opportunities.
             </p>
           </motion.div>
@@ -176,7 +191,13 @@ export default function BlogPage() {
 
       {/* Search and Filter Section */}
       <div className="container mx-auto px-4 py-8">
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
+        <div
+          className="rounded-xl shadow-lg p-6 mb-8"
+          style={{
+            background: "var(--bg-elevated)",
+            border: "1px solid var(--border-primary)",
+          }}
+        >
           <div className="flex flex-col lg:flex-row gap-6">
             {/* Search Bar */}
             <div className="flex-1">
@@ -186,7 +207,12 @@ export default function BlogPage() {
                   placeholder="Search articles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 rounded-lg focus-ring"
+                  style={{
+                    border: "1px solid var(--border-primary)",
+                    background: "var(--bg-primary)",
+                    color: "var(--text-primary)",
+                  }}
                 />
               </form>
             </div>
@@ -197,11 +223,18 @@ export default function BlogPage() {
                 <button
                   key={category}
                   onClick={() => handleCategoryChange(category)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCategory === category
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  }`}
+                  className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                  style={{
+                    background:
+                      selectedCategory === category
+                        ? "var(--brand-primary)"
+                        : "var(--bg-glass)",
+                    color:
+                      selectedCategory === category
+                        ? "white"
+                        : "var(--text-primary)",
+                    border: "1px solid var(--border-primary)",
+                  }}
                 >
                   {category}
                 </button>
@@ -212,11 +245,15 @@ export default function BlogPage() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => handleViewModeChange("grid")}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === "grid"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                className="p-2 rounded-lg transition-colors"
+                style={{
+                  background:
+                    viewMode === "grid"
+                      ? "var(--brand-primary)"
+                      : "var(--bg-glass)",
+                  color: viewMode === "grid" ? "white" : "var(--text-primary)",
+                  border: "1px solid var(--border-primary)",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -238,11 +275,15 @@ export default function BlogPage() {
               </button>
               <button
                 onClick={() => handleViewModeChange("list")}
-                className={`p-2 rounded-lg transition-colors ${
-                  viewMode === "list"
-                    ? "bg-blue-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
+                className="p-2 rounded-lg transition-colors"
+                style={{
+                  background:
+                    viewMode === "list"
+                      ? "var(--brand-primary)"
+                      : "var(--bg-glass)",
+                  color: viewMode === "list" ? "white" : "var(--text-primary)",
+                  border: "1px solid var(--border-primary)",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -267,7 +308,7 @@ export default function BlogPage() {
 
         {/* Results Count */}
         <div className="mb-6">
-          <p className="text-gray-600">
+          <p style={{ color: "var(--text-secondary)" }}>
             Showing {paginatedPosts.length} of {filteredPosts.length} articles
           </p>
         </div>
@@ -287,7 +328,7 @@ export default function BlogPage() {
           </div>
         ) : paginatedPosts.length === 0 ? (
           <div className="text-center py-12">
-            <div className="text-gray-400 mb-4">
+            <div className="mb-4" style={{ color: "var(--text-tertiary)" }}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="64"
@@ -305,10 +346,13 @@ export default function BlogPage() {
                 <path d="M10 14L21 3" />
               </svg>
             </div>
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+            <h3
+              className="text-xl font-semibold mb-2"
+              style={{ color: "var(--text-primary)" }}
+            >
               No articles found
             </h3>
-            <p className="text-gray-500">
+            <p style={{ color: "var(--text-secondary)" }}>
               Try adjusting your search terms or filters.
             </p>
           </div>
@@ -341,7 +385,12 @@ export default function BlogPage() {
               <button
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
-                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  border: "1px solid var(--border-primary)",
+                  background: "var(--bg-elevated)",
+                  color: "var(--text-primary)",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -364,11 +413,16 @@ export default function BlogPage() {
                   <button
                     key={page}
                     onClick={() => handlePageChange(page)}
-                    className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                      currentPage === page
-                        ? "bg-blue-600 text-white"
-                        : "border border-gray-300 hover:bg-gray-50"
-                    }`}
+                    className="px-3 py-2 rounded-lg text-sm font-medium transition-colors"
+                    style={{
+                      background:
+                        currentPage === page
+                          ? "var(--brand-primary)"
+                          : "var(--bg-elevated)",
+                      color:
+                        currentPage === page ? "white" : "var(--text-primary)",
+                      border: "1px solid var(--border-primary)",
+                    }}
                   >
                     {page}
                   </button>
@@ -378,7 +432,12 @@ export default function BlogPage() {
               <button
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                style={{
+                  border: "1px solid var(--border-primary)",
+                  background: "var(--bg-elevated)",
+                  color: "var(--text-primary)",
+                }}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

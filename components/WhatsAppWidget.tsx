@@ -10,7 +10,7 @@ interface WhatsAppWidgetProps {
 }
 
 export default function WhatsAppWidget({ 
-  phoneNumber = "+256700000000", 
+  phoneNumber = "256759058245", // Removed the '+' sign
   message = "Hi! I need expert advice about scholarships 🎓",
   position = "bottom-right" 
 }: WhatsAppWidgetProps) {
@@ -39,7 +39,7 @@ export default function WhatsAppWidget({
       customMessage: customMessage !== message,
     });
     
-    const whatsappUrl = `https://wa.me/${phoneNumber.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(finalMessage)}`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(finalMessage)}`;
     window.open(whatsappUrl, '_blank');
     setIsOpen(false);
   };
