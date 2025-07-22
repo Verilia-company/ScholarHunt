@@ -45,6 +45,7 @@ type ScholarshipFormData = z.infer<typeof scholarshipSchema>;
 const educationLevels = [
   "Undergraduate",
   "Graduate",
+  "Post Graduate",
   "PhD",
   "Certificate",
   "Diploma",
@@ -276,11 +277,12 @@ export default function SubmitPage() {
               </label>
               <textarea
                 {...register("description")}
-                rows={4}
+                rows={6}
                 className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Provide a detailed description of the scholarship, its purpose, and what it covers..."
+                style={{ minHeight: "150px" }}
               />
               {errors.description && (
                 <p className="mt-1 text-xs sm:text-sm text-red-600 flex items-center gap-1">
@@ -378,11 +380,12 @@ export default function SubmitPage() {
               </label>
               <textarea
                 {...register("eligibility")}
-                rows={4}
+                rows={6}
                 className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base ${
                   errors.eligibility ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Describe who is eligible to apply, academic requirements, nationality restrictions, etc..."
+                style={{ minHeight: "150px" }}
               />
               {errors.eligibility && (
                 <p className="mt-1 text-xs sm:text-sm text-red-600 flex items-center gap-1">
@@ -511,9 +514,10 @@ export default function SubmitPage() {
                 </label>
                 <textarea
                   {...register("additionalNotes")}
-                  rows={3}
+                  rows={4}
                   className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
                   placeholder="Any additional information or special instructions..."
+                  style={{ minHeight: "120px" }}
                 />
               </div>
             </div>
