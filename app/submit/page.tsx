@@ -379,8 +379,8 @@ export default function SubmitPage() {
               </label>
               <textarea
                 {...register("eligibility")}
-                rows={6}
-                className={`w-full px-3 sm:px-4 py-3 sm:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[120px] resize-y ${
+                rows={10}
+                className={`w-full px-3 sm:px-4 py-3 sm:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[200px] resize-y ${
                   errors.eligibility ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Describe who is eligible to apply, academic requirements, nationality restrictions, etc..."
