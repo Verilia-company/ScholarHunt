@@ -28,7 +28,7 @@ export function useIntersectionObserver(
     return () => {
       observer.unobserve(element);
     };
-  }, [threshold, root, rootMargin]);
+  }, [elementRef, threshold, root, rootMargin]);
 
   return isVisible;
 }
@@ -220,19 +220,22 @@ export function OptimizedImage({
   }
 
   return (
-    <img
-      ref={imgRef}
-      src={imageSrc}
-      alt={alt}
-      width={width}
-      height={height}
-      className={`transition-opacity duration-300 ${
-        isLoaded ? "opacity-100" : "opacity-50"
-      } ${className}`}
-      loading={priority ? "eager" : "lazy"}
-      onLoad={() => setIsLoaded(true)}
-      onError={() => setHasError(true)}
-    />
+    <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        ref={imgRef}
+        src={imageSrc}
+        alt={alt}
+        width={width}
+        height={height}
+        className={`transition-opacity duration-300 ${
+          isLoaded ? "opacity-100" : "opacity-50"
+        } ${className}`}
+        loading={priority ? "eager" : "lazy"}
+        onLoad={() => setIsLoaded(true)}
+        onError={() => setHasError(true)}
+      />
+    </>
   );
 }
 

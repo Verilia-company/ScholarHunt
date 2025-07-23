@@ -361,6 +361,7 @@ export default function ScholarshipManagement() {
                       {[
                         "Undergraduate",
                         "Masters",
+                        "Post Graduate",
                         "PhD",
                         "Postdoctoral",
                         "Certificate",
@@ -380,7 +381,7 @@ export default function ScholarshipManagement() {
                               } else {
                                 setFormData((prev) => ({
                                   ...prev,
-                                  level: prev.level.filter((l) => l !== level),
+                                  level: prev.level.filter((l: string) => l !== level),
                                 }));
                               }
                             }}
@@ -466,7 +467,7 @@ export default function ScholarshipManagement() {
                   </label>
                   <textarea
                     required
-                    rows={4}
+                    rows={8}
                     value={formData.description}
                     onChange={(e) =>
                       setFormData((prev) => ({
@@ -474,7 +475,7 @@ export default function ScholarshipManagement() {
                         description: e.target.value,
                       }))
                     }
-                    className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                    className="w-full p-3 sm:p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[150px] resize-y"
                   />
                 </div>
                 {/* Eligibility Requirements */}
@@ -484,14 +485,14 @@ export default function ScholarshipManagement() {
                   </label>
                   {formData.eligibility.map((item, index) => (
                     <div key={index} className="flex gap-2 mb-2">
-                      <input
-                        type="text"
+                      <textarea
                         value={item}
                         onChange={(e) =>
                           updateArrayField("eligibility", index, e.target.value)
                         }
                         placeholder="Enter eligibility requirement"
-                        className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                        rows={3}
+                        className="flex-1 p-3 sm:p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[80px] resize-y"
                       />
                       {formData.eligibility.length > 1 && (
                         <button
@@ -519,8 +520,7 @@ export default function ScholarshipManagement() {
                   </label>
                   {formData.requirements.map((item, index) => (
                     <div key={index} className="flex gap-2 mb-2">
-                      <input
-                        type="text"
+                      <textarea
                         value={item}
                         onChange={(e) =>
                           updateArrayField(
@@ -530,7 +530,8 @@ export default function ScholarshipManagement() {
                           )
                         }
                         placeholder="Enter application requirement"
-                        className="flex-1 p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                        rows={3}
+                        className="flex-1 p-3 sm:p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[80px] resize-y"
                       />
                       {formData.requirements.length > 1 && (
                         <button
