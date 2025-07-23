@@ -44,6 +44,7 @@ export default function BlogPage() {
     async function loadPosts() {
       setLoading(true);
       try {
+<<<<<<< HEAD
         const posts = await blogService.getPublishedPosts();
         setPosts(
           posts.map((post) => ({
@@ -66,6 +67,34 @@ export default function BlogPage() {
           }))
         );
         setError(null);
+=======
+        setLoading(true);
+        const fetchedPosts = await blogService.getBlogPosts();
+
+        // Only include published posts
+        const publishedPosts = fetchedPosts.filter((post) => post.published);
+
+        // Transform posts to include date property for BlogCard compatibility
+        const transformedPosts = publishedPosts.map((post) => ({
+          ...post,
+          date:
+            post.publishedAt &&
+            typeof post.publishedAt === "object" &&
+            "toDate" in post.publishedAt &&
+            typeof (post.publishedAt as { toDate: unknown }).toDate ===
+              "function"
+              ? (post.publishedAt as { toDate: () => Date })
+                  .toDate()
+                  .toISOString()
+              : new Date(
+                  post.publishedAt as string | number | Date
+                ).toISOString(),
+          readTime: post.readTime ? `${post.readTime} min read` : undefined,
+        }));
+
+        setPosts(transformedPosts);
+        setTotalPages(Math.ceil(transformedPosts.length / postsPerPage));
+>>>>>>> origin/main
       } catch (err) {
         setError("Failed to load blog posts");
         setPosts([]);
