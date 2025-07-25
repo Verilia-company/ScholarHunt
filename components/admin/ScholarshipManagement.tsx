@@ -9,6 +9,7 @@ import {
   Filter,
   GraduationCap,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { scholarshipService } from "@/lib/firebase/services";
 import type { Scholarship } from "@/lib/firebase/services";
@@ -157,7 +158,7 @@ export default function ScholarshipManagement() {
       fieldOfStudy: scholarship.fieldOfStudy,
       applicationUrl: scholarship.applicationUrl || "",
       status: scholarship.status,
-      image: scholarship.image || "",
+      image: (scholarship as any).image || "",
     });
     setShowForm(true);
   };
@@ -698,8 +699,8 @@ export default function ScholarshipManagement() {
         </div>
       </div>
     </div>{ " " }
-  {/* Scholarships List */ }
-  <div className="rounded-lg shadow overflow-hidden" style={{ background: 'var(--bg-elevated)' }}
+  {/* Scholarships List */}
+  <div className="rounded-lg shadow overflow-hidden" style={{ background: 'var(--bg-elevated)' }}>
     {loading ? (
       <div className="p-8 sm:p-12 text-center">
         <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -947,7 +948,7 @@ export default function ScholarshipManagement() {
         </div>
       </>
     )}
-      </ div>
+    </div>
   </div>
   );
 }
