@@ -45,6 +45,7 @@ type ScholarshipFormData = z.infer<typeof scholarshipSchema>;
 const educationLevels = [
   "Undergraduate",
   "Graduate",
+  "Post Graduate",
   "PhD",
   "Certificate",
   "Diploma",
@@ -81,7 +82,7 @@ export default function SubmitPage() {
     if (currentLevels.includes(level)) {
       setValue(
         "level",
-        currentLevels.filter((l) => l !== level)
+        currentLevels.filter((l: string) => l !== level)
       );
     } else {
       setValue("level", [...currentLevels, level]);
@@ -276,8 +277,8 @@ export default function SubmitPage() {
               </label>
               <textarea
                 {...register("description")}
-                rows={4}
-                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base ${
+                rows={8}
+                className={`w-full px-3 sm:px-4 py-3 sm:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[150px] resize-y ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Provide a detailed description of the scholarship, its purpose, and what it covers..."
@@ -378,8 +379,8 @@ export default function SubmitPage() {
               </label>
               <textarea
                 {...register("eligibility")}
-                rows={4}
-                className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base ${
+                rows={10}
+                className={`w-full px-3 sm:px-4 py-3 sm:py-4 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[200px] resize-y ${
                   errors.eligibility ? "border-red-500" : "border-gray-300"
                 }`}
                 placeholder="Describe who is eligible to apply, academic requirements, nationality restrictions, etc..."
@@ -511,8 +512,8 @@ export default function SubmitPage() {
                 </label>
                 <textarea
                   {...register("additionalNotes")}
-                  rows={3}
-                  className="w-full px-3 sm:px-4 py-2.5 sm:py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                  rows={5}
+                  className="w-full px-3 sm:px-4 py-3 sm:py-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base min-h-[100px] resize-y"
                   placeholder="Any additional information or special instructions..."
                 />
               </div>
