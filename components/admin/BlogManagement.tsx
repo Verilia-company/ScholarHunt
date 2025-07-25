@@ -342,8 +342,8 @@ export default function BlogManagement() {
 
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50 overflow-y-auto">
-        <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full my-4 sm:my-8 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto">
-          <div className="p-4 sm:p-6 border-b border-gray-200 sticky top-0 bg-white">
+        <div className="rounded-lg shadow-xl max-w-4xl w-full my-4 sm:my-8 max-h-[95vh] sm:max-h-[90vh] overflow-y-auto" style={{ background: 'var(--bg-elevated)', color: 'var(--text-primary)' }}>
+          <div className="p-4 sm:p-6 border-b sticky top-0" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-primary)' }}>
             <div className="flex items-center justify-between">
               <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
                 {post ? "Edit Post" : "Add New Post"}
@@ -473,6 +473,28 @@ export default function BlogManagement() {
                   className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   placeholder="https://example.com/image.jpg"
                 />
+                {formData.image && (
+                  <div className="mt-2 relative">
+                    <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-300">
+                      <img 
+                        src={formData.image} 
+                        alt="Blog post preview" 
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Image+Not+Found";
+                        }}
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setFormData({ ...formData, image: "" })}
+                      className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                      title="Remove image"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -633,13 +655,35 @@ export default function BlogManagement() {
                       className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                       placeholder="https://example.com/social-image.jpg"
                     />
+                    {formData.socialImage && (
+                      <div className="mt-2 relative">
+                        <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-300">
+                          <img 
+                            src={formData.socialImage} 
+                            alt="Social media preview" 
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src = "https://via.placeholder.com/640x360?text=Image+Not+Found";
+                            }}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setFormData({ ...formData, socialImage: "" })}
+                          className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                          title="Remove image"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
             {/* Form Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 sticky bottom-0 bg-white">
+            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200 sticky bottom-0" style={{ background: 'var(--bg-elevated)', borderColor: 'var(--border-primary)' }}>
               <button
                 type="button"
                 onClick={onCancel}
@@ -709,7 +753,7 @@ export default function BlogManagement() {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+      <div className="rounded-lg shadow p-4 sm:p-6" style={{ background: 'var(--bg-elevated)' }}
         <div className="flex flex-col gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -751,7 +795,7 @@ export default function BlogManagement() {
 
       {/* Stats */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <div className="bg-white rounded-lg shadow p-4 sm:p-6">
+        <div className="rounded-lg shadow p-4 sm:p-6" style={{ background: 'var(--bg-elevated)' }}
           <div className="flex items-center">
             <div className="p-2 sm:p-3 bg-blue-100 rounded-lg">
               <BookOpen className="h-4 w-4 sm:h-6 sm:w-6 text-blue-600" />
@@ -814,7 +858,7 @@ export default function BlogManagement() {
       </div>
 
       {/* Posts List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="rounded-lg shadow overflow-hidden" style={{ background: 'var(--bg-elevated)' }}
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
@@ -839,7 +883,7 @@ export default function BlogManagement() {
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200" style={{ background: 'var(--bg-elevated)' }}
               {filteredPosts.map((post) => (
                 <tr key={post.id} className="hover:bg-gray-50">
                   <td className="px-4 sm:px-6 py-4">

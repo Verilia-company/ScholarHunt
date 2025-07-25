@@ -11,13 +11,13 @@
   --bg-glass: rgba(0, 0, 0, 0.02);
   --bg-glass-strong: rgba(0, 0, 0, 0.05);
   
-  /* Dark Mode Override */
-  --bg-dark-primary: #0f172a;
-  --bg-dark-secondary: #1e293b;
-  --bg-dark-tertiary: #334155;
-  --bg-dark-elevated: #1e293b;
-  --bg-dark-glass: rgba(255, 255, 255, 0.05);
-  --bg-dark-glass-strong: rgba(255, 255, 255, 0.10);
+  /* Dark Mode Override - Softer colors */
+  --bg-dark-primary: #1a2234;
+  --bg-dark-secondary: #2a3447;
+  --bg-dark-tertiary: #3a4559;
+  --bg-dark-elevated: #2a3447;
+  --bg-dark-glass: rgba(255, 255, 255, 0.07);
+  --bg-dark-glass-strong: rgba(255, 255, 255, 0.12);
   
   /* Text Colors */
   --text-primary: #0f172a;
@@ -96,6 +96,71 @@
     
     --border-primary: var(--border-dark-primary);
     --border-secondary: var(--border-dark-secondary);
+  }
+  
+  /* Fix input text visibility in dark mode */
+  input, textarea, select {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+    border-color: var(--border-primary);
+  }
+  
+  /* Fix placeholder text visibility in dark mode */
+  input::placeholder, textarea::placeholder {
+    color: var(--text-tertiary);
+    opacity: 0.7;
+  }
+  
+  /* Fix form backgrounds in dark mode */
+  .bg-white {
+    background-color: var(--bg-elevated);
+  }
+  
+  /* Fix text colors in dark mode */
+  .text-gray-900 {
+    color: var(--text-primary);
+  }
+  
+  .text-gray-700, .text-gray-800 {
+    color: var(--text-secondary);
+  }
+  
+  .text-gray-600, .text-gray-500 {
+    color: var(--text-tertiary);
+  }
+  
+  .text-gray-400 {
+    color: var(--text-quaternary);
+  }
+  
+  /* Fix hover states in dark mode */
+  .hover\:bg-gray-50:hover {
+    background-color: var(--bg-glass);
+  }
+  
+  /* Fix rich text editor in dark mode */
+  .ProseMirror {
+    color: var(--text-primary);
+    background-color: var(--bg-elevated);
+  }
+  
+  /* Fix table headers in dark mode */
+  thead {
+    background-color: var(--bg-secondary);
+  }
+  
+  /* Fix borders in dark mode */
+  .border, .border-t, .border-b, .border-l, .border-r {
+    border-color: var(--border-primary);
+  }
+  
+  /* Fix buttons in dark mode */
+  button.text-gray-500, button.text-gray-600, button.text-gray-700 {
+    color: var(--text-secondary);
+  }
+  
+  button.hover\:text-gray-700:hover, button.hover\:text-gray-800:hover, button.hover\:text-gray-900:hover {
+    color: var(--text-primary);
   }
 }
 
