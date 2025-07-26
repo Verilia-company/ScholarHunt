@@ -13,11 +13,7 @@ import {
   X,
 } from "lucide-react";
 import RichTextEditor from "./RichTextEditor";
-import {
-  blogService,
-  analyticsService,
-  type BlogPost,
-} from "@/lib/firebase/services";
+import { blogService, type BlogPost } from "@/lib/firebase/services";
 import { useAuth } from "@/contexts/AuthContext";
 import ShareButtons from "@/components/ShareButtons";
 import Image from "next/image";
@@ -55,15 +51,26 @@ const categories = [
 ];
 
 // PostForm component (simplified, you may want to move to its own file)
-const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
-  const [formData, setFormData] = useState(
+const PostForm = ({
+  post,
+  onSave,
+  onCancel,
+  isSubmitting,
+}: {
+  post?: BlogPost;
+  onSave: (data: BlogPost) => void;
+  onCancel: () => void;
+  isSubmitting: boolean;
+}) => {
+  const [formData, setFormData] = useState<BlogPost>(
     post || {
+      id: "",
       title: "",
       slug: "",
       author: "",
       category: "",
       readTime: 5,
-      tags: "",
+      tags: [] as string[],
       image: "",
       excerpt: "",
       content: "",
@@ -74,6 +81,9 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
       metaDescription: "",
       canonicalUrl: "",
       socialImage: "",
+      published: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     }
   );
 
@@ -175,9 +185,19 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
               </label>
               <input
                 type="text"
-                value={formData.tags}
+                value={
+                  Array.isArray(formData.tags)
+                    ? formData.tags.join(", ")
+                    : formData.tags
+                }
                 onChange={(e) =>
-                  setFormData({ ...formData, tags: e.target.value })
+                  setFormData({
+                    ...formData,
+                    tags: e.target.value
+                      .split(",")
+                      .map((tag) => tag.trim())
+                      .filter((tag) => tag.length > 0),
+                  })
                 }
                 className="w-full px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent"
                 placeholder="scholarship, education, tips"
@@ -199,10 +219,12 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
               {formData.image && (
                 <div className="mt-2 relative">
                   <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-300">
-                    <img
+                    <Image
                       src={formData.image}
                       alt="Blog post preview"
                       className="w-full h-full object-cover"
+                      width={200}
+                      height={120}
                       onError={(e) => {
                         (e.target as HTMLImageElement).src =
                           "https://via.placeholder.com/640x360?text=Image+Not+Found";
@@ -300,7 +322,7 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
                     maxLength={60}
                   />
                   <div className="text-xs text-gray-500 mt-1">
-                    {formData.metaTitle.length}/60 characters
+                    {formData.metaTitle?.length ?? 0}/60 characters
                   </div>
                 </div>
                 <div>
@@ -338,7 +360,7 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
                     maxLength={160}
                   />
                   <div className="text-xs text-gray-500 mt-1">
-                    {formData.metaDescription.length}/160 characters
+                    {formData.metaDescription?.length ?? 0}/160 characters
                   </div>
                 </div>
                 <div>
@@ -377,10 +399,12 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
                   {formData.socialImage && (
                     <div className="mt-2 relative">
                       <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-300">
-                        <img
+                        <Image
                           src={formData.socialImage}
                           alt="Social media preview"
                           className="w-full h-full object-cover"
+                          width={200}
+                          height={120}
                           onError={(e) => {
                             (e.target as HTMLImageElement).src =
                               "https://via.placeholder.com/640x360?text=Image+Not+Found";
@@ -440,7 +464,7 @@ const PostForm = ({ post, onSave, onCancel, isSubmitting }: any) => {
 };
 
 export default function BlogManagement() {
-  const { user, userProfile } = useAuth();
+  const { isAdmin } = useAuth();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState("");

@@ -2,7 +2,22 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../contexts/AuthContext";
-import { jsonLdWebsite, jsonLdOrganization } from "../lib/seo";
+
+const jsonLdWebsite = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "ScholarHunt",
+  url: "https://scholarhunt.ug",
+  // Only use static values here
+};
+
+const jsonLdOrganization = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "ScholarHunt",
+  url: "https://scholarhunt.ug",
+  // Only use static values here
+};
 
 export const metadata: Metadata = {
   title: "ScholarHunt Uganda - Find Your Perfect Scholarship Opportunity",
