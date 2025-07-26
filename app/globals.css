@@ -20,27 +20,27 @@
   --bg-dark-glass-strong: rgba(255, 255, 255, 0.1);
 
   /* Text Colors */
-  --text-primary: #1a237e;
-  --text-secondary: #475569;
-  --text-tertiary: #64748b;
-  --text-quaternary: #94a3b8;
+  --text-primary: #1f2937; /* Darker, more visible primary text */
+  --text-secondary: #4b5563; /* More visible secondary text */
+  --text-tertiary: #6b7280; /* More visible tertiary text */
+  --text-quaternary: #9ca3af; /* More visible quaternary text */
 
   /* Dark Mode Text */
-  --text-dark-primary: #f8fafc;
-  --text-dark-secondary: #cbd5e1;
-  --text-dark-tertiary: #94a3b8;
-  --text-dark-quaternary: #64748b;
+  --text-dark-primary: #ffffff;
+  --text-dark-secondary: #e5e7eb;
+  --text-dark-tertiary: #d1d5db;
+  --text-dark-quaternary: #9ca3af;
 
   /* Simplified Brand Colors - Only 3 Main Colors */
-  --brand-primary: #1a237e;
-  --brand-secondary: #1976d2;
-  --brand-accent: #10b981; /* Green for success states */
-  --brand-warning: #f59e0b; /* Amber for warnings */
-  --brand-error: #ef4444; /* Red for errors */
+  --brand-primary: #3b4d8f; /* Softer blue */
+  --brand-secondary: #4f7cac; /* Softer secondary blue */
+  --brand-accent: #059669; /* Softer green for success states */
+  --brand-warning: #d97706; /* Softer amber for warnings */
+  --brand-error: #dc2626; /* Softer red for errors */
 
   /* Simplified Gradients - Minimal Use */
-  --gradient-primary: linear-gradient(135deg, #1a237e 0%, #1976d2 100%);
-  --gradient-secondary: linear-gradient(135deg, #1976d2 0%, #1a237e 100%);
+  --gradient-primary: linear-gradient(135deg, #3b4d8f 0%, #4f7cac 100%);
+  --gradient-secondary: linear-gradient(135deg, #4f7cac 0%, #3b4d8f 100%);
 
   /* Borders */
   --border-primary: #e2e8f0;
@@ -80,11 +80,11 @@
   --radius-3xl: 2rem;
   --radius-full: 9999px;
 
-  --color-primary: #1a237e;
+  --color-primary: #3b4d8f;
   --color-secondary: #ffffff;
-  --color-accent: #1976d2;
+  --color-accent: #4f7cac;
   --color-bg: #ffffff;
-  --color-text: #1a237e;
+  --color-text: #1f2937;
 }
 
 /* Dark Mode */
@@ -139,6 +139,20 @@
   
   .text-gray-400 {
     color: var(--text-quaternary);
+  }
+  
+  /* Enhanced text visibility for navigation and menus */
+  .text-gray-300, .text-gray-400 {
+    color: var(--text-secondary) !important;
+  }
+  
+  /* Ensure navigation links are more visible */
+  nav a, .nav-link, .menu-link {
+    color: var(--text-primary) !important;
+  }
+  
+  nav a:hover, .nav-link:hover, .menu-link:hover {
+    color: var(--brand-primary) !important;
   }
   
   /* Fix hover states in dark mode */
@@ -296,7 +310,7 @@ body {
 }
 
 .btn-primary:hover {
-  background: #2563eb;
+  background: #4f7cac;
   transform: translateY(-1px);
   box-shadow: var(--shadow-lg);
 }
@@ -372,9 +386,9 @@ body {
 }
 
 .badge-primary {
-  background: rgba(99, 102, 241, 0.1);
+  background: rgba(59, 77, 143, 0.1);
   color: var(--brand-primary);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  border: 1px solid rgba(59, 77, 143, 0.2);
 }
 
 .badge-success {
@@ -409,10 +423,10 @@ body {
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 0 20px rgba(59, 77, 143, 0.3);
   }
   50% {
-    box-shadow: 0 0 40px rgba(99, 102, 241, 0.6);
+    box-shadow: 0 0 40px rgba(59, 77, 143, 0.6);
   }
 }
 
@@ -498,7 +512,7 @@ body {
 
 /* Selection Styling */
 ::selection {
-  background: rgba(99, 102, 241, 0.3);
+  background: rgba(59, 77, 143, 0.3);
   color: var(--text-primary);
 }
 

@@ -261,7 +261,7 @@ export default function ScholarshipManagement() {
                           title: e.target.value,
                         }))
                       }
-                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div>
@@ -278,7 +278,7 @@ export default function ScholarshipManagement() {
                           university: e.target.value,
                         }))
                       }
-                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div>
@@ -556,7 +556,7 @@ export default function ScholarshipManagement() {
                   <button
                     type="button"
                     onClick={() => addArrayField("eligibility")}
-                    className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm font-medium"
+                    className="text-blue-500 hover:text-blue-600 text-xs sm:text-sm font-medium"
                   >
                     + Add Eligibility Requirement
                   </button>
@@ -597,7 +597,7 @@ export default function ScholarshipManagement() {
                   <button
                     type="button"
                     onClick={() => addArrayField("requirements")}
-                    className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm font-medium"
+                    className="text-blue-500 hover:text-blue-600 text-xs sm:text-sm font-medium"
                   >
                     + Add Application Requirement
                   </button>
@@ -614,7 +614,7 @@ export default function ScholarshipManagement() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+                    className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     {submitting ? (
                       <>
@@ -647,7 +647,7 @@ export default function ScholarshipManagement() {
         </h1>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+          className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm sm:text-base"
         >
           <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
           <span className="hidden sm:inline">Add Scholarship</span>
@@ -722,7 +722,7 @@ export default function ScholarshipManagement() {
         {scholarships.length === 0 && (
           <button
             onClick={() => setShowForm(true)}
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm sm:text-base"
           >
             Add First Scholarship
           </button>
@@ -788,7 +788,7 @@ export default function ScholarshipManagement() {
                           href={scholarship.applicationUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:text-blue-800 underline"
+                          className="text-blue-500 hover:text-blue-700 underline"
                         >
                           {scholarship.applicationUrl}
                         </a>
@@ -797,10 +797,10 @@ export default function ScholarshipManagement() {
                   )}
                 </div>{" "}
                 <div className="flex gap-2 pt-2">
-                  <button
-                    onClick={() => handleEdit(scholarship)}
-                    className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
-                  >
+                                      <button
+                      onClick={() => handleEdit(scholarship)}
+                      className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs text-blue-500 bg-blue-50 rounded-lg hover:bg-blue-100"
+                    >
                     <Edit className="w-3 h-3" />
                     Edit
                   </button>{" "}
@@ -887,13 +887,13 @@ export default function ScholarshipManagement() {
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {scholarship.applicationUrl ? (
-                      <a
-                        href={scholarship.applicationUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-800 underline truncate block max-w-[200px]"
-                        title={scholarship.applicationUrl}
-                      >
+                                              <a
+                          href={scholarship.applicationUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-500 hover:text-blue-700 underline truncate block max-w-[200px]"
+                          title={scholarship.applicationUrl}
+                        >
                         Apply Here
                       </a>
                     ) : (
@@ -914,11 +914,11 @@ export default function ScholarshipManagement() {
                   </td>{" "}
                   <td className="px-6 py-4 text-sm font-medium">
                     <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(scholarship)}
-                        className="text-blue-600 hover:text-blue-900"
-                        title="Edit"
-                      >
+                                              <button
+                          onClick={() => handleEdit(scholarship)}
+                          className="text-blue-500 hover:text-blue-700"
+                          title="Edit"
+                        >
                         <Edit className="w-5 h-5" />
                       </button>{" "}
                       {scholarship.status === "active" && (

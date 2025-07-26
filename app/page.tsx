@@ -110,7 +110,7 @@ export default function Home() {
             <div className="inline-flex items-center gap-3 glass-strong rounded-full px-6 py-3 mb-12">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
               <span style={{ color: 'var(--text-primary)' }} className="font-medium text-sm">
-                🎓 Trusted by 5,000+ Students Worldwide
+                🎓 Trust sits at the heart of our platform
               </span>
             </div>
           </motion.div>
@@ -211,34 +211,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
 
-          {/* Trust Indicators */}
-          <motion.div
-            className="mt-16 flex flex-wrap justify-center items-center gap-8 opacity-60"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: heroInView ? 0 : 20, opacity: heroInView ? 0.6 : 0 }}
-            transition={{ duration: 0.8, delay: 0.8 }}
-          >
-            <div className="flex items-center gap-2">
-              <Star className="w-4 h-4 fill-current text-yellow-400" />
-              <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                4.9/5 Success Rate
-              </span>
-            </div>
-            <div className="w-px h-4 bg-current opacity-20"></div>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
-              <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                5,000+ Students Helped
-              </span>
-            </div>
-            <div className="w-px h-4 bg-current opacity-20"></div>
-            <div className="flex items-center gap-2">
-              <DollarSign className="w-4 h-4" style={{ color: 'var(--text-tertiary)' }} />
-              <span className="text-sm" style={{ color: 'var(--text-tertiary)' }}>
-                $2M+ in Scholarships
-              </span>
-            </div>
-          </motion.div>
         </div>
       </motion.section>
 
@@ -277,64 +249,13 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
-            {[
-              { 
-                icon: DollarSign, 
-                value: "$2M+", 
-                label: "Total Scholarship Value", 
-                description: "Awarded to students",
-                gradient: "from-emerald-400 to-cyan-400",
-                delay: 0.4 
-              },
-              { 
-                icon: Users, 
-                value: "5,000+", 
-                label: "Students Helped", 
-                description: "Dreams made reality",
-                gradient: "from-violet-400 to-purple-400",
-                delay: 0.5 
-              },
-              { 
-                icon: TrendingUp, 
-                value: "95%", 
-                label: "Success Rate", 
-                description: "Application approval",
-                gradient: "from-blue-400 to-indigo-400",
-                delay: 0.6 
-              },
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                className="group text-center"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 50 }}
-                transition={{ duration: 0.8, delay: stat.delay }}
-              >
-                <div className="card-glass p-8 group-hover:scale-105 transition-all duration-500">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 group-hover:scale-110 transition-transform duration-300" style={{ background: 'var(--brand-primary)' }}>
-                    <stat.icon className="w-8 h-8 text-white" />
-                  </div>
+         
                   
-                  <motion.div
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    animate={{ scale: statsInView ? 1 : 0.5, opacity: statsInView ? 1 : 0 }}
-                    transition={{ duration: 1, delay: stat.delay + 0.3 }}
-                  >
-                    <h3 className="text-5xl font-bold mb-2" style={{ color: 'var(--text-primary)' }}>
-                      {stat.value}
-                    </h3>
-                    <p className="text-lg font-semibold mb-2" style={{ color: 'var(--text-primary)' }}>
-                      {stat.label}
-                    </p>
-                    <p className="text-sm" style={{ color: 'var(--text-secondary)' }}>
-                      {stat.description}
-                    </p>
-                  </motion.div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+                 
+                
+              
+            
+          
         </div>
       </motion.section>
 
