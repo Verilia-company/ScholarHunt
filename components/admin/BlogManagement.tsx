@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import RichTextEditor from "./RichTextEditor";
 import { blogService, type BlogPost } from "@/lib/firebase/services";
-import { useAuth } from "@/contexts/AuthContext";
 import ShareButtons from "@/components/ShareButtons";
 import Image from "next/image";
 
@@ -464,7 +463,6 @@ const PostForm = ({
 };
 
 export default function BlogManagement() {
-  const { isAdmin } = useAuth();
   const [posts, setPosts] = useState<BlogPost[]>([]);
   const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -472,20 +470,16 @@ export default function BlogManagement() {
   const [statusFilter, setStatusFilter] = useState("");
   const [isAddingPost, setIsAddingPost] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Load blog posts from Firebase
   useEffect(() => {
     const loadPosts = async () => {
       try {
-        setIsLoading(true);
         const allPosts = await blogService.getBlogPosts();
         setPosts(allPosts);
       } catch (error) {
         console.error("Error loading blog posts:", error);
-      } finally {
-        setIsLoading(false);
       }
     };
     loadPosts();
@@ -519,7 +513,7 @@ export default function BlogManagement() {
   }, [posts, searchQuery, categoryFilter, statusFilter]);
 
   // Handlers
-  const handleAddPost = async (formData: any) => {
+  const handleAddPost = async (formData: BlogPost) => {
     setIsSubmitting(true);
     try {
       const result = await blogService.createBlogPost(formData);
@@ -544,7 +538,7 @@ export default function BlogManagement() {
     }
   };
 
-  const handleEditPost = async (formData: any) => {
+  const handleEditPost = async (formData: BlogPost) => {
     setIsSubmitting(true);
     try {
       await blogService.updateBlogPost(formData.id, formData);

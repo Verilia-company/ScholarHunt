@@ -4,7 +4,7 @@ import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
 import { getStorage } from "firebase/storage";
-import { getAnalytics } from "firebase/analytics";
+import { getAnalytics, isSupported } from "firebase/analytics";
 
 // Firebase configuration object using environment variables
 const firebaseConfig = {
@@ -60,9 +60,18 @@ export const rtdb = getDatabase(app);
 // Initialize Cloud Storage and get a reference to the service
 export const storage = getStorage(app);
 
-// Initialize Analytics (only in browser environment)
-export const analytics =
-  typeof window !== "undefined" ? getAnalytics(app) : null;
+// Remove top-level await for analytics
+let analytics: ReturnType<typeof getAnalytics> | null = null;
+
+import type { FirebaseApp } from "firebase/app";
+
+export async function initAnalytics(app: FirebaseApp) {
+  if (typeof window !== "undefined") {
+    const supported = await isSupported();
+    analytics = supported ? getAnalytics(app) : null;
+  }
+  return analytics;
+}
 
 // Export the app for use in other parts of the application
 export default app;
