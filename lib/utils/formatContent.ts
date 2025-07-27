@@ -179,7 +179,10 @@ export function formatBlogContentProfessional(content: string): string {
       if (
         paragraph.toLowerCase().includes("scholarships can be life-changing") ||
         paragraph.toLowerCase().includes("comprehensive guide") ||
-        paragraph.toLowerCase().includes("everything you need to know")
+        paragraph.toLowerCase().includes("everything you need to know") ||
+        paragraph
+          .toLowerCase()
+          .includes("compelling scholarship essay can make the difference")
       ) {
         return `
           <div class="mb-10 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border-l-4 border-blue-500">
