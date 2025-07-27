@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [signInLoading, setSignInLoading] = React.useState(false);
-  
+
   // Toast system
   const { toasts, removeToast } = useToast();
 
@@ -284,15 +284,18 @@ export default function Layout({ children }: LayoutProps) {
         style={{ backgroundColor: "var(--background)" }}
       >
         {/* Clean Header */}
-        <header 
+        <header
           className="sticky top-0 z-50 transition-all duration-300 relative"
-          style={{ 
-            background: 'var(--brand-primary)',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+          style={{
+            background: "var(--brand-primary)",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
           {" "}
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
+          <div
+            className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative"
+            style={{ zIndex: 10 }}
+          >
             <div className="flex justify-between items-center h-14 sm:h-16">
               {/* Logo */}
               <Link
@@ -302,9 +305,7 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
                   <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <span
-                  className="text-lg sm:text-xl font-bold text-white"
-                >
+                <span className="text-lg sm:text-xl font-bold text-white">
                   ScholarHunt
                 </span>
               </Link>{" "}
@@ -705,14 +706,12 @@ export default function Layout({ children }: LayoutProps) {
         </header>{" "}
         {/* Main Content */}
         <main className="flex-1">{children}</main>
-        
         {/* WhatsApp Widget for Expert Advice */}
-        <WhatsAppWidget 
+        <WhatsAppWidget
           phoneNumber="+256759058245"
           message="Hi! I need expert advice about scholarships 🎓"
           position="bottom-right"
         />
-        
         {/* Toast Notifications */}
         <ToastContainer toasts={toasts} onClose={removeToast} /> {/* Footer */}
         <footer
