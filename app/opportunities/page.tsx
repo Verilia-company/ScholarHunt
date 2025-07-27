@@ -25,7 +25,7 @@ function OpportunitiesContent() {
   const [showFilters, setShowFilters] = useState(false);
   const [sortBy, setSortBy] = useState("deadline"); // deadline, amount, alphabetical
   const [currentPage, setCurrentPage] = useState(1);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [scholarships, setScholarships] = useState<Scholarship[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -140,7 +140,7 @@ function OpportunitiesContent() {
         searchTerm: searchQuery,
         resultsCount: filteredScholarships.length,
         searchType: "scholarship",
-        source: "opportunities"
+        source: "opportunities",
       });
     }
   }, [searchParams, filteredScholarships.length]);
@@ -161,10 +161,18 @@ function OpportunitiesContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center px-3 sm:px-4"
+        style={{ background: "var(--bg-primary)" }}
+      >
         <div className="text-center max-w-md">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4" style={{ borderColor: 'var(--brand-primary)' }}></div>
-          <p style={{ color: 'var(--text-secondary)' }}>Loading scholarship opportunities...</p>
+          <div
+            className="animate-spin rounded-full h-12 w-12 border-b-2 mx-auto mb-4"
+            style={{ borderColor: "var(--brand-primary)" }}
+          ></div>
+          <p style={{ color: "var(--text-secondary)" }}>
+            Loading scholarship opportunities...
+          </p>
         </div>
       </div>
     );
@@ -172,12 +180,21 @@ function OpportunitiesContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-3 sm:px-4" style={{ background: 'var(--bg-primary)' }}>
+      <div
+        className="min-h-screen flex items-center justify-center px-3 sm:px-4"
+        style={{ background: "var(--bg-primary)" }}
+      >
         <div className="text-center max-w-md">
-          <h1 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4" style={{ color: 'var(--text-primary)' }}>
+          <h1
+            className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4"
+            style={{ color: "var(--text-primary)" }}
+          >
             Unable to Load Scholarships
           </h1>
-          <p className="text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+          <p
+            className="text-sm sm:text-base mb-4 sm:mb-6 leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
             {error}. Please try refreshing the page.
           </p>
           <button
@@ -192,26 +209,84 @@ function OpportunitiesContent() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--bg-primary)' }}>
-      {/* Clean Header */}
-      <div className="relative overflow-hidden py-20" style={{ background: 'var(--brand-primary)' }}>
+    <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      {/* Elegant Header with Soft Colors */}
+      <div
+        className="relative overflow-hidden py-20"
+        style={{
+          background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
+          position: "relative",
+        }}
+      >
+        {/* Soft gradient overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%)",
+          }}
+        ></div>
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-6 py-3 mb-8" style={{ background: 'rgba(255, 255, 255, 0.1)' }}>
-            <Search className="w-5 h-5 text-white" />
-            <span className="font-medium text-white">
+          <div
+            className="inline-flex items-center gap-2 rounded-full px-6 py-3 mb-8"
+            style={{
+              background: "rgba(255, 255, 255, 0.2)",
+              backdropFilter: "blur(12px)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+            }}
+          >
+            <Search
+              className="w-5 h-5"
+              style={{ color: "rgba(255, 255, 255, 0.9)" }}
+            />
+            <span
+              className="font-medium"
+              style={{ color: "rgba(255, 255, 255, 0.9)" }}
+            >
               Discover Your Future
             </span>
           </div>
 
-          <h1 className="text-display mb-6 text-white">
-            Scholarship
+          <h1 className="text-display mb-6">
+            <span
+              className="font-bold"
+              style={{
+                color: "rgba(255, 255, 255, 0.95)",
+                textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
+                fontSize: "clamp(2.5rem, 8vw, 6rem)",
+                lineHeight: "1.1",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Scholarship
+            </span>
             <br />
-            <span className="text-white opacity-90">Opportunities</span>
+            <span
+              className="font-bold"
+              style={{
+                color: "rgba(255, 255, 255, 0.95)",
+                textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
+                fontSize: "clamp(2.5rem, 8vw, 6rem)",
+                lineHeight: "1.1",
+                letterSpacing: "-0.02em",
+              }}
+            >
+              Opportunities
+            </span>
           </h1>
 
-          <p className="text-subtitle max-w-4xl mx-auto text-white opacity-80">
-            Discover scholarship opportunities that match your academic goals and background.
-            Use our advanced filters to find the perfect scholarships for you.
+          <p
+            className="text-subtitle max-w-4xl mx-auto"
+            style={{
+              color: "rgba(255, 255, 255, 0.85)",
+              textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
+              fontSize: "clamp(1.125rem, 2vw, 1.5rem)",
+              lineHeight: "1.6",
+            }}
+          >
+            Discover scholarship opportunities that match your academic goals
+            and background. Use our advanced filters to find the perfect
+            scholarships for you.
           </p>
         </div>
       </div>
@@ -221,13 +296,18 @@ function OpportunitiesContent() {
           {/* Clean Search Bar */}
           <div className="mb-8">
             <div className="relative">
-              <div className="glass-strong rounded-2xl p-2 border" style={{ borderColor: 'var(--border-primary)' }}>
+              <div
+                className="glass-strong rounded-2xl p-2 border"
+                style={{ borderColor: "var(--border-primary)" }}
+              >
                 <div className="flex items-center">
                   <div className="flex items-center pl-6">
                     <Search
                       className="h-6 w-6 transition-colors duration-300"
                       style={{
-                        color: searchTerm ? 'var(--brand-primary)' : 'var(--text-tertiary)'
+                        color: searchTerm
+                          ? "var(--brand-primary)"
+                          : "var(--text-tertiary)",
                       }}
                     />
                   </div>
@@ -238,7 +318,7 @@ function OpportunitiesContent() {
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none focus-ring"
                     style={{
-                      color: 'var(--text-primary)'
+                      color: "var(--text-primary)",
                     }}
                     placeholder="Search scholarships, universities, or study fields..."
                   />
@@ -253,15 +333,18 @@ function OpportunitiesContent() {
               <button
                 onClick={() => setShowFilters(!showFilters)}
                 className="glass-strong rounded-xl px-6 py-3 flex items-center gap-3 hover:bg-opacity-80 transition-all duration-300 focus-ring group"
-                style={{ color: 'var(--text-primary)' }}
+                style={{ color: "var(--text-primary)" }}
               >
                 <Filter className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" />
                 <span className="font-medium">
-                  {showFilters ? 'Hide Filters' : 'Show Filters'}
+                  {showFilters ? "Hide Filters" : "Show Filters"}
                 </span>
               </button>
               <div className="glass rounded-lg px-4 py-2">
-                <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   {filteredScholarships.length} opportunities found
                 </span>
               </div>
@@ -269,14 +352,20 @@ function OpportunitiesContent() {
 
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
-                <span className="text-sm font-medium" style={{ color: 'var(--text-secondary)' }}>
+                <span
+                  className="text-sm font-medium"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   Sort by:
                 </span>
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
                   className="glass rounded-lg px-4 py-2 text-sm focus-ring border-0 font-medium"
-                  style={{ color: 'var(--text-primary)', background: 'var(--bg-glass)' }}
+                  style={{
+                    color: "var(--text-primary)",
+                    background: "var(--bg-glass)",
+                  }}
                 >
                   <option value="deadline">Deadline</option>
                   <option value="alphabetical">Alphabetical</option>
@@ -284,22 +373,31 @@ function OpportunitiesContent() {
                 </select>
               </div>
               <button
-                onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+                onClick={() =>
+                  setViewMode(viewMode === "grid" ? "list" : "grid")
+                }
                 className="glass rounded-lg p-2 hover:bg-opacity-80 transition-all duration-200 focus-ring"
-                style={{ color: 'var(--text-secondary)' }}
+                style={{ color: "var(--text-secondary)" }}
               >
-                {viewMode === 'grid' ? <List className="w-5 h-5" /> : <Grid className="w-5 h-5" />}
+                {viewMode === "grid" ? (
+                  <List className="w-5 h-5" />
+                ) : (
+                  <Grid className="w-5 h-5" />
+                )}
               </button>
             </div>
           </div>
 
           {/* Enhanced Filters Section */}
-          <div className={`${showFilters ? 'block' : 'hidden'} mb-8`}>
+          <div className={`${showFilters ? "block" : "hidden"} mb-8`}>
             <div className="card-glass p-8">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {/* Type Filter */}
                 <div>
-                  <label className="block text-sm font-medium mb-3" style={{ color: 'var(--text-primary)' }}>
+                  <label
+                    className="block text-sm font-medium mb-3"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     Scholarship Type
                   </label>
                   <div className="space-y-2">
@@ -317,7 +415,7 @@ function OpportunitiesContent() {
                         <label
                           htmlFor={`type-${type}`}
                           className="ml-2 text-sm cursor-pointer"
-                          style={{ color: 'var(--text-secondary)' }}
+                          style={{ color: "var(--text-secondary)" }}
                         >
                           {type}
                         </label>
@@ -328,14 +426,20 @@ function OpportunitiesContent() {
 
                 {/* Level Filter */}
                 <div>
-                  <label className="block text-sm font-medium mb-3" style={{ color: 'var(--text-primary)' }}>
+                  <label
+                    className="block text-sm font-medium mb-3"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     Education Level
                   </label>
                   <select
                     value={selectedLevel}
                     onChange={(e) => setSelectedLevel(e.target.value)}
                     className="glass w-full rounded-lg px-4 py-2 text-sm focus-ring border-0"
-                    style={{ color: 'var(--text-secondary)', background: 'var(--bg-glass)' }}
+                    style={{
+                      color: "var(--text-secondary)",
+                      background: "var(--bg-glass)",
+                    }}
                   >
                     {levels.map((level) => (
                       <option key={level} value={level}>
@@ -347,14 +451,20 @@ function OpportunitiesContent() {
 
                 {/* Location Filter */}
                 <div>
-                  <label className="block text-sm font-medium mb-3" style={{ color: 'var(--text-primary)' }}>
+                  <label
+                    className="block text-sm font-medium mb-3"
+                    style={{ color: "var(--text-primary)" }}
+                  >
                     Location
                   </label>
                   <select
                     value={selectedLocation}
                     onChange={(e) => setSelectedLocation(e.target.value)}
                     className="glass w-full rounded-lg px-4 py-2 text-sm focus-ring border-0"
-                    style={{ color: 'var(--text-secondary)', background: 'var(--bg-glass)' }}
+                    style={{
+                      color: "var(--text-secondary)",
+                      background: "var(--bg-glass)",
+                    }}
                   >
                     {locations.map((location) => (
                       <option key={location} value={location}>
@@ -370,7 +480,7 @@ function OpportunitiesContent() {
                 <button
                   onClick={resetFilters}
                   className="glass rounded-lg px-4 py-2 hover:bg-opacity-80 transition-all duration-200 focus-ring text-sm font-medium"
-                  style={{ color: 'var(--text-secondary)' }}
+                  style={{ color: "var(--text-secondary)" }}
                 >
                   Reset Filters
                 </button>
@@ -386,7 +496,13 @@ function OpportunitiesContent() {
         </div>
 
         {/* Enhanced Scholarship Results */}
-        <div className={`grid gap-8 ${viewMode === 'grid' ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3' : 'grid-cols-1'}`}>
+        <div
+          className={`grid gap-8 ${
+            viewMode === "grid"
+              ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+              : "grid-cols-1"
+          }`}
+        >
           {loading ? (
             // Premium Loading Skeletons
             Array.from({ length: 6 }).map((_, index) => (
@@ -397,14 +513,32 @@ function OpportunitiesContent() {
                 transition={{ duration: 0.4, delay: index * 0.1 }}
                 className="card-glass p-6 animate-pulse"
               >
-                <div className="h-4 rounded mb-4" style={{ background: 'var(--bg-glass)' }}></div>
-                <div className="h-3 rounded mb-2" style={{ background: 'var(--bg-glass)' }}></div>
-                <div className="h-3 rounded mb-4 w-3/4" style={{ background: 'var(--bg-glass)' }}></div>
+                <div
+                  className="h-4 rounded mb-4"
+                  style={{ background: "var(--bg-glass)" }}
+                ></div>
+                <div
+                  className="h-3 rounded mb-2"
+                  style={{ background: "var(--bg-glass)" }}
+                ></div>
+                <div
+                  className="h-3 rounded mb-4 w-3/4"
+                  style={{ background: "var(--bg-glass)" }}
+                ></div>
                 <div className="flex gap-2 mb-4">
-                  <div className="h-6 rounded-full w-16" style={{ background: 'var(--bg-glass)' }}></div>
-                  <div className="h-6 rounded-full w-20" style={{ background: 'var(--bg-glass)' }}></div>
+                  <div
+                    className="h-6 rounded-full w-16"
+                    style={{ background: "var(--bg-glass)" }}
+                  ></div>
+                  <div
+                    className="h-6 rounded-full w-20"
+                    style={{ background: "var(--bg-glass)" }}
+                  ></div>
                 </div>
-                <div className="h-10 rounded-lg" style={{ background: 'var(--bg-glass)' }}></div>
+                <div
+                  className="h-10 rounded-lg"
+                  style={{ background: "var(--bg-glass)" }}
+                ></div>
               </motion.div>
             ))
           ) : currentScholarships.length > 0 ? (
@@ -416,9 +550,7 @@ function OpportunitiesContent() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <ScholarshipCard
-                  scholarship={scholarship}
-                />
+                <ScholarshipCard scholarship={scholarship} />
               </motion.div>
             ))
           ) : (
@@ -429,19 +561,26 @@ function OpportunitiesContent() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.5 }}
             >
-              <div className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6" style={{ background: 'var(--text-quaternary)' }}>
+              <div
+                className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6"
+                style={{ background: "var(--text-quaternary)" }}
+              >
                 <Search className="w-10 h-10 text-white" />
               </div>
-              <h3 className="text-xl font-bold mb-3" style={{ color: 'var(--text-primary)' }}>
+              <h3
+                className="text-xl font-bold mb-3"
+                style={{ color: "var(--text-primary)" }}
+              >
                 No Scholarships Found
               </h3>
-              <p className="text-lg max-w-md mx-auto mb-6" style={{ color: 'var(--text-secondary)' }}>
-                Try adjusting your filters or search terms to find more opportunities.
-              </p>
-              <button
-                onClick={resetFilters}
-                className="btn btn-primary"
+              <p
+                className="text-lg max-w-md mx-auto mb-6"
+                style={{ color: "var(--text-secondary)" }}
               >
+                Try adjusting your filters or search terms to find more
+                opportunities.
+              </p>
+              <button onClick={resetFilters} className="btn btn-primary">
                 Reset All Filters
               </button>
             </motion.div>
@@ -456,7 +595,7 @@ function OpportunitiesContent() {
                 onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                 disabled={currentPage === 1}
                 className="p-2 rounded-lg hover:bg-opacity-80 transition-all duration-200 focus-ring disabled:opacity-50"
-                style={{ color: 'var(--text-secondary)' }}
+                style={{ color: "var(--text-secondary)" }}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -467,11 +606,14 @@ function OpportunitiesContent() {
                   <button
                     key={pageNumber}
                     onClick={() => setCurrentPage(pageNumber)}
-                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-300 ${isActive ? 'text-white' : ''
-                      }`}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-300 ${
+                      isActive ? "text-white" : ""
+                    }`}
                     style={{
-                      background: isActive ? 'var(--brand-primary)' : 'transparent',
-                      color: isActive ? 'white' : 'var(--text-secondary)'
+                      background: isActive
+                        ? "var(--brand-primary)"
+                        : "transparent",
+                      color: isActive ? "white" : "var(--text-secondary)",
                     }}
                   >
                     {pageNumber}
@@ -479,10 +621,12 @@ function OpportunitiesContent() {
                 );
               })}
               <button
-                onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                onClick={() =>
+                  setCurrentPage(Math.min(totalPages, currentPage + 1))
+                }
                 disabled={currentPage === totalPages}
                 className="p-2 rounded-lg hover:bg-opacity-80 transition-all duration-200 focus-ring disabled:opacity-50"
-                style={{ color: 'var(--text-secondary)' }}
+                style={{ color: "var(--text-secondary)" }}
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -494,26 +638,34 @@ function OpportunitiesContent() {
         <div className="mt-20 card-glass p-12 border-gradient">
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="md:w-2/3">
-              <h3 className="text-title font-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+              <h3
+                className="text-title font-bold mb-4"
+                style={{ color: "var(--text-primary)" }}
+              >
                 Never Miss a Scholarship Opportunity
               </h3>
-              <p className="text-body mb-6" style={{ color: 'var(--text-secondary)' }}>
-                Get personalized scholarship alerts and application deadline reminders delivered straight to your inbox.
+              <p
+                className="text-body mb-6"
+                style={{ color: "var(--text-secondary)" }}
+              >
+                Get personalized scholarship alerts and application deadline
+                reminders delivered straight to your inbox.
               </p>
               <div className="glass-strong rounded-xl p-2 flex flex-col sm:flex-row gap-2">
                 <input
                   type="email"
                   placeholder="Enter your email address"
                   className="flex-1 px-4 py-3 bg-transparent border-0 outline-none text-sm focus-ring rounded-lg"
-                  style={{ color: 'var(--text-primary)' }}
+                  style={{ color: "var(--text-primary)" }}
                 />
-                <button className="btn btn-primary">
-                  Subscribe Now
-                </button>
+                <button className="btn btn-primary">Subscribe Now</button>
               </div>
             </div>
             <div className="md:w-1/3 flex justify-center">
-              <div className="w-24 h-24 rounded-full flex items-center justify-center" style={{ background: 'var(--brand-primary)' }}>
+              <div
+                className="w-24 h-24 rounded-full flex items-center justify-center"
+                style={{ background: "var(--brand-primary)" }}
+              >
                 <Bell className="w-12 h-12 text-white" />
               </div>
             </div>

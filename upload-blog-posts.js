@@ -10,7 +10,7 @@ const { getFirestore } = require("firebase-admin/firestore");
 // Initialize Firebase Admin
 if (!getApps().length) {
   initializeApp({
-    projectId: "scholarhunt-9b00f",
+    projectId: "verilyblog-d1235",
   });
 }
 

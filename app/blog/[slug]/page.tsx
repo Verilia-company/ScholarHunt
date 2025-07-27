@@ -3,7 +3,6 @@
 // app/blog/[slug]/page.tsx
 
 import React, { useState, useEffect } from "react";
-import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -19,13 +18,12 @@ import {
 import { blogService, BlogPost } from "@/lib/firebase/services";
 import { trackEvents, event } from "@/lib/analytics";
 import ShareButtons from "@/components/ShareButtons";
-import Layout from "@/components/Layout";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { formatBlogContentConsistent } from "@/lib/utils/formatContent";
 
 interface BlogPostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
@@ -36,25 +34,33 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   const [viewCount, setViewCount] = useState(0);
   const [likes, setLikes] = useState(0);
   const [hasLiked, setHasLiked] = useState(false);
+  const [slug, setSlug] = useState<string>("");
 
   const { ref, inView } = useInView({
     threshold: 0.1,
     triggerOnce: true,
   });
 
-  // Next.js 15 migration: params may be a Promise, unwrap with React.use()
-  // See: https://nextjs.org/docs/app/api-reference/file-conventions/page#dynamic-route-params
-  const unwrappedParams =
-    typeof (React as any).use === "function"
-      ? (React as any).use(params)
-      : params;
-  const slug =
-    unwrappedParams && typeof unwrappedParams.slug === "string"
-      ? decodeURIComponent(unwrappedParams.slug)
-          .replace(/%20/g, " ")
-          .replace(/\+/g, " ")
-          .trim()
-      : "";
+  // Handle Next.js 15 Promise-based params
+  useEffect(() => {
+    const resolveParams = async () => {
+      try {
+        const resolvedParams = await params;
+        const decodedSlug = resolvedParams?.slug
+          ? decodeURIComponent(resolvedParams.slug)
+              .replace(/%20/g, " ")
+              .replace(/\+/g, " ")
+              .trim()
+          : "";
+        setSlug(decodedSlug);
+      } catch (error) {
+        console.error("Error resolving params:", error);
+        setSlug("");
+      }
+    };
+
+    resolveParams();
+  }, [params]);
 
   useEffect(() => {
     // SSR-safe: only run on client
@@ -133,41 +139,15 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             );
           console.error("Blog post not found for slug:", slug);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         let errorMsg = "Failed to load blog post";
-        if (err && err.code === "permission-denied") {
-          // Try to show more debug info for Firestore rules
-          let debugInfo = "";
-          if (typeof window !== "undefined" && db && db.app && db.app.options) {
-            // Try to get current user from Firebase Auth
-            try {
-              // Import firebase auth from the firebase module
-              // (db is imported from '@/lib/firebase')
-              // If you use getAuth, replace below with your actual import
-              // For example: import { getAuth } from "firebase/auth";
-              // const user = getAuth().currentUser;
-              // Here, try to get user from firebase.auth if available
-              let user = null;
-              if (
-                typeof window !== "undefined" &&
-                (window as any).firebase &&
-                (window as any).firebase.auth
-              ) {
-                user = (window as any).firebase.auth().currentUser;
-              }
-              debugInfo = user
-                ? `Logged in as: ${user.email || user.uid}`
-                : "Not logged in (unauthenticated)";
-            } catch (e) {
-              debugInfo = "Could not determine auth state.";
-            }
-          }
+        const error = err as { code?: string; message?: string };
+        if (error && error.code === "permission-denied") {
           errorMsg =
             "Missing or insufficient Firestore permissions. Please check your Firestore rules for the 'blog' collection. " +
-            debugInfo +
             "\nSee https://firebase.google.com/docs/firestore/security/get-started";
-        } else if (err && err.message) {
-          errorMsg += ": " + err.message;
+        } else if (error && error.message) {
+          errorMsg += ": " + error.message;
         }
         if (isMounted) setError(errorMsg);
         console.error("Error loading post:", err);
