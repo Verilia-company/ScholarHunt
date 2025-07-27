@@ -472,12 +472,127 @@ export const blogService = {
     return docRef.id;
   },
 
+  // Helper function to format blog post content
+  formatBlogPostContent(post: any): BlogPost {
+    // Function to format content for HTML display
+    const formatContent = (content: string) => {
+      if (!content) return "";
+
+      // Convert markdown-style headings to HTML
+      let formattedContent = content
+        .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+        .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+        .replace(/^# (.*$)/gim, "<h1>$1</h1>");
+
+      // Convert double line breaks to paragraph breaks
+      formattedContent = formattedContent
+        .split("\n\n")
+        .map((paragraph) => {
+          // Skip empty paragraphs
+          if (!paragraph.trim()) return "";
+
+          // Don't wrap headings in paragraphs
+          if (paragraph.trim().startsWith("<h")) {
+            return paragraph.trim();
+          }
+
+          // Handle lists (lines starting with -)
+          if (paragraph.includes("\n-")) {
+            const lines = paragraph.split("\n");
+            let result = "";
+            let inList = false;
+
+            for (const line of lines) {
+              if (line.trim().startsWith("-")) {
+                if (!inList) {
+                  result += "<ul>";
+                  inList = true;
+                }
+                result += `<li>${line.trim().substring(1).trim()}</li>`;
+              } else {
+                if (inList) {
+                  result += "</ul>";
+                  inList = false;
+                }
+                if (line.trim()) {
+                  result += `<p>${line.trim()}</p>`;
+                }
+              }
+            }
+
+            if (inList) {
+              result += "</ul>";
+            }
+
+            return result;
+          }
+
+          // Handle numbered lists (lines starting with digits)
+          if (paragraph.includes("\n") && /^\d+\./.test(paragraph.trim())) {
+            const lines = paragraph.split("\n");
+            let result = "<ol>";
+
+            for (const line of lines) {
+              if (/^\d+\./.test(line.trim())) {
+                const content = line.trim().replace(/^\d+\.\s*/, "");
+                result += `<li>${content}</li>`;
+              }
+            }
+
+            result += "</ol>";
+            return result;
+          }
+
+          // Regular paragraph
+          return `<p>${paragraph.trim()}</p>`;
+        })
+        .filter((p) => p !== "")
+        .join("\n");
+
+      return formattedContent;
+    };
+
+    // Function to get appropriate backup image
+    const getBackupImage = (title: string) => {
+      const slug = title.toLowerCase();
+      if (slug.includes("scholarship") && slug.includes("guide")) {
+        return "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop";
+      } else if (slug.includes("interview")) {
+        return "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop";
+      } else if (slug.includes("university") || slug.includes("universities")) {
+        return "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=400&fit=crop";
+      } else if (slug.includes("essay") || slug.includes("writing")) {
+        return "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=400&fit=crop";
+      } else {
+        return "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop";
+      }
+    };
+
+    return {
+      ...post,
+      // Format content for proper HTML display
+      content: formatContent(post.content || ""),
+      // Use local SVG if available, otherwise use professional backup images
+      image:
+        post.image &&
+        post.image.startsWith("/blog/") &&
+        post.image.endsWith(".svg")
+          ? post.image
+          : getBackupImage(post.title),
+      // Ensure proper date handling
+      createdAt: post.createdAt || new Date(),
+      publishedAt: post.publishedAt || post.createdAt || new Date(),
+      updatedAt: post.updatedAt || new Date(),
+    } as BlogPost;
+  },
+
   async getBlogPost(postId: string): Promise<BlogPost | null> {
     const docRef = doc(db, "blog", postId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as BlogPost;
+      const rawPost = { id: docSnap.id, ...docSnap.data() };
+      return this.formatBlogPostContent(rawPost);
     }
     return null;
   },
@@ -488,7 +603,8 @@ export const blogService = {
 
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      return { id: doc.id, ...doc.data() } as BlogPost;
+      const rawPost = { id: doc.id, ...doc.data() };
+      return this.formatBlogPostContent(rawPost);
     }
     return null;
   },
@@ -520,25 +636,188 @@ export const blogService = {
     category?: string;
     limit?: number;
   }): Promise<BlogPost[]> {
-    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    let q;
 
-    if (filters?.status) {
-      constraints.push(where("status", "==", filters.status));
-    }
-    if (filters?.category) {
-      constraints.push(where("category", "==", filters.category));
-    }
-    if (filters?.limit) {
-      constraints.push(limit(filters.limit));
+    // If no filters, just order by createdAt
+    if (!filters?.status && !filters?.category) {
+      q = query(collection(db, "blog"), orderBy("createdAt", "desc"));
+    } else {
+      // Use simple queries to avoid index requirements
+      const constraints: QueryConstraint[] = [];
+
+      if (filters?.status) {
+        constraints.push(where("status", "==", filters.status));
+      }
+      if (filters?.category) {
+        constraints.push(where("category", "==", filters.category));
+      }
+      if (filters?.limit) {
+        constraints.push(limit(filters.limit));
+      }
+
+      q = query(collection(db, "blog"), ...constraints);
     }
 
-    const q = query(collection(db, "blog"), ...constraints);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
+    let posts = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as BlogPost[];
+
+    // Process posts to add default image and fix dates
+    posts = posts.map((post) => {
+      // Function to get appropriate backup image
+      const getBackupImage = (title: string) => {
+        const slug = title.toLowerCase();
+        if (slug.includes("scholarship") && slug.includes("guide")) {
+          return "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=400&fit=crop";
+        } else if (slug.includes("interview")) {
+          return "https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=800&h=400&fit=crop";
+        } else if (
+          slug.includes("university") ||
+          slug.includes("universities")
+        ) {
+          return "https://images.unsplash.com/photo-1562774053-701939374585?w=800&h=400&fit=crop";
+        } else if (slug.includes("essay") || slug.includes("writing")) {
+          return "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=800&h=400&fit=crop";
+        } else {
+          return "https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=800&h=400&fit=crop";
+        }
+      };
+
+      // Function to format content for HTML display
+      const formatContent = (content: string) => {
+        if (!content) return "";
+
+        // Convert markdown-style headings to HTML
+        let formattedContent = content
+          .replace(/^### (.*$)/gim, "<h3>$1</h3>")
+          .replace(/^## (.*$)/gim, "<h2>$1</h2>")
+          .replace(/^# (.*$)/gim, "<h1>$1</h1>");
+
+        // Convert double line breaks to paragraph breaks
+        formattedContent = formattedContent
+          .split("\n\n")
+          .map((paragraph) => {
+            // Skip empty paragraphs
+            if (!paragraph.trim()) return "";
+
+            // Don't wrap headings in paragraphs
+            if (paragraph.trim().startsWith("<h")) {
+              return paragraph.trim();
+            }
+
+            // Handle lists (lines starting with -)
+            if (paragraph.includes("\n-")) {
+              const lines = paragraph.split("\n");
+              let result = "";
+              let inList = false;
+
+              for (const line of lines) {
+                if (line.trim().startsWith("-")) {
+                  if (!inList) {
+                    result += "<ul>";
+                    inList = true;
+                  }
+                  result += `<li>${line.trim().substring(1).trim()}</li>`;
+                } else {
+                  if (inList) {
+                    result += "</ul>";
+                    inList = false;
+                  }
+                  if (line.trim()) {
+                    result += `<p>${line.trim()}</p>`;
+                  }
+                }
+              }
+
+              if (inList) {
+                result += "</ul>";
+              }
+
+              return result;
+            }
+
+            // Handle numbered lists (lines starting with digits)
+            if (paragraph.includes("\n") && /^\d+\./.test(paragraph.trim())) {
+              const lines = paragraph.split("\n");
+              let result = "<ol>";
+
+              for (const line of lines) {
+                if (/^\d+\./.test(line.trim())) {
+                  const content = line.trim().replace(/^\d+\.\s*/, "");
+                  result += `<li>${content}</li>`;
+                }
+              }
+
+              result += "</ol>";
+              return result;
+            }
+
+            // Regular paragraph
+            return `<p>${paragraph.trim()}</p>`;
+          })
+          .filter((p) => p !== "")
+          .join("\n");
+
+        return formattedContent;
+      };
+
+      return {
+        ...post,
+        // Format content for proper HTML display
+        content: formatContent(post.content || ""),
+        // Use local SVG if available, otherwise use professional backup images
+        image:
+          post.image &&
+          post.image.startsWith("/blog/") &&
+          post.image.endsWith(".svg")
+            ? post.image
+            : getBackupImage(post.title),
+        // Ensure proper date handling
+        createdAt: post.createdAt || new Date(),
+        publishedAt: post.publishedAt || post.createdAt || new Date(),
+        updatedAt: post.updatedAt || new Date(),
+      };
+    });
+
+    // Filter and sort in memory to avoid index requirements
+    if (filters?.status) {
+      posts = posts.filter((post) => post.status === filters.status);
+    }
+    if (filters?.category) {
+      posts = posts.filter((post) => post.category === filters.category);
+    }
+
+    // Sort by createdAt in memory (most recent first)
+    posts.sort((a, b) => {
+      // Handle various date formats
+      const getDateValue = (dateField: any) => {
+        if (!dateField) return 0;
+        if (dateField instanceof Date) return dateField.getTime();
+        if (typeof dateField === "string") return new Date(dateField).getTime();
+        if (dateField.toDate && typeof dateField.toDate === "function") {
+          return dateField.toDate().getTime(); // Firestore Timestamp
+        }
+        if (dateField.seconds) {
+          return new Date(dateField.seconds * 1000).getTime(); // Firestore Timestamp object
+        }
+        return new Date(dateField).getTime();
+      };
+
+      const aDate = getDateValue(a.publishedAt || a.createdAt);
+      const bDate = getDateValue(b.publishedAt || b.createdAt);
+
+      return bDate - aDate; // Most recent first
+    });
+
+    // Apply limit after sorting
+    if (filters?.limit) {
+      posts = posts.slice(0, filters.limit);
+    }
+
+    return posts;
   },
 
   async getPublishedPosts(): Promise<BlogPost[]> {
@@ -814,7 +1093,7 @@ export const backupService = {
 export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  if (error && typeof error === 'object' && 'code' in error) {
+  if (error && typeof error === "object" && "code" in error) {
     switch ((error as { code: string }).code) {
       case "permission-denied":
         return "You do not have permission to perform this action.";
@@ -828,7 +1107,7 @@ export const handleFirebaseError = (error: unknown): string => {
         return "An unexpected error occurred. Please try again.";
     }
   }
-  
+
   return "An unexpected error occurred. Please try again.";
 };
 
