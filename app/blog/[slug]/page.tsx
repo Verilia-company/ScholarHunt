@@ -22,7 +22,7 @@ import ShareButtons from "@/components/ShareButtons";
 import Layout from "@/components/Layout";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { formatBlogContentProfessional } from "@/lib/utils/formatContent";
+import { formatBlogContentConsistent } from "@/lib/utils/formatContent";
 
 interface BlogPostPageProps {
   params: { slug: string };
@@ -417,7 +417,7 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             className="prose prose-lg max-w-none"
             style={{ color: "var(--text-primary)" }}
             dangerouslySetInnerHTML={{
-              __html: formatBlogContentProfessional(post.content),
+              __html: formatBlogContentConsistent(post.content),
             }}
           />
         </motion.div>
