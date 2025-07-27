@@ -8,7 +8,6 @@ const jsonLdWebsite = {
   "@type": "WebSite",
   name: "ScholarHunt",
   url: "https://scholarhunt.ug",
-  // Only use static values here
 };
 
 const jsonLdOrganization = {
@@ -16,7 +15,6 @@ const jsonLdOrganization = {
   "@type": "Organization",
   name: "ScholarHunt",
   url: "https://scholarhunt.ug",
-  // Only use static values here
 };
 
 export const metadata: Metadata = {
@@ -105,6 +103,13 @@ export default function RootLayout({
         <script src="https://accounts.google.com/gsi/client" async defer />
       </head>
       <body className="antialiased">
+        {/* Hydration error warning for users with browser extensions */}
+        <noscript>
+          <div style={{ color: "red", textAlign: "center", padding: "1em" }}>
+            If you see hydration errors, try disabling browser extensions or use
+            incognito mode.
+          </div>
+        </noscript>
         <AuthProvider>
           <Layout>{children}</Layout>
         </AuthProvider>
