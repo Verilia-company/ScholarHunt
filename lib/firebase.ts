@@ -18,6 +18,7 @@ const firebaseConfig = {
     process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID || "demo-sender-id",
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID || "demo-app-id",
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL, // <-- add this line
 };
 
 // Check if we're in a valid Firebase environment
