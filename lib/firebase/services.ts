@@ -520,25 +520,87 @@ export const blogService = {
     category?: string;
     limit?: number;
   }): Promise<BlogPost[]> {
-    const constraints: QueryConstraint[] = [orderBy("createdAt", "desc")];
+    let q;
 
-    if (filters?.status) {
-      constraints.push(where("status", "==", filters.status));
-    }
-    if (filters?.category) {
-      constraints.push(where("category", "==", filters.category));
-    }
-    if (filters?.limit) {
-      constraints.push(limit(filters.limit));
+    // If no filters, just order by createdAt
+    if (!filters?.status && !filters?.category) {
+      q = query(collection(db, "blog"), orderBy("createdAt", "desc"));
+    } else {
+      // Use simple queries to avoid index requirements
+      const constraints: QueryConstraint[] = [];
+
+      if (filters?.status) {
+        constraints.push(where("status", "==", filters.status));
+      }
+      if (filters?.category) {
+        constraints.push(where("category", "==", filters.category));
+      }
+      if (filters?.limit) {
+        constraints.push(limit(filters.limit));
+      }
+
+      q = query(collection(db, "blog"), ...constraints);
     }
 
-    const q = query(collection(db, "blog"), ...constraints);
     const querySnapshot = await getDocs(q);
 
-    return querySnapshot.docs.map((doc) => ({
+    let posts = querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     })) as BlogPost[];
+
+    // Process posts to add default image and fix dates
+    posts = posts.map((post) => ({
+      ...post,
+      // Use a default image if image is missing or broken
+      image:
+        post.image && !post.image.includes("/blog/")
+          ? post.image
+          : `https://via.placeholder.com/800x400/3B82F6/FFFFFF?text=${encodeURIComponent(
+              post.title.substring(0, 30)
+            )}`,
+      // Ensure proper date handling
+      createdAt: post.createdAt || new Date(),
+      publishedAt: post.publishedAt || post.createdAt || new Date(),
+      updatedAt: post.updatedAt || new Date(),
+    }));
+
+    // Filter and sort in memory to avoid index requirements
+    if (filters?.status) {
+      posts = posts.filter((post) => post.status === filters.status);
+    }
+    if (filters?.category) {
+      posts = posts.filter((post) => post.category === filters.category);
+    }
+
+    // Sort by createdAt in memory (most recent first)
+    posts.sort((a, b) => {
+      // Handle various date formats
+      const getDateValue = (dateField: any) => {
+        if (!dateField) return 0;
+        if (dateField instanceof Date) return dateField.getTime();
+        if (typeof dateField === "string") return new Date(dateField).getTime();
+        if (dateField.toDate && typeof dateField.toDate === "function") {
+          return dateField.toDate().getTime(); // Firestore Timestamp
+        }
+        if (dateField.seconds) {
+          return new Date(dateField.seconds * 1000).getTime(); // Firestore Timestamp object
+        }
+        return new Date(dateField).getTime();
+      };
+
+      const aDate = getDateValue(a.publishedAt || a.createdAt);
+      const bDate = getDateValue(b.publishedAt || b.createdAt);
+
+      return bDate - aDate; // Most recent first
+    });
+
+    // Apply limit after sorting
+    if (filters?.limit) {
+      posts = posts.slice(0, filters.limit);
+    }
+
+    return posts;
   },
 
   async getPublishedPosts(): Promise<BlogPost[]> {
@@ -814,7 +876,7 @@ export const backupService = {
 export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  if (error && typeof error === 'object' && 'code' in error) {
+  if (error && typeof error === "object" && "code" in error) {
     switch ((error as { code: string }).code) {
       case "permission-denied":
         return "You do not have permission to perform this action.";
@@ -828,7 +890,7 @@ export const handleFirebaseError = (error: unknown): string => {
         return "An unexpected error occurred. Please try again.";
     }
   }
-  
+
   return "An unexpected error occurred. Please try again.";
 };
 

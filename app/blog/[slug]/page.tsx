@@ -20,9 +20,11 @@ import { blogService, BlogPost } from "@/lib/firebase/services";
 import { trackEvents, event } from "@/lib/analytics";
 import ShareButtons from "@/components/ShareButtons";
 import Layout from "@/components/Layout";
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 interface BlogPostPageProps {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
@@ -39,52 +41,144 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
     triggerOnce: true,
   });
 
+  // Next.js 15 migration: params may be a Promise, unwrap with React.use()
+  // See: https://nextjs.org/docs/app/api-reference/file-conventions/page#dynamic-route-params
+  const unwrappedParams =
+    typeof (React as any).use === "function"
+      ? (React as any).use(params)
+      : params;
+  const slug =
+    unwrappedParams && typeof unwrappedParams.slug === "string"
+      ? decodeURIComponent(unwrappedParams.slug)
+          .replace(/%20/g, " ")
+          .replace(/\+/g, " ")
+          .trim()
+      : "";
+
   useEffect(() => {
+    // SSR-safe: only run on client
+    if (!slug) return;
+    let isMounted = true;
     const loadPost = async () => {
       try {
         setLoading(true);
-        const resolvedParams = await params;
-        const fetchedPost = await blogService.getBlogPostBySlug(
-          resolvedParams.slug
+        console.log("Loading blog post with slug:", slug);
+        console.log(
+          "Firebase project ID:",
+          process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
         );
 
-        if (!fetchedPost) {
-          notFound();
+        // Query Firestore for blog post by slug field
+        const q = query(collection(db, "blog"), where("slug", "==", slug));
+        console.log("Executing Firestore query...");
+        const querySnapshot = await getDocs(q);
+        console.log(
+          "Query result:",
+          querySnapshot.empty
+            ? "No documents found"
+            : `Found ${querySnapshot.docs.length} documents`
+        );
+
+        if (!querySnapshot.empty) {
+          const doc = querySnapshot.docs[0];
+          const fetchedPost = { id: doc.id, ...doc.data() } as BlogPost;
+          console.log("Fetched post:", fetchedPost);
+          if (isMounted) {
+            setPost(fetchedPost);
+            setViewCount(fetchedPost.views || 0);
+          }
+
+          // Load related posts
+          try {
+            const allPosts = await blogService.getBlogPosts();
+            const related = allPosts
+              .filter(
+                (p: BlogPost) =>
+                  p.id !== fetchedPost.id && p.category === fetchedPost.category
+              )
+              .slice(0, 3);
+            if (isMounted) setRelatedPosts(related);
+          } catch (relatedErr) {
+            console.error("Error loading related posts:", relatedErr);
+          }
+
+          // Track view (client only)
+          if (typeof window !== "undefined") {
+            try {
+              trackEvents.blogPostView({
+                postSlug: fetchedPost.slug,
+                postTitle: fetchedPost.title,
+                category: fetchedPost.category,
+              });
+            } catch (trackErr) {
+              console.error("Error tracking blog post view:", trackErr);
+            }
+          }
+
+          // Increment view count (client only)
+          if (typeof window !== "undefined") {
+            try {
+              await blogService.incrementViews(fetchedPost.id);
+              if (isMounted) setViewCount((prev) => prev + 1);
+            } catch (incErr) {
+              console.error("Error incrementing blog post views:", incErr);
+            }
+          }
+        } else {
+          if (isMounted)
+            setError(
+              "Blog post not found. Check Firestore rules and blog data for slug: " +
+                slug
+            );
+          console.error("Blog post not found for slug:", slug);
         }
-
-        setPost(fetchedPost);
-        setViewCount(fetchedPost.views || 0);
-
-        // Load related posts
-        const allPosts = await blogService.getBlogPosts();
-        const related = allPosts
-          .filter(
-            (p: BlogPost) =>
-              p.id !== fetchedPost.id && p.category === fetchedPost.category
-          )
-          .slice(0, 3);
-        setRelatedPosts(related);
-
-        // Track view
-        trackEvents.blogPostView({
-          postSlug: fetchedPost.slug,
-          postTitle: fetchedPost.title,
-          category: fetchedPost.category,
-        });
-
-        // Increment view count
-        await blogService.incrementViews(fetchedPost.id);
-        setViewCount((prev) => prev + 1);
-      } catch (err) {
-        setError("Failed to load blog post");
+      } catch (err: any) {
+        let errorMsg = "Failed to load blog post";
+        if (err && err.code === "permission-denied") {
+          // Try to show more debug info for Firestore rules
+          let debugInfo = "";
+          if (typeof window !== "undefined" && db && db.app && db.app.options) {
+            // Try to get current user from Firebase Auth
+            try {
+              // Import firebase auth from the firebase module
+              // (db is imported from '@/lib/firebase')
+              // If you use getAuth, replace below with your actual import
+              // For example: import { getAuth } from "firebase/auth";
+              // const user = getAuth().currentUser;
+              // Here, try to get user from firebase.auth if available
+              let user = null;
+              if (
+                typeof window !== "undefined" &&
+                (window as any).firebase &&
+                (window as any).firebase.auth
+              ) {
+                user = (window as any).firebase.auth().currentUser;
+              }
+              debugInfo = user
+                ? `Logged in as: ${user.email || user.uid}`
+                : "Not logged in (unauthenticated)";
+            } catch (e) {
+              debugInfo = "Could not determine auth state.";
+            }
+          }
+          errorMsg =
+            "Missing or insufficient Firestore permissions. Please check your Firestore rules for the 'blog' collection. " +
+            debugInfo +
+            "\nSee https://firebase.google.com/docs/firestore/security/get-started";
+        } else if (err && err.message) {
+          errorMsg += ": " + err.message;
+        }
+        if (isMounted) setError(errorMsg);
         console.error("Error loading post:", err);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
-
     loadPost();
-  }, [params]);
+    return () => {
+      isMounted = false;
+    };
+  }, [slug]);
 
   const handleLike = async () => {
     if (!post || hasLiked) return;
@@ -130,6 +224,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
       day: "numeric",
     }).format(dateObj);
   };
+
+  // Removed unused fetchBlogPost function
 
   if (loading) {
     return (
