@@ -3,15 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import {
-  Menu,
-  X,
-  GraduationCap,
-  User,
-  LogOut,
-  Settings,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, X, GraduationCap, User, LogOut, Settings } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import NewsletterSubscription from "./NewsletterSubscription";
 import { usePageTracking } from "../lib/analytics";
@@ -28,7 +20,6 @@ export default function Layout({ children }: LayoutProps) {
   usePageTracking();
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [signInLoading, setSignInLoading] = React.useState(false);
 
   // Toast system
@@ -77,21 +68,6 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [user, loading, initializeOneTap]);
 
-  // Close profile dropdown when clicking outside
-  React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (!target.closest(".profile-dropdown-container")) {
-        setShowProfileDropdown(false);
-      }
-    };
-
-    if (showProfileDropdown) {
-      document.addEventListener("mousedown", handleClickOutside);
-      return () =>
-        document.removeEventListener("mousedown", handleClickOutside);
-    }
-  }, [showProfileDropdown]);
   const handleSignIn = async () => {
     try {
       setSignInLoading(true);
@@ -300,7 +276,7 @@ export default function Layout({ children }: LayoutProps) {
               {/* Logo */}
               <Link
                 href="/"
-                className="flex items-center space-x-1.5 sm:space-x-2"
+                className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0"
               >
                 <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
                   <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
@@ -311,24 +287,12 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
 
               {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
-              <nav
-                className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6"
-                style={{
-                  display: "none",
-                }}
-              >
-                <style jsx>{`
-                  @media (min-width: 768px) {
-                    nav {
-                      display: flex !important;
-                    }
-                  }
-                `}</style>
+              <nav className="flex-1 items-center justify-center space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6 max-md:hidden md:flex">
                 <Link
                   href="/"
                   className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
                     Home
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -337,7 +301,7 @@ export default function Layout({ children }: LayoutProps) {
                   href="/opportunities"
                   className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
                     Opportunities
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -346,7 +310,7 @@ export default function Layout({ children }: LayoutProps) {
                   href="/blog"
                   className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
                     Blog
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -355,7 +319,7 @@ export default function Layout({ children }: LayoutProps) {
                   href="/about"
                   className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
                     About
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -368,7 +332,7 @@ export default function Layout({ children }: LayoutProps) {
                       href="/admin"
                       className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group"
                     >
-                      <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                      <span className="relative z-10 text-sm lg:text-base xl:text-lg">
                         Dashboard
                       </span>
                       <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -378,20 +342,10 @@ export default function Layout({ children }: LayoutProps) {
               </nav>
 
               {/* Auth Buttons & Mobile Menu */}
-              <div className="flex items-center space-x-2 sm:space-x-4">
+              <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
                 {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
-                  <div
-                    className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4"
-                    style={{ display: "none" }}
-                  >
-                    <style jsx>{`
-                      @media (min-width: 768px) {
-                        div {
-                          display: flex !important;
-                        }
-                      }
-                    `}</style>
+                  <div className="max-md:hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
                     <button
                       onClick={handleSignIn}
                       className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
@@ -414,148 +368,37 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div
-                    className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 relative"
-                    style={{ display: "none" }}
-                  >
-                    <style jsx>{`
-                      @media (min-width: 768px) {
-                        div {
-                          display: flex !important;
-                        }
-                      }
-                    `}</style>
-                    <div className="relative profile-dropdown-container">
-                      <button
-                        onClick={() =>
-                          setShowProfileDropdown(!showProfileDropdown)
-                        }
-                        className="flex items-center space-x-1 lg:space-x-2 xl:space-x-3 px-3 lg:px-4 xl:px-5 py-2 lg:py-2.5 xl:py-3 rounded-lg hover:bg-white/10 transition-colors text-white border border-white/30 hover:border-white/50"
-                      >
-                        <div className="w-6 lg:w-7 xl:w-8 h-6 lg:h-7 xl:h-8 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
-                          {user.photoURL ? (
-                            <Image
-                              src={user.photoURL}
-                              alt="Profile"
-                              width={32}
-                              height={32}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <User className="w-3 lg:w-4 xl:w-5 h-3 lg:h-4 xl:h-5 text-white" />
-                          )}
-                        </div>
-                        <span className="hidden lg:block text-xs lg:text-sm xl:text-base font-medium truncate max-w-24 xl:max-w-32">
-                          {user.displayName?.split(" ")[0] || "User"}
-                        </span>
-                        <ChevronDown
-                          className={`w-3 lg:w-4 xl:w-5 h-3 lg:h-4 xl:h-5 transition-transform text-white/80 ${
-                            showProfileDropdown ? "rotate-180" : ""
-                          }`}
-                        />
-                      </button>
-                      {/* Profile Dropdown */}
-                      {showProfileDropdown && (
-                        <div
-                          className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border py-2"
-                          style={{
-                            backgroundColor: "var(--surface)",
-                            borderColor: "var(--border)",
-                            zIndex: 9999,
-                          }}
-                        >
-                          {/* User Info */}
-                          <div
-                            className="px-4 py-3 border-b"
-                            style={{ borderColor: "var(--border)" }}
-                          >
-                            <div className="flex items-center space-x-3">
-                              <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
-                                {user.photoURL ? (
-                                  <Image
-                                    src={user.photoURL}
-                                    alt="Profile"
-                                    width={48}
-                                    height={48}
-                                  />
-                                ) : (
-                                  <User className="w-6 h-6 text-white" />
-                                )}
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <p
-                                  className="text-sm font-medium truncate"
-                                  style={{ color: "var(--text-primary)" }}
-                                >
-                                  {user.displayName || "User"}
-                                </p>
-                                <p
-                                  className="text-xs truncate"
-                                  style={{ color: "var(--text-secondary)" }}
-                                >
-                                  {user.email}
-                                </p>
-                                {isAdmin && (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
-                                    Admin
-                                  </span>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Menu Items */}
-                          <div className="py-1">
-                            <Link
-                              href="/profile"
-                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
-                              onClick={() => setShowProfileDropdown(false)}
-                            >
-                              <User className="w-4 h-4 mr-3" />
-                              Profile
-                            </Link>
-                            <Link
-                              href="/settings"
-                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
-                              onClick={() => setShowProfileDropdown(false)}
-                            >
-                              <Settings className="w-4 h-4 mr-3" />
-                              Settings
-                            </Link>
-                            {isAdmin && (
-                              <Link
-                                href="/admin"
-                                className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                                style={{ color: "var(--text-primary)" }}
-                                onClick={() => setShowProfileDropdown(false)}
-                              >
-                                <Settings className="w-4 h-4 mr-3" />
-                                Admin Dashboard
-                              </Link>
-                            )}
-                          </div>
-
-                          <div
-                            className="border-t py-1"
-                            style={{ borderColor: "var(--border)" }}
-                          >
-                            <button
-                              onClick={() => {
-                                handleSignOut();
-                                setShowProfileDropdown(false);
-                              }}
-                              className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-50 transition-colors text-left"
-                              style={{ color: "var(--text-secondary)" }}
-                            >
-                              <LogOut className="w-4 h-4 mr-3" />
-                              Sign Out
-                            </button>
-                          </div>
-                        </div>
-                      )}{" "}
+                  <div className="max-md:hidden md:flex items-center space-x-3">
+                    {/* Profile Picture - Only show on desktop */}
+                    <div className="relative">
+                      <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-white/30 shadow-lg">
+                        {user.photoURL ? (
+                          <Image
+                            src={user.photoURL}
+                            alt={`${user.displayName || "User"}'s profile`}
+                            width={36}
+                            height={36}
+                            className="w-full h-full object-cover rounded-full"
+                          />
+                        ) : (
+                          <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                        )}
+                      </div>
+                      {/* Online indicator */}
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
                     </div>
+
+                    {/* Sign Out Button - Only show on desktop */}
+                    <button
+                      onClick={handleSignOut}
+                      className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
+                    >
+                      <span className="relative z-10 flex items-center">
+                        <LogOut className="w-3 h-3 lg:w-4 lg:h-4 mr-1.5 lg:mr-2" />
+                        Sign Out
+                      </span>
+                      <div className="absolute inset-0 bg-white/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                    </button>
                   </div>
                 )}{" "}
                 {/* Enhanced Mobile menu button - Only show on small screens */}
@@ -660,86 +503,108 @@ export default function Layout({ children }: LayoutProps) {
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col space-y-3">
-                        {/* Mobile User Info */}
-                        <div
-                          className="flex items-center px-4 py-3 rounded-lg"
-                          style={{ backgroundColor: "var(--surface-hover)" }}
-                        >
-                          <div className="w-10 h-10 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
-                            {user.photoURL ? (
-                              <Image
-                                src={user.photoURL}
-                                alt="Profile"
-                                width={48}
-                                height={48}
-                              />
-                            ) : (
-                              <User className="w-5 h-5 text-white" />
-                            )}
+                      <div className="flex flex-col space-y-4">
+                        {/* Improved Mobile User Info */}
+                        <div className="flex items-center px-5 py-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
+                          <div className="relative">
+                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-3 ring-white shadow-lg">
+                              {user.photoURL ? (
+                                <Image
+                                  src={user.photoURL}
+                                  alt={`${
+                                    user.displayName || "User"
+                                  }'s profile`}
+                                  width={48}
+                                  height={48}
+                                  className="w-full h-full object-cover rounded-full"
+                                />
+                              ) : (
+                                <User className="w-6 h-6 text-white" />
+                              )}
+                            </div>
+                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
                           </div>
-                          <div className="ml-3 flex-1 min-w-0">
-                            <p
-                              className="text-sm font-medium truncate"
-                              style={{ color: "var(--text-primary)" }}
-                            >
+                          <div className="ml-4 flex-1 min-w-0">
+                            <h3 className="text-base font-semibold text-gray-900 truncate">
                               {user.displayName || "User"}
-                            </p>
-                            <p
-                              className="text-xs truncate"
-                              style={{ color: "var(--text-secondary)" }}
-                            >
+                            </h3>
+                            <p className="text-sm text-gray-600 truncate">
                               {user.email}
                             </p>
                             {isAdmin && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
-                                Admin
-                              </span>
+                              <div className="mt-2">
+                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ring-1 ring-blue-600/20">
+                                  <svg
+                                    className="w-3 h-3 mr-1"
+                                    fill="currentColor"
+                                    viewBox="0 0 20 20"
+                                  >
+                                    <path
+                                      fillRule="evenodd"
+                                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
+                                      clipRule="evenodd"
+                                    />
+                                  </svg>
+                                  Admin
+                                </span>
+                              </div>
                             )}
                           </div>
                         </div>
-                        {/* Mobile Menu Items */}
+                        {/* Improved Mobile Menu Items */}
                         <div className="flex flex-col space-y-1">
                           <Link
                             href="/profile"
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                            style={{ color: "var(--text-primary)" }}
+                            className="flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-all duration-200 group"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <User className="w-4 h-4 mr-3" />
-                            Profile
+                            <User className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-600" />
+                            <span className="font-medium">View Profile</span>
                           </Link>
                           <Link
                             href="/settings"
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                            style={{ color: "var(--text-primary)" }}
+                            className="flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-all duration-200 group"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <Settings className="w-4 h-4 mr-3" />
-                            Settings
+                            <Settings className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-600" />
+                            <span className="font-medium">Settings</span>
                           </Link>
                           {isAdmin && (
                             <Link
                               href="/admin"
-                              className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
+                              className="flex items-center px-5 py-3 text-sm text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded-xl transition-all duration-200 group"
                               onClick={() => setIsMenuOpen(false)}
                             >
-                              <Settings className="w-4 h-4 mr-3" />
-                              Admin Dashboard
+                              <svg
+                                className="w-5 h-5 mr-3 text-blue-400 group-hover:text-blue-600"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                              <span className="font-medium">
+                                Admin Dashboard
+                              </span>
                             </Link>
                           )}
-                          <button
-                            onClick={() => {
-                              handleSignOut();
-                              setIsMenuOpen(false);
-                            }}
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors text-left"
-                            style={{ color: "var(--text-secondary)" }}
-                          >
-                            <LogOut className="w-4 h-4 mr-3" />
-                            Sign Out
-                          </button>
+
+                          {/* Mobile Logout Section */}
+                          <div className="pt-2 mt-2 border-t border-gray-200">
+                            <button
+                              onClick={() => {
+                                handleSignOut();
+                                setIsMenuOpen(false);
+                              }}
+                              className="flex items-center w-full px-5 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 text-left group"
+                            >
+                              <LogOut className="w-5 h-5 mr-3 text-red-400 group-hover:text-red-600" />
+                              <span className="font-medium">Sign Out</span>
+                            </button>
+                          </div>
                         </div>{" "}
                       </div>
                     )}
