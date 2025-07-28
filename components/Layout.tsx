@@ -310,7 +310,7 @@ export default function Layout({ children }: LayoutProps) {
                 </span>
               </Link>
 
-              {/* Professional Navigation Links - Visible on laptop and larger screens */}
+              {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
               <nav className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6">
                 <Link
                   href="/"
@@ -367,7 +367,7 @@ export default function Layout({ children }: LayoutProps) {
 
               {/* Auth Buttons & Mobile Menu */}
               <div className="flex items-center space-x-2 sm:space-x-4">
-                {/* Professional Authentication Buttons - Always visible on laptop and larger screens */}
+                {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
                   <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
                     <button
