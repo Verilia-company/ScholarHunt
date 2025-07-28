@@ -256,99 +256,103 @@ export default function Layout({ children }: LayoutProps) {
       />
 
       <div
-        className="min-h-screen"
+        className="full-width-container min-h-screen"
         style={{ backgroundColor: "var(--background)" }}
       >
-        {/* Clean Header */}
+        {/* Responsive Header */}
         <header
-          className="sticky top-0 z-50 transition-all duration-300 relative"
+          className="responsive-nav sticky top-0 z-50 transition-all duration-300 relative"
           style={{
             background: "var(--brand-primary)",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          {" "}
-          <div
-            className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative"
-            style={{ zIndex: 10 }}
-          >
-            <div className="flex justify-between items-center h-14 sm:h-16">
-              {/* Logo */}
+          <div className="content-wrapper relative" style={{ zIndex: 10 }}>
+            <div className="flex justify-between items-center h-14 sm:h-16 lg:h-18 gap-x-4 lg:gap-x-6 xl:gap-x-8">
+              {/* Logo - Fixed width to prevent compression */}
               <Link
                 href="/"
-                className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0"
+                className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0 min-w-[140px] sm:min-w-[160px] lg:min-w-[180px]"
               >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 gradient-primary rounded-lg flex items-center justify-center">
+                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
                 </div>
-                <span className="text-lg sm:text-xl font-bold text-white">
+                <span className="text-responsive-lg font-bold text-white">
                   ScholarHunt
                 </span>
               </Link>
 
               {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
-              <nav className="flex-1 items-center justify-center space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6 max-md:hidden md:flex">
-                <Link
-                  href="/"
-                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
+              <nav className="flex-1 items-center justify-center max-md:hidden md:flex">
+                <div
+                  className="flex items-center nav-links navbar-spacing"
+                  style={{ gap: "clamp(12px, 2vw, 32px)" }}
                 >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
-                    Home
-                  </span>
-                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-                <Link
-                  href="/opportunities"
-                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
-                >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
-                    Opportunities
-                  </span>
-                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-                <Link
-                  href="/blog"
-                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
-                >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
-                    Blog
-                  </span>
-                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-                <Link
-                  href="/about"
-                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
-                >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
-                    About
-                  </span>
-                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </Link>
-                {/* Admin Navigation Links */}
-                {isAdmin && (
-                  <>
-                    <div className="w-px h-6 bg-white/30 mx-1 lg:mx-2 xl:mx-3" />
-                    <Link
-                      href="/admin"
-                      className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group"
-                    >
-                      <span className="relative z-10 text-sm lg:text-base xl:text-lg">
-                        Dashboard
-                      </span>
-                      <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                    </Link>
-                  </>
-                )}
+                  <Link
+                    href="/"
+                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
+                  >
+                    <span className="relative z-10 text-responsive-base">
+                      Home
+                    </span>
+                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </Link>
+                  <Link
+                    href="/opportunities"
+                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
+                  >
+                    <span className="relative z-10 text-responsive-base">
+                      Opportunities
+                    </span>
+                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </Link>
+                  <Link
+                    href="/blog"
+                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
+                  >
+                    <span className="relative z-10 text-responsive-base">
+                      Blog
+                    </span>
+                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </Link>
+                  <Link
+                    href="/about"
+                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
+                  >
+                    <span className="relative z-10 text-responsive-base">
+                      About
+                    </span>
+                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  </Link>
+                  {/* Admin Navigation Links */}
+                  {isAdmin && (
+                    <>
+                      <div className="w-px h-6 bg-white/30 mx-3 lg:mx-4 xl:mx-6" />
+                      <Link
+                        href="/admin"
+                        className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group touch-target"
+                      >
+                        <span className="relative z-10 text-responsive-base">
+                          Dashboard
+                        </span>
+                        <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                      </Link>
+                    </>
+                  )}
+                </div>
               </nav>
 
-              {/* Auth Buttons & Mobile Menu */}
-              <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
+              {/* Auth Buttons & Mobile Menu - Properly spaced */}
+              <div className="flex items-center flex-shrink-0 ml-4 lg:ml-6 xl:ml-8">
                 {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
-                  <div className="max-md:hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
+                  <div
+                    className="max-md:hidden md:flex items-center auth-buttons"
+                    style={{ gap: "clamp(16px, 2vw, 32px)" }}
+                  >
                     <button
                       onClick={handleSignIn}
-                      className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
+                      className="btn-mobile relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-responsive-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden focus-visible"
                       disabled={signInLoading}
                     >
                       <span className="relative z-10">
@@ -358,7 +362,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="relative px-3 md:px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group"
+                      className="btn-mobile relative px-3 md:px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-responsive-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group focus-visible"
                       disabled={signInLoading}
                     >
                       <span className="relative z-10 font-semibold">
@@ -368,30 +372,33 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="max-md:hidden md:flex items-center space-x-4 lg:space-x-5">
+                  <div
+                    className="max-md:hidden md:flex items-center auth-buttons"
+                    style={{ gap: "clamp(16px, 2vw, 32px)" }}
+                  >
                     {/* Profile Picture - Only show on desktop */}
                     <div className="relative">
-                      <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-white/30 shadow-lg">
+                      <div className="w-8 h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-white/30 shadow-lg">
                         {user.photoURL ? (
                           <Image
                             src={user.photoURL}
                             alt={`${user.displayName || "User"}'s profile`}
-                            width={36}
-                            height={36}
+                            width={40}
+                            height={40}
                             className="w-full h-full object-cover rounded-full"
                           />
                         ) : (
-                          <User className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
+                          <User className="w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white" />
                         )}
                       </div>
                       {/* Online indicator */}
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
+                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 lg:w-3.5 lg:h-3.5 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
                     </div>
 
                     {/* Professional Sign Out Button - Positioned at rightmost corner */}
                     <button
                       onClick={handleSignOut}
-                      className="relative group px-4 md:px-5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 border border-red-400/30 hover:border-red-400/60 rounded-xl text-white font-medium text-sm lg:text-base transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm overflow-hidden"
+                      className="btn-mobile relative group px-4 md:px-5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 border border-red-400/30 hover:border-red-400/60 rounded-xl text-white font-medium text-responsive-base transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm overflow-hidden focus-visible"
                       title="Sign out of your account"
                     >
                       {/* Animated background gradient */}
@@ -412,11 +419,12 @@ export default function Layout({ children }: LayoutProps) {
                       <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-400/20 to-red-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
                     </button>
                   </div>
-                )}{" "}
-                {/* Enhanced Mobile menu button - Only show on small screens */}
+                )}
+
+                {/* Enhanced Mobile menu button - Only show on small screens with proper spacing */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="md:hidden p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50"
+                  className="md:hidden p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
                 >
                   {isMenuOpen ? (
                     <X className="w-6 h-6" />
@@ -425,7 +433,8 @@ export default function Layout({ children }: LayoutProps) {
                   )}
                 </button>
               </div>
-            </div>{" "}
+            </div>
+
             {/* Enhanced Mobile Navigation - Only show on small screens */}
             {isMenuOpen && (
               <div
@@ -438,28 +447,28 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="flex flex-col space-y-2 px-3">
                   <Link
                     href="/"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     🏠 Home
                   </Link>
                   <Link
                     href="/opportunities"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     🎓 Opportunities
                   </Link>
                   <Link
                     href="/blog"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     📝 Blog
                   </Link>
                   <Link
                     href="/about"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     ℹ️ About
@@ -625,9 +634,11 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             )}
           </div>
-        </header>{" "}
-        {/* Main Content */}
-        <main className="flex-1">{children}</main>
+        </header>
+        {/* Main Content with proper responsive wrapper */}
+        <main className="main-content">
+          <div className="content-wrapper">{children}</div>
+        </main>
         {/* WhatsApp Widget for Expert Advice */}
         <WhatsAppWidget
           phoneNumber="+256759058245"
@@ -635,7 +646,8 @@ export default function Layout({ children }: LayoutProps) {
           position="bottom-right"
         />
         {/* Toast Notifications */}
-        <ToastContainer toasts={toasts} onClose={removeToast} /> {/* Footer */}
+        <ToastContainer toasts={toasts} onClose={removeToast} />
+        {/* Footer */}
         <footer
           style={{
             backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://cdn.pixabay.com/photo/2021/10/30/17/54/desert-6755127_1280.jpg')`,
@@ -646,7 +658,7 @@ export default function Layout({ children }: LayoutProps) {
           }}
           className="text-white relative"
         >
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="content-wrapper py-8 sm:py-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {/* Company Info */}
               <div className="col-span-1 sm:col-span-2 lg:col-span-2">
@@ -654,47 +666,47 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
                     <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <span className="text-lg sm:text-xl font-bold">
+                  <span className="text-responsive-lg font-bold">
                     ScholarHunt
                   </span>
                 </div>
-                <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4 max-w-md">
+                <p className="text-gray-300 text-responsive-body mb-3 sm:mb-4 max-w-md">
                   Connecting Ugandan students with scholarship opportunities
                   worldwide. Your gateway to educational excellence and global
                   opportunities.
                 </p>
-                <div className="text-xs sm:text-sm text-gray-400">
+                <div className="text-responsive-caption text-gray-400">
                   © 2025 ScholarHunt. All rights reserved.
                 </div>
               </div>
 
               {/* Quick Links */}
               <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
+                <h3 className="font-semibold text-responsive-lg mb-3 sm:mb-4">
                   Quick Links
                 </h3>
                 <div className="space-y-1.5 sm:space-y-2">
                   <Link
                     href="/opportunities"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     Browse Scholarships
                   </Link>
                   <Link
                     href="/submit"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     Submit Opportunity
                   </Link>
                   <Link
                     href="/blog"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     Blog & Tips
                   </Link>
                   <Link
                     href="/about"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     About Us
                   </Link>
@@ -703,19 +715,19 @@ export default function Layout({ children }: LayoutProps) {
 
               {/* Legal */}
               <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
+                <h3 className="font-semibold text-responsive-lg mb-3 sm:mb-4">
                   Legal
                 </h3>
                 <div className="space-y-1.5 sm:space-y-2">
                   <Link
                     href="/privacy-policy"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     Privacy Policy
                   </Link>
                   <Link
                     href="/terms-of-service"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
+                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
                   >
                     Terms of Service
                   </Link>
@@ -726,10 +738,10 @@ export default function Layout({ children }: LayoutProps) {
             {/* Newsletter Signup */}
             <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-700">
               <div className="text-center">
-                <h3 className="text-base sm:text-lg font-semibold mb-2">
+                <h3 className="text-responsive-lg font-semibold mb-2">
                   Stay Updated
                 </h3>
-                <p className="text-gray-300 text-sm sm:text-base mb-4 max-w-lg mx-auto">
+                <p className="text-gray-300 text-responsive-body mb-4 max-w-lg mx-auto">
                   Get the latest scholarship opportunities delivered to your
                   inbox.
                 </p>
@@ -746,7 +758,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* AdSense Placeholder - Hidden on mobile to save space */}
             <div className="hidden sm:block mt-6 sm:mt-8 text-center">
               <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 sm:p-4">
-                <small className="text-gray-500 text-xs sm:text-sm">
+                <small className="text-gray-500 text-responsive-caption">
                   {/* AdSense Footer Ad will go here after approval */}
                   Advertisement Space
                 </small>
