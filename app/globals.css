@@ -2474,6 +2474,34 @@ section {
   }
 }
 
+/* Mobile Menu Button Centering */
+.mobile-menu-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  position: relative;
+}
+
+.mobile-menu-button svg {
+  display: block;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Enhanced hamburger icon styling */
+.hamburger-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5px;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
 /* ================================
    ACCESSIBILITY IMPROVEMENTS
    ================================ */

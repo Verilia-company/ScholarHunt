@@ -424,12 +424,12 @@ export default function Layout({ children }: LayoutProps) {
                 {/* Enhanced Mobile menu button - Only show on small screens with proper spacing */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="md:hidden p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
+                  className="md:hidden mobile-menu-button p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
                 >
                   {isMenuOpen ? (
-                    <X className="w-6 h-6" />
+                    <X className="hamburger-icon" />
                   ) : (
-                    <Menu className="w-6 h-6" />
+                    <Menu className="hamburger-icon" />
                   )}
                 </button>
               </div>
