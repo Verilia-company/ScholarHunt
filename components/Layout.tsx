@@ -311,7 +311,19 @@ export default function Layout({ children }: LayoutProps) {
               </Link>
 
               {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
-              <nav className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6">
+              <nav
+                className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6"
+                style={{
+                  display: "none",
+                }}
+              >
+                <style jsx>{`
+                  @media (min-width: 768px) {
+                    nav {
+                      display: flex !important;
+                    }
+                  }
+                `}</style>
                 <Link
                   href="/"
                   className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
@@ -369,7 +381,17 @@ export default function Layout({ children }: LayoutProps) {
               <div className="flex items-center space-x-2 sm:space-x-4">
                 {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
-                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
+                  <div
+                    className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4"
+                    style={{ display: "none" }}
+                  >
+                    <style jsx>{`
+                      @media (min-width: 768px) {
+                        div {
+                          display: flex !important;
+                        }
+                      }
+                    `}</style>
                     <button
                       onClick={handleSignIn}
                       className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
@@ -392,7 +414,17 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 relative">
+                  <div
+                    className="hidden md:flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 relative"
+                    style={{ display: "none" }}
+                  >
+                    <style jsx>{`
+                      @media (min-width: 768px) {
+                        div {
+                          display: flex !important;
+                        }
+                      }
+                    `}</style>
                     <div className="relative profile-dropdown-container">
                       <button
                         onClick={() =>
