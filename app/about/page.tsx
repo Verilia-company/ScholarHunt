@@ -10,7 +10,6 @@ import {
   MapPin,
   BookOpen,
   Facebook,
-  Twitter,
   Instagram,
   Linkedin,
   Heart,
@@ -660,12 +659,6 @@ export default function AboutPage() {
                   href: settings?.socialMedia?.facebook || "https://www.facebook.com/share/16g4GXRe6r/",
                   color: "hover:text-blue-500",
                   gradient: "from-blue-400 to-blue-600",
-                },
-                {
-                  component: Twitter,
-                  href: settings?.socialMedia?.twitter || "https://twitter.com/scholarhunt_ug",
-                  color: "hover:text-sky-500",
-                  gradient: "from-sky-400 to-blue-500",
                 },
                 {
                   component: Instagram,
