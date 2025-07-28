@@ -30,7 +30,7 @@ export default function Layout({ children }: LayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
   const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [signInLoading, setSignInLoading] = React.useState(false);
-  
+
   // Toast system
   const { toasts, removeToast } = useToast();
 
@@ -284,15 +284,18 @@ export default function Layout({ children }: LayoutProps) {
         style={{ backgroundColor: "var(--background)" }}
       >
         {/* Clean Header */}
-        <header 
+        <header
           className="sticky top-0 z-50 transition-all duration-300 relative"
-          style={{ 
-            background: 'var(--brand-primary)',
-            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.1)'
+          style={{
+            background: "var(--brand-primary)",
+            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
           {" "}
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative" style={{ zIndex: 10 }}>
+          <div
+            className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative"
+            style={{ zIndex: 10 }}
+          >
             <div className="flex justify-between items-center h-14 sm:h-16">
               {/* Logo */}
               <Link
@@ -302,105 +305,121 @@ export default function Layout({ children }: LayoutProps) {
                 <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
                   <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <span
-                  className="text-lg sm:text-xl font-bold text-white"
-                >
+                <span className="text-lg sm:text-xl font-bold text-white">
                   ScholarHunt
                 </span>
-              </Link>{" "}
-              {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+              </Link>
+
+              {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
+              <nav className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6">
                 <Link
                   href="/"
-                  className="font-medium text-white transition-colors hover:opacity-80"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  Home
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                    Home
+                  </span>
+                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/opportunities"
-                  className="font-medium text-white transition-colors hover:opacity-80"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  Opportunities
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                    Opportunities
+                  </span>
+                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/blog"
-                  className="font-medium text-white transition-colors hover:opacity-80"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  Blog
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                    Blog
+                  </span>
+                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/about"
-                  className="font-medium text-white transition-colors hover:opacity-80"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  About
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                    About
+                  </span>
+                  <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 {/* Admin Navigation Links */}
                 {isAdmin && (
                   <>
-                    <div className="w-px h-6 bg-white/30" /> {/* Separator */}
+                    <div className="w-px h-6 bg-white/30 mx-1 lg:mx-2 xl:mx-3" />
                     <Link
                       href="/admin"
-                      className={clsx(
-                        "font-medium text-white transition-colors hover:opacity-80"
-                      )}
+                      className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group"
                     >
-                      Dashboard
+                      <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
+                        Dashboard
+                      </span>
+                      <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </Link>
                   </>
                 )}
-              </nav>{" "}
-              {/* Auth Buttons & CTA Button & Mobile Menu */}
+              </nav>
+
+              {/* Auth Buttons & Mobile Menu */}
               <div className="flex items-center space-x-2 sm:space-x-4">
-                {/* Authentication Buttons - Desktop only for space */}
+                {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
-                  <div className="hidden lg:flex items-center space-x-3">
-                    {" "}
+                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
                     <button
                       onClick={handleSignIn}
-                      className="flex items-center px-3 py-1.5 text-sm font-medium text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors"
+                      className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
                       disabled={signInLoading}
                     >
-                      {signInLoading ? "Signing in..." : "Login"}
+                      <span className="relative z-10">
+                        {signInLoading ? "Signing in..." : "Login"}
+                      </span>
+                      <div className="absolute inset-0 bg-white/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="flex items-center px-3 py-1.5 text-sm font-medium bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+                      className="relative px-3 md:px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group"
                       disabled={signInLoading}
                     >
-                      {signInLoading ? "Signing in..." : "Sign Up"}
+                      <span className="relative z-10 font-semibold">
+                        {signInLoading ? "Signing in..." : "Sign Up"}
+                      </span>
+                      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
                     </button>
                   </div>
                 ) : (
-                  <div className="hidden lg:flex items-center space-x-3 relative">
+                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 relative">
                     <div className="relative profile-dropdown-container">
                       <button
                         onClick={() =>
                           setShowProfileDropdown(!showProfileDropdown)
                         }
-                        className="flex items-center space-x-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
-                        style={{
-                          backgroundColor: showProfileDropdown
-                            ? "var(--surface-hover)"
-                            : "transparent",
-                        }}
+                        className="flex items-center space-x-1 lg:space-x-2 xl:space-x-3 px-3 lg:px-4 xl:px-5 py-2 lg:py-2.5 xl:py-3 rounded-lg hover:bg-white/10 transition-colors text-white border border-white/30 hover:border-white/50"
                       >
-                        <div className="w-7 h-7 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                        <div className="w-6 lg:w-7 xl:w-8 h-6 lg:h-7 xl:h-8 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
                           {user.photoURL ? (
                             <Image
                               src={user.photoURL}
                               alt="Profile"
-                              width={48}
-                              height={48}
+                              width={32}
+                              height={32}
+                              className="w-full h-full object-cover"
                             />
                           ) : (
-                            <User className="w-4 h-4 text-white" />
+                            <User className="w-3 lg:w-4 xl:w-5 h-3 lg:h-4 xl:h-5 text-white" />
                           )}
                         </div>
+                        <span className="hidden lg:block text-xs lg:text-sm xl:text-base font-medium truncate max-w-24 xl:max-w-32">
+                          {user.displayName?.split(" ")[0] || "User"}
+                        </span>
                         <ChevronDown
-                          className={`w-4 h-4 transition-transform ${
+                          className={`w-3 lg:w-4 xl:w-5 h-3 lg:h-4 xl:h-5 transition-transform text-white/80 ${
                             showProfileDropdown ? "rotate-180" : ""
                           }`}
-                          style={{ color: "var(--text-secondary)" }}
                         />
                       </button>
                       {/* Profile Dropdown */}
@@ -507,11 +526,10 @@ export default function Layout({ children }: LayoutProps) {
                     </div>
                   </div>
                 )}{" "}
-                {/* Mobile menu button */}
+                {/* Enhanced Mobile menu button - Only show on small screens */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                  style={{ color: "var(--text-primary)" }}
+                  className="md:hidden p-2.5 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50"
                 >
                   {isMenuOpen ? (
                     <X className="w-6 h-6" />
@@ -521,44 +539,43 @@ export default function Layout({ children }: LayoutProps) {
                 </button>
               </div>
             </div>{" "}
-            {/* Mobile Navigation */}
+            {/* Enhanced Mobile Navigation - Only show on small screens */}
             {isMenuOpen && (
               <div
-                className="lg:hidden py-4 border-t"
-                style={{ borderColor: "var(--border)" }}
+                className="md:hidden py-4 border-t backdrop-blur-sm"
+                style={{
+                  borderColor: "rgba(255, 255, 255, 0.2)",
+                  background: "rgba(255, 255, 255, 0.05)",
+                }}
               >
-                <div className="flex flex-col space-y-4 px-3">
+                <div className="flex flex-col space-y-2 px-3">
                   <Link
                     href="/"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Home
+                    🏠 Home
                   </Link>
                   <Link
                     href="/opportunities"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Opportunities
+                    🎓 Opportunities
                   </Link>
                   <Link
                     href="/blog"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Blog
+                    📝 Blog
                   </Link>
                   <Link
                     href="/about"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    About
+                    ℹ️ About
                   </Link>{" "}
                   {/* Admin Mobile Navigation */}
                   {isAdmin && (
@@ -580,26 +597,22 @@ export default function Layout({ children }: LayoutProps) {
                       </Link>
                     </>
                   )}{" "}
-                  {/* Mobile Authentication */}
+                  {/* Enhanced Mobile Authentication */}
                   <div
                     className="pt-4 border-t"
-                    style={{ borderColor: "var(--border)" }}
+                    style={{ borderColor: "rgba(255, 255, 255, 0.2)" }}
                   >
                     {!user ? (
                       <div className="flex flex-col space-y-3">
-                        {" "}
                         <button
                           onClick={() => {
                             handleSignIn();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-4 py-3 text-sm font-medium transition-colors hover:opacity-80 border rounded-lg disabled:opacity-50"
-                          style={{
-                            color: "var(--text-primary)",
-                            borderColor: "var(--border)",
-                          }}
+                          className="flex items-center justify-center px-5 py-3.5 text-sm font-medium transition-all duration-300 hover:bg-white/10 border-2 border-white/40 rounded-lg disabled:opacity-50 text-white"
                           disabled={signInLoading}
                         >
+                          <span className="mr-2">🔐</span>
                           {signInLoading ? "Signing in..." : "Login"}
                         </button>
                         <button
@@ -607,9 +620,10 @@ export default function Layout({ children }: LayoutProps) {
                             handleSignUp();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                          className="flex items-center justify-center px-5 py-3.5 text-sm font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 shadow-lg font-semibold"
                           disabled={signInLoading}
                         >
+                          <span className="mr-2">✨</span>
                           {signInLoading ? "Signing in..." : "Sign Up"}
                         </button>
                       </div>
@@ -705,14 +719,12 @@ export default function Layout({ children }: LayoutProps) {
         </header>{" "}
         {/* Main Content */}
         <main className="flex-1">{children}</main>
-        
         {/* WhatsApp Widget for Expert Advice */}
-        <WhatsAppWidget 
+        <WhatsAppWidget
           phoneNumber="+256759058245"
           message="Hi! I need expert advice about scholarships 🎓"
           position="bottom-right"
         />
-        
         {/* Toast Notifications */}
         <ToastContainer toasts={toasts} onClose={removeToast} /> {/* Footer */}
         <footer

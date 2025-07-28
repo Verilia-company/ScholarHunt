@@ -59,6 +59,13 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <DynamicScripts />
+        {/* Hydration error warning for users with browser extensions */}
+        <noscript>
+          <div style={{ color: "red", textAlign: "center", padding: "1em" }}>
+            If you see hydration errors, try disabling browser extensions or use
+            incognito mode.
+          </div>
+        </noscript>
         <AuthProvider>
           <Layout>{children}</Layout>
         </AuthProvider>

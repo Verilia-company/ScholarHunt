@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   PlusCircle,
   Edit,
@@ -9,6 +10,7 @@ import {
   Filter,
   GraduationCap,
   AlertCircle,
+  X,
 } from "lucide-react";
 import { scholarshipService } from "@/lib/firebase/services";
 import type { Scholarship } from "@/lib/firebase/services";
@@ -38,6 +40,7 @@ export default function ScholarshipManagement() {
     fieldOfStudy: string;
     applicationUrl: string;
     status: "active" | "draft" | "expired";
+    image: string;
   }>({
     title: "",
     description: "",
@@ -52,6 +55,7 @@ export default function ScholarshipManagement() {
     fieldOfStudy: "",
     applicationUrl: "",
     status: "draft",
+    image: "",
   });
 
   // Load scholarships on component mount
@@ -93,6 +97,7 @@ export default function ScholarshipManagement() {
         fieldOfStudy: formData.fieldOfStudy,
         applicationUrl: formData.applicationUrl,
         status: formData.status,
+        image: formData.image,
       };
       if (editingScholarship) {
         await scholarshipService.updateScholarship(
@@ -102,9 +107,7 @@ export default function ScholarshipManagement() {
         // Reload scholarships to get the updated data
         await loadScholarships();
       } else {
-        await scholarshipService.createScholarship(
-          scholarshipData
-        );
+        await scholarshipService.createScholarship(scholarshipData);
         // Reload scholarships to get the new data
         await loadScholarships();
       }
@@ -132,6 +135,7 @@ export default function ScholarshipManagement() {
       fieldOfStudy: "",
       applicationUrl: "",
       status: "draft",
+      image: "",
     });
     setShowForm(false);
     setEditingScholarship(null);
@@ -153,6 +157,7 @@ export default function ScholarshipManagement() {
       fieldOfStudy: scholarship.fieldOfStudy,
       applicationUrl: scholarship.applicationUrl || "",
       status: scholarship.status,
+      image: (scholarship as { image?: string }).image || "",
     });
     setShowForm(true);
   };
@@ -210,8 +215,20 @@ export default function ScholarshipManagement() {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
         <div className="min-h-screen px-4 py-6 flex items-center justify-center">
-          <div className="bg-white rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b px-4 sm:px-6 py-4 flex justify-between items-center">
+          <div
+            className="rounded-lg shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto"
+            style={{
+              background: "var(--bg-elevated)",
+              color: "var(--text-primary)",
+            }}
+          >
+            <div
+              className="sticky top-0 border-b px-4 sm:px-6 py-4 flex justify-between items-center"
+              style={{
+                background: "var(--bg-elevated)",
+                borderColor: "var(--border-primary)",
+              }}
+            >
               <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
                 {editingScholarship
                   ? "Edit Scholarship"
@@ -255,7 +272,7 @@ export default function ScholarshipManagement() {
                           title: e.target.value,
                         }))
                       }
-                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div>
@@ -272,7 +289,7 @@ export default function ScholarshipManagement() {
                           university: e.target.value,
                         }))
                       }
-                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent text-sm sm:text-base"
                     />
                   </div>
                   <div>
@@ -381,7 +398,9 @@ export default function ScholarshipManagement() {
                               } else {
                                 setFormData((prev) => ({
                                   ...prev,
-                                  level: prev.level.filter((l: string) => l !== level),
+                                  level: prev.level.filter(
+                                    (l: string) => l !== level
+                                  ),
                                 }));
                               }
                             }}
@@ -436,6 +455,59 @@ export default function ScholarshipManagement() {
                     <p className="mt-1 text-xs text-gray-500">
                       Direct link where students can apply for this scholarship
                     </p>
+                  </div>
+                  <div>
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
+                      Image URL
+                    </label>
+                    <input
+                      type="url"
+                      value={formData.image}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          image: e.target.value,
+                        }))
+                      }
+                      placeholder="https://example.com/scholarship-image.jpg"
+                      className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                    />
+                    <p className="mt-1 text-xs text-gray-500">
+                      URL to an image representing this scholarship (optional)
+                    </p>
+                    {formData.image && (
+                      <div className="mt-2 relative">
+                        <div className="aspect-video w-full rounded-lg overflow-hidden border border-gray-300">
+                          {/* Use Next.js Image component correctly */}
+                          <Image
+                            src={
+                              formData.image ||
+                              "https://via.placeholder.com/640x360?text=Image+Not+Found"
+                            }
+                            alt="Scholarship preview"
+                            width={640}
+                            height={360}
+                            className="w-full h-full object-cover"
+                            onError={(
+                              e: React.SyntheticEvent<HTMLImageElement, Event>
+                            ) => {
+                              e.currentTarget.src =
+                                "https://via.placeholder.com/640x360?text=Image+Not+Found";
+                            }}
+                          />
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            setFormData((prev) => ({ ...prev, image: "" }))
+                          }
+                          className="absolute top-2 right-2 bg-red-600 text-white rounded-full p-1 hover:bg-red-700"
+                          title="Remove image"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <div>
                     <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">
@@ -508,7 +580,7 @@ export default function ScholarshipManagement() {
                   <button
                     type="button"
                     onClick={() => addArrayField("eligibility")}
-                    className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm font-medium"
+                    className="text-blue-500 hover:text-blue-600 text-xs sm:text-sm font-medium"
                   >
                     + Add Eligibility Requirement
                   </button>
@@ -549,12 +621,18 @@ export default function ScholarshipManagement() {
                   <button
                     type="button"
                     onClick={() => addArrayField("requirements")}
-                    className="text-blue-600 hover:text-blue-700 text-xs sm:text-sm font-medium"
+                    className="text-blue-500 hover:text-blue-600 text-xs sm:text-sm font-medium"
                   >
                     + Add Application Requirement
                   </button>
                 </div>
-                <div className="sticky bottom-0 bg-white border-t px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-end gap-3">
+                <div
+                  className="sticky bottom-0 border-t px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-end gap-3"
+                  style={{
+                    background: "var(--bg-elevated)",
+                    borderColor: "var(--border-primary)",
+                  }}
+                >
                   <button
                     type="button"
                     onClick={resetForm}
@@ -566,7 +644,7 @@ export default function ScholarshipManagement() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
+                    className="w-full sm:w-auto px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     {submitting ? (
                       <>
@@ -599,7 +677,7 @@ export default function ScholarshipManagement() {
         </h1>
         <button
           onClick={() => setShowForm(true)}
-          className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm sm:text-base"
+          className="flex items-center justify-center px-3 sm:px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm sm:text-base"
         >
           <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
           <span className="hidden sm:inline">Add Scholarship</span>
@@ -622,7 +700,10 @@ export default function ScholarshipManagement() {
         </div>
       )}
       {/* Filters */}
-      <div className="bg-white rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+      <div
+        className="rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6"
+        style={{ background: "var(--bg-elevated)" }}
+      >
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
           <div className="flex-1">
             <div className="relative">
@@ -652,7 +733,10 @@ export default function ScholarshipManagement() {
         </div>
       </div>{" "}
       {/* Scholarships List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div
+        className="rounded-lg shadow overflow-hidden"
+        style={{ background: "var(--bg-elevated)" }}
+      >
         {loading ? (
           <div className="p-8 sm:p-12 text-center">
             <div className="animate-spin rounded-full h-8 w-8 sm:h-12 sm:w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
@@ -674,7 +758,7 @@ export default function ScholarshipManagement() {
             {scholarships.length === 0 && (
               <button
                 onClick={() => setShowForm(true)}
-                className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm sm:text-base"
+                className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-sm sm:text-base"
               >
                 Add First Scholarship
               </button>
@@ -741,7 +825,7 @@ export default function ScholarshipManagement() {
                               href={scholarship.applicationUrl}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 underline"
+                              className="text-blue-500 hover:text-blue-700 underline"
                             >
                               {scholarship.applicationUrl}
                             </a>
@@ -752,7 +836,7 @@ export default function ScholarshipManagement() {
                     <div className="flex gap-2 pt-2">
                       <button
                         onClick={() => handleEdit(scholarship)}
-                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100"
+                        className="flex-1 flex items-center justify-center gap-1 px-3 py-2 text-xs text-blue-500 bg-blue-50 rounded-lg hover:bg-blue-100"
                       >
                         <Edit className="w-3 h-3" />
                         Edit
@@ -845,7 +929,7 @@ export default function ScholarshipManagement() {
                             href={scholarship.applicationUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 underline truncate block max-w-[200px]"
+                            className="text-blue-500 hover:text-blue-700 underline truncate block max-w-[200px]"
                             title={scholarship.applicationUrl}
                           >
                             Apply Here
@@ -871,7 +955,7 @@ export default function ScholarshipManagement() {
                         <div className="flex space-x-2">
                           <button
                             onClick={() => handleEdit(scholarship)}
-                            className="text-blue-600 hover:text-blue-900"
+                            className="text-blue-500 hover:text-blue-700"
                             title="Edit"
                           >
                             <Edit className="w-5 h-5" />

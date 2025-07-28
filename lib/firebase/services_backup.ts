@@ -720,7 +720,10 @@ export const analyticsService = {
     })) as Activity[];
   },
 
-  async getUserActivity(userId: string, limitCount: number = 50): Promise<Activity[]> {
+  async getUserActivity(
+    userId: string,
+    limitCount: number = 50
+  ): Promise<Activity[]> {
     const q = query(
       collection(db, "userActivity"),
       where("userId", "==", userId),
@@ -737,27 +740,29 @@ export const analyticsService = {
 
   async getAdminStats(): Promise<AdminStats> {
     try {
-      const [
-        scholarships,
-        blogPosts,
-        users,
-        newsletterSubs,
-        submissions
-      ] = await Promise.all([
-        scholarshipService.getScholarships(),
-        blogService.getBlogPosts(),
-        userService.getAllUsers(),
-        newsletterService.getAllSubscriptions(),
-        submissionService.getSubmissions()
-      ]);
+      const [scholarships, blogPosts, users, newsletterSubs, submissions] =
+        await Promise.all([
+          scholarshipService.getScholarships(),
+          blogService.getBlogPosts(),
+          userService.getAllUsers(),
+          newsletterService.getAllSubscriptions(),
+          submissionService.getSubmissions(),
+        ]);
 
-      const activeScholarships = scholarships.filter(s => s.status === 'active').length;
-      const publishedBlogs = blogPosts.filter(b => b.status === 'published').length;
-      const pendingApplications = submissions.filter(s => s.status === 'pending').length;
+      const activeScholarships = scholarships.filter(
+        (s) => s.status === "active"
+      ).length;
+      const publishedBlogs = blogPosts.filter(
+        (b) => b.status === "published"
+      ).length;
+      const pendingApplications = submissions.filter(
+        (s) => s.status === "pending"
+      ).length;
 
       // Calculate monthly views (mock for now, you can implement view tracking)
-      const monthlyViews = scholarships.reduce((total, s) => total + (s.views || 0), 0) +
-                          blogPosts.reduce((total, b) => total + (b.views || 0), 0);
+      const monthlyViews =
+        scholarships.reduce((total, s) => total + (s.views || 0), 0) +
+        blogPosts.reduce((total, b) => total + (b.views || 0), 0);
 
       return {
         totalScholarships: scholarships.length,
@@ -770,7 +775,7 @@ export const analyticsService = {
         newsletterSubscribers: newsletterSubs.length,
       };
     } catch (error) {
-      console.error('Error fetching admin stats:', error);
+      console.error("Error fetching admin stats:", error);
       return {
         totalScholarships: 0,
         totalBlogPosts: 0,
@@ -796,7 +801,10 @@ export const analyticsService = {
     });
   },
 
-  async getPageViews(resourceType: string, resourceId: string): Promise<number> {
+  async getPageViews(
+    resourceType: string,
+    resourceId: string
+  ): Promise<number> {
     const q = query(
       collection(db, "pageViews"),
       where("resourceType", "==", resourceType),
@@ -806,7 +814,10 @@ export const analyticsService = {
     return querySnapshot.size;
   },
 
-  async incrementPageView(resourceType: string, resourceId: string): Promise<void> {
+  async incrementPageView(
+    resourceType: string,
+    resourceId: string
+  ): Promise<void> {
     await addDoc(collection(db, "pageViews"), {
       resourceType,
       resourceId,
@@ -819,7 +830,7 @@ export const analyticsService = {
 export const handleFirebaseError = (error: unknown): string => {
   console.error("Firebase Error:", error);
 
-  if (error && typeof error === 'object' && 'code' in error) {
+  if (error && typeof error === "object" && "code" in error) {
     switch ((error as { code: string }).code) {
       case "permission-denied":
         return "You do not have permission to perform this action.";
@@ -833,7 +844,7 @@ export const handleFirebaseError = (error: unknown): string => {
         return "An unexpected error occurred. Please try again.";
     }
   }
-  
+
   return "An unexpected error occurred. Please try again.";
 };
 

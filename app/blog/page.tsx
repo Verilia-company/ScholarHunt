@@ -11,7 +11,7 @@ import BlogCard from "@/components/BlogCard";
 // Extended BlogPost type for BlogCard compatibility
 interface BlogPostWithDate extends Omit<BlogPost, "readTime"> {
   date: string;
-  readTime?: string; // Override the number type from BlogPost
+  readTime?: string;
 }
 
 export default function BlogPage() {
@@ -30,7 +30,6 @@ export default function BlogPage() {
     triggerOnce: true,
   });
 
-  // Categories for filtering
   const categories = [
     "All",
     "Scholarships",
@@ -42,42 +41,41 @@ export default function BlogPage() {
   ];
 
   useEffect(() => {
-    const loadPosts = async () => {
+    async function loadPosts() {
+      setLoading(true);
       try {
-        setLoading(true);
-        const fetchedPosts = await blogService.getBlogPosts();
-
-        // Only include published posts
-        const publishedPosts = fetchedPosts.filter((post) => post.published);
-
-        // Transform posts to include date property for BlogCard compatibility
-        const transformedPosts = publishedPosts.map((post) => ({
+        // Always use the correct published posts fetch method
+        const posts = await blogService.getPublishedPosts();
+        const transformedPosts = posts.map((post) => ({
           ...post,
           date:
-            post.publishedAt &&
             typeof post.publishedAt === "object" &&
-            "toDate" in post.publishedAt &&
-            typeof (post.publishedAt as { toDate: unknown }).toDate ===
+            post.publishedAt !== null &&
+            typeof (post.publishedAt as { toDate?: () => Date }).toDate ===
               "function"
               ? (post.publishedAt as { toDate: () => Date })
                   .toDate()
                   .toISOString()
-              : new Date(
-                  post.publishedAt as string | number | Date
-                ).toISOString(),
+              : post.publishedAt &&
+                (typeof post.publishedAt === "string" ||
+                  typeof post.publishedAt === "number" ||
+                  post.publishedAt instanceof Date)
+              ? new Date(post.publishedAt).toISOString()
+              : "",
           readTime: post.readTime ? `${post.readTime} min read` : undefined,
         }));
 
         setPosts(transformedPosts);
         setTotalPages(Math.ceil(transformedPosts.length / postsPerPage));
+        setError(null);
       } catch (err) {
         setError("Failed to load blog posts");
-        console.error("Error loading posts:", err);
+        setPosts([]);
+        console.error(err);
       } finally {
         setLoading(false);
       }
-    };
-
+    }
     loadPosts();
   }, []);
 
@@ -90,6 +88,11 @@ export default function BlogPage() {
       selectedCategory === "All" || post.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  useEffect(() => {
+    setTotalPages(Math.max(1, Math.ceil(filteredPosts.length / postsPerPage)));
+    setCurrentPage(1);
+  }, [filteredPosts.length, selectedCategory, searchTerm]);
 
   const paginatedPosts = filteredPosts.slice(
     (currentPage - 1) * postsPerPage,
@@ -255,6 +258,7 @@ export default function BlogPage() {
                   border: "1px solid var(--border-primary)",
                 }}
               >
+                {/* grid icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
@@ -285,6 +289,7 @@ export default function BlogPage() {
                   border: "1px solid var(--border-primary)",
                 }}
               >
+                {/* list icon */}
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="24"
