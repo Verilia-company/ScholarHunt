@@ -368,7 +368,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="max-md:hidden md:flex items-center space-x-3">
+                  <div className="max-md:hidden md:flex items-center space-x-4 lg:space-x-5">
                     {/* Profile Picture - Only show on desktop */}
                     <div className="relative">
                       <div className="w-8 h-8 lg:w-9 lg:h-9 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-white/30 shadow-lg">
@@ -388,16 +388,28 @@ export default function Layout({ children }: LayoutProps) {
                       <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
                     </div>
 
-                    {/* Sign Out Button - Only show on desktop */}
+                    {/* Professional Sign Out Button - Positioned at rightmost corner */}
                     <button
                       onClick={handleSignOut}
-                      className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
+                      className="relative group px-4 md:px-5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 border border-red-400/30 hover:border-red-400/60 rounded-xl text-white font-medium text-sm lg:text-base transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm overflow-hidden"
+                      title="Sign out of your account"
                     >
-                      <span className="relative z-10 flex items-center">
-                        <LogOut className="w-3 h-3 lg:w-4 lg:h-4 mr-1.5 lg:mr-2" />
-                        Sign Out
+                      {/* Animated background gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+                      {/* Button content */}
+                      <span className="relative z-10 flex items-center justify-center space-x-2">
+                        <LogOut className="w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                        <span className="font-semibold tracking-wide">
+                          Sign Out
+                        </span>
                       </span>
-                      <div className="absolute inset-0 bg-white/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+
+                      {/* Shimmer effect on hover */}
+                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
+
+                      {/* Subtle border glow */}
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-400/20 to-red-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
                     </button>
                   </div>
                 )}{" "}
