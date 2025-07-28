@@ -1,6 +1,7 @@
 /**
  * Helper function to format scholarship sections with proper hierarchy
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatScholarshipSection(
   title: string,
   description: string,
@@ -242,7 +243,7 @@ export function formatBlogContentSimple(content: string): string {
       }
 
       // Regular paragraph
-      let formatted = paragraph
+      const formatted = paragraph
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
         .replace(/\n/g, "<br>");
