@@ -657,13 +657,13 @@ export default function AboutPage() {
               {[
                 {
                   component: Facebook,
-                  href: settings?.socialMedia?.facebook,
+                  href: settings?.socialMedia?.facebook || "https://facebook.com/scholarhunt.ug",
                   color: "hover:text-blue-500",
                   gradient: "from-blue-400 to-blue-600",
                 },
                 {
                   component: Twitter,
-                  href: settings?.socialMedia?.twitter,
+                  href: settings?.socialMedia?.twitter || "https://twitter.com/scholarhunt_ug",
                   color: "hover:text-sky-500",
                   gradient: "from-sky-400 to-blue-500",
                 },
@@ -675,7 +675,7 @@ export default function AboutPage() {
                 },
                 {
                   component: Linkedin,
-                  href: settings?.socialMedia?.linkedin,
+                  href: settings?.socialMedia?.linkedin || "https://linkedin.com/company/scholarhunt-uganda",
                   color: "hover:text-blue-600",
                   gradient: "from-blue-500 to-indigo-600",
                 },

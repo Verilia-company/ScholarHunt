@@ -3,6 +3,7 @@ import "./globals.css";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../contexts/AuthContext";
 import { jsonLdWebsite, jsonLdOrganization } from "../lib/seo";
+import DynamicScripts from "../components/DynamicScripts";
 
 export const metadata: Metadata = {
   title: "ScholarHunt Uganda - Find Your Perfect Scholarship Opportunity",
@@ -55,41 +56,9 @@ export default function RootLayout({
             __html: JSON.stringify(jsonLdOrganization),
           }}
         />
-        {/* Google AdSense */}
-        {process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID &&
-          process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID !==
-            "ca-pub-XXXXXXXXXXXXXXXXX_PLACEHOLDER" && (
-            <script
-              async
-              src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID}`}
-              crossOrigin="anonymous"
-            />
-          )}
-        {/* Google Analytics */}
-        {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID &&
-          process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID !==
-            "GA_MEASUREMENT_ID_PLACEHOLDER" && (
-            <>
-              <script
-                async
-                src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}`}
-              />
-              <script
-                dangerouslySetInnerHTML={{
-                  __html: `
-                  window.dataLayer = window.dataLayer || [];
-                  function gtag(){dataLayer.push(arguments);}
-                  gtag('js', new Date());
-                  gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID}');
-                `,
-                }}
-              />
-            </>
-          )}
-        {/* Google Identity Services for One Tap Sign-in */}
-        <script src="https://accounts.google.com/gsi/client" async defer />
       </head>
       <body className="antialiased">
+        <DynamicScripts />
         <AuthProvider>
           <Layout>{children}</Layout>
         </AuthProvider>

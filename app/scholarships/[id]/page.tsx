@@ -38,10 +38,17 @@ export default function ScholarshipDetailPage() {
   const [retryCount, setRetryCount] = useState(0);
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
+  const [isClient, setIsClient] = useState(false);
 
   // Analytics tracking hooks
   usePageTracking();
   useScrollTracking();
+
+  // Client-side hydration fix
+  useEffect(() => {
+    setIsClient(true);
+    setCurrentUrl(window.location.href);
+  }, []);
 
   // Function to handle apply button click
   const handleApplyClick = () => {
@@ -248,7 +255,7 @@ export default function ScholarshipDetailPage() {
           </p>
 
           {/* Debug info for mobile */}
-          {typeof window !== "undefined" && (
+          {isClient && (
             <div className="text-xs mb-4 p-2 rounded" style={{ 
               color: 'var(--text-tertiary)', 
               background: 'var(--bg-glass)',
@@ -311,7 +318,7 @@ export default function ScholarshipDetailPage() {
   };
 
   // Share functions
-  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
+  const [currentUrl, setCurrentUrl] = useState("");
   const shareTitle = scholarship ? `${scholarship.title} - ${scholarship.amount} Scholarship` : "";  const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);
@@ -597,9 +604,9 @@ export default function ScholarshipDetailPage() {
                   About This Scholarship
                 </h2>
                 <div className="card">
-                  <p className="text-sm sm:text-base text-gray-700 leading-relaxed">
+                  <div className="text-sm sm:text-base text-gray-700 leading-relaxed whitespace-pre-line">
                     {scholarship.description}
-                  </p>
+                  </div>
                 </div>
               </section>
             </div>
@@ -741,88 +748,7 @@ export default function ScholarshipDetailPage() {
                   </p>
                 </div>
               </section>
-            )}{" "}
-            {/* Application Process */}
-            <section id="application-section">
-              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">
-                How to Apply
-              </h2>
-              <div className="card">
-                <div className="space-y-4">
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                      1
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                        Review Requirements
-                      </h4>
-                      <p className="text-gray-700 text-xs sm:text-sm">
-                        Carefully read all eligibility criteria and required
-                        documents.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                      2
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                        Prepare Documents
-                      </h4>
-                      <p className="text-gray-700 text-xs sm:text-sm">
-                        Gather all required documents such as transcripts,
-                        essays, and references.
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="flex items-start gap-3">
-                    <div className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-semibold flex-shrink-0 mt-0.5">
-                      3
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-900 text-sm sm:text-base">
-                        Submit Application
-                      </h4>
-                      <p className="text-gray-700 text-xs sm:text-sm">
-                        {scholarship.applicationUrl
-                          ? "Click the apply button above to be redirected to the official application page."
-                          : "Contact the scholarship provider directly using the information below to apply."}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                {!isExpired && !isUndisclosed && (
-                  <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
-                    <button
-                      onClick={handleApplyClick}
-                      className="btn-primary flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      {scholarship.applicationUrl
-                        ? "Visit Official Application Page"
-                        : "Get Application Details"}
-                    </button>
-                  </div>
-                )}
-                {isUndisclosed && (
-                  <div className="mt-4 sm:mt-6 pt-4 sm:pt-6 border-t border-gray-200">
-                    <button
-                      onClick={handleApplyClick}
-                      className="btn-primary flex items-center gap-2 w-full sm:w-auto text-sm sm:text-base py-2.5 sm:py-3"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      {scholarship.applicationUrl
-                        ? "Visit Official Application Page"
-                        : "Get Application Details"}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </section>
+            )}
           </div>          {/* Sidebar */}
           <div className="space-y-6 sm:space-y-8">
             {/* Additional sidebar content can go here */}
