@@ -473,7 +473,7 @@ export const blogService = {
   },
 
   // Helper function to format blog post content
-  formatBlogPostContent(post: any): BlogPost {
+  formatBlogPostContent(post: BlogPost): BlogPost {
     // Function to format content for HTML display
     const formatContent = (content: string) => {
       if (!content) return "";
@@ -591,7 +591,7 @@ export const blogService = {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const rawPost = { id: docSnap.id, ...docSnap.data() };
+      const rawPost = { id: docSnap.id, ...docSnap.data() } as BlogPost;
       return this.formatBlogPostContent(rawPost);
     }
     return null;
@@ -603,7 +603,7 @@ export const blogService = {
 
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      const rawPost = { id: doc.id, ...doc.data() };
+      const rawPost = { id: doc.id, ...doc.data() } as BlogPost;
       return this.formatBlogPostContent(rawPost);
     }
     return null;
@@ -793,17 +793,20 @@ export const blogService = {
     // Sort by createdAt in memory (most recent first)
     posts.sort((a, b) => {
       // Handle various date formats
-      const getDateValue = (dateField: any) => {
+      const getDateValue = (dateField: unknown) => {
         if (!dateField) return 0;
         if (dateField instanceof Date) return dateField.getTime();
         if (typeof dateField === "string") return new Date(dateField).getTime();
-        if (dateField.toDate && typeof dateField.toDate === "function") {
-          return dateField.toDate().getTime(); // Firestore Timestamp
+        if (typeof dateField === "object" && dateField !== null) {
+          const obj = dateField as Record<string, unknown>;
+          if (obj.toDate && typeof obj.toDate === "function") {
+            return (obj.toDate() as Date).getTime(); // Firestore Timestamp
+          }
+          if (obj.seconds && typeof obj.seconds === "number") {
+            return new Date(obj.seconds * 1000).getTime(); // Firestore Timestamp object
+          }
         }
-        if (dateField.seconds) {
-          return new Date(dateField.seconds * 1000).getTime(); // Firestore Timestamp object
-        }
-        return new Date(dateField).getTime();
+        return 0;
       };
 
       const aDate = getDateValue(a.publishedAt || a.createdAt);

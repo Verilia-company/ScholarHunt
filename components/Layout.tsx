@@ -308,41 +308,42 @@ export default function Layout({ children }: LayoutProps) {
                 <span className="text-lg sm:text-xl font-bold text-white">
                   ScholarHunt
                 </span>
-              </Link>{" "}
-              {/* Professional Desktop Navigation - Always visible on tablet and larger screens */}
-              <nav className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6">
+              </Link>
+
+              {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
+              <nav className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 2xl:space-x-6">
                 <Link
                   href="/"
-                  className="relative px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
                     Home
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/opportunities"
-                  className="relative px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
                     Opportunities
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/blog"
-                  className="relative px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
                     Blog
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 </Link>
                 <Link
                   href="/about"
-                  className="relative px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
+                  className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group"
                 >
-                  <span className="relative z-10 text-sm lg:text-base xl:text-lg">
+                  <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
                     About
                   </span>
                   <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -353,24 +354,25 @@ export default function Layout({ children }: LayoutProps) {
                     <div className="w-px h-6 bg-white/30 mx-1 lg:mx-2 xl:mx-3" />
                     <Link
                       href="/admin"
-                      className="relative px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group"
+                      className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group"
                     >
-                      <span className="relative z-10 text-sm lg:text-base xl:text-lg">
+                      <span className="relative z-10 text-xs sm:text-sm lg:text-base xl:text-lg">
                         Dashboard
                       </span>
                       <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     </Link>
                   </>
                 )}
-              </nav>{" "}
-              {/* Auth Buttons & CTA Button & Mobile Menu */}
+              </nav>
+
+              {/* Auth Buttons & Mobile Menu */}
               <div className="flex items-center space-x-2 sm:space-x-4">
-                {/* Professional Authentication Buttons - Always visible on tablet and larger screens */}
+                {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
                 {!user ? (
-                  <div className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4">
+                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4">
                     <button
                       onClick={handleSignIn}
-                      className="relative px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
+                      className="relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden"
                       disabled={signInLoading}
                     >
                       <span className="relative z-10">
@@ -380,7 +382,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="relative px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-xs lg:text-sm xl:text-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group"
+                      className="relative px-3 md:px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-xs md:text-xs lg:text-sm xl:text-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group"
                       disabled={signInLoading}
                     >
                       <span className="relative z-10 font-semibold">
@@ -390,7 +392,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="hidden md:flex items-center space-x-2 lg:space-x-3 xl:space-x-4 relative">
+                  <div className="flex items-center space-x-1 md:space-x-2 lg:space-x-3 xl:space-x-4 relative">
                     <div className="relative profile-dropdown-container">
                       <button
                         onClick={() =>
