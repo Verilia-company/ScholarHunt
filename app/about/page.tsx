@@ -657,7 +657,7 @@ export default function AboutPage() {
               {[
                 {
                   component: Facebook,
-                  href: settings?.socialMedia?.facebook || "https://facebook.com/scholarhunt.ug",
+                  href: settings?.socialMedia?.facebook || "https://www.facebook.com/share/16g4GXRe6r/",
                   color: "hover:text-blue-500",
                   gradient: "from-blue-400 to-blue-600",
                 },

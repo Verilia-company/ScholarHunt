@@ -89,7 +89,7 @@ export const jsonLdOrganization = {
   url: "https://scholarhunt.ug",
   logo: "https://scholarhunt.ug/logo.png",
   sameAs: [
-    "https://facebook.com/scholarhunt.ug",
+    "https://www.facebook.com/share/16g4GXRe6r/",
     "https://twitter.com/scholarhunt_ug",
     "https://linkedin.com/company/scholarhunt-uganda",
   ],

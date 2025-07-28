@@ -39,6 +39,7 @@ export default function ScholarshipDetailPage() {
   const [showSharePopup, setShowSharePopup] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [currentUrl, setCurrentUrl] = useState("");
 
   // Analytics tracking hooks
   usePageTracking();
@@ -318,7 +319,6 @@ export default function ScholarshipDetailPage() {
   };
 
   // Share functions
-  const [currentUrl, setCurrentUrl] = useState("");
   const shareTitle = scholarship ? `${scholarship.title} - ${scholarship.amount} Scholarship` : "";  const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(currentUrl);

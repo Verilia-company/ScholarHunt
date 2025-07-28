@@ -422,8 +422,8 @@ export default function AdminSettings() {
                               },
                             }))
                           }
-                          className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
-                          placeholder="https://facebook.com/scholarhunt"
+                          className="w-full p-2 sm:p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
+                          placeholder="https://www.facebook.com/share/16g4GXRe6r/"
                         />
                       </div>
                       <div>
