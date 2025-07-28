@@ -591,7 +591,7 @@ export const blogService = {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const rawPost = { id: docSnap.id, ...docSnap.data() };
+      const rawPost = { id: docSnap.id, ...docSnap.data() } as BlogPost;
       return this.formatBlogPostContent(rawPost);
     }
     return null;
@@ -603,7 +603,7 @@ export const blogService = {
 
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      const rawPost = { id: doc.id, ...doc.data() };
+      const rawPost = { id: doc.id, ...doc.data() } as BlogPost;
       return this.formatBlogPostContent(rawPost);
     }
     return null;
