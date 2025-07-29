@@ -511,8 +511,7 @@ export default function Layout({ children }: LayoutProps) {
                 {/* Mobile menu button */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
-                  style={{ color: "var(--text-primary)" }}
+                  className="hamburger-button lg:hidden"
                 >
                   {isMenuOpen ? (
                     <X className="w-6 h-6" />
@@ -524,164 +523,148 @@ export default function Layout({ children }: LayoutProps) {
             </div>{" "}
             {/* Mobile Navigation */}
             {isMenuOpen && (
-              <div
-                className="lg:hidden py-4 border-t"
-                style={{ borderColor: "var(--border)" }}
-              >
-                <div className="flex flex-col space-y-4 px-3">
+              <div className="mobile-menu-container lg:hidden py-6">
+                <div className="flex flex-col space-y-3 px-4">
                   <Link
                     href="/"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="mobile-menu-link px-4 py-3 flex items-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Home
+                    <span className="mobile-menu-link-text">🏠 Home</span>
                   </Link>
                   <Link
                     href="/opportunities"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="mobile-menu-link px-4 py-3 flex items-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Opportunities
+                    <span className="mobile-menu-link-text">
+                      🎓 Opportunities
+                    </span>
                   </Link>
                   <Link
                     href="/blog"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="mobile-menu-link px-4 py-3 flex items-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Blog
+                    <span className="mobile-menu-link-text">📝 Blog</span>
                   </Link>
                   <Link
                     href="/about"
-                    className="font-medium py-2"
-                    style={{ color: "var(--text-primary)" }}
+                    className="mobile-menu-link px-4 py-3 flex items-center"
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    About
+                    <span className="mobile-menu-link-text">ℹ️ About</span>
                   </Link>{" "}
                   {/* Admin Mobile Navigation */}
                   {isAdmin && (
-                    <>
-                      <div
-                        className="border-t pt-2"
-                        style={{ borderColor: "var(--border)" }}
-                      >
-                        <span className="text-xs font-semibold text-blue-600 uppercase tracking-wider">
-                          Admin
+                    <div className="mobile-admin-section p-4 mt-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="mobile-admin-badge">
+                          ⚡ Admin Access
                         </span>
                       </div>
                       <Link
                         href="/admin"
-                        className={clsx("font-medium ml-3", "text-blue-600")}
+                        className="mobile-menu-link px-4 py-3 flex items-center"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        Dashboard
+                        <span className="mobile-menu-link-text">
+                          🛠️ Dashboard
+                        </span>
                       </Link>
-                    </>
+                    </div>
                   )}{" "}
                   {/* Mobile Authentication */}
-                  <div
-                    className="pt-4 border-t"
-                    style={{ borderColor: "var(--border)" }}
-                  >
+                  <div className="mt-6 pt-4">
                     {!user ? (
                       <div className="flex flex-col space-y-3">
-                        {" "}
                         <button
                           onClick={() => {
                             handleSignIn();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-4 py-3 text-sm font-medium transition-colors hover:opacity-80 border rounded-lg disabled:opacity-50"
-                          style={{
-                            color: "var(--text-primary)",
-                            borderColor: "var(--border)",
-                          }}
+                          className="mobile-auth-button px-6 py-3 text-center"
                           disabled={signInLoading}
                         >
-                          {signInLoading ? "Signing in..." : "Login"}
+                          <span className="mobile-auth-button-text">
+                            {signInLoading ? "Signing in..." : "🔐 Login"}
+                          </span>
                         </button>
                         <button
                           onClick={() => {
                             handleSignUp();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
+                          className="mobile-auth-button-primary px-6 py-3 text-center rounded-lg"
                           disabled={signInLoading}
                         >
-                          {signInLoading ? "Signing in..." : "Sign Up"}
+                          {signInLoading ? "Signing in..." : "✨ Sign Up"}
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col space-y-3">
+                      <div className="flex flex-col space-y-4">
                         {/* Mobile User Info */}
-                        <div
-                          className="flex items-center px-4 py-3 rounded-lg"
-                          style={{ backgroundColor: "var(--surface-hover)" }}
-                        >
-                          <div className="w-10 h-10 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
-                            {user.photoURL ? (
-                              <Image
-                                src={user.photoURL}
-                                alt="Profile"
-                                width={48}
-                                height={48}
-                              />
-                            ) : (
-                              <User className="w-5 h-5 text-white" />
-                            )}
-                          </div>
-                          <div className="ml-3 flex-1 min-w-0">
-                            <p
-                              className="text-sm font-medium truncate"
-                              style={{ color: "var(--text-primary)" }}
-                            >
-                              {user.displayName || "User"}
-                            </p>
-                            <p
-                              className="text-xs truncate"
-                              style={{ color: "var(--text-secondary)" }}
-                            >
-                              {user.email}
-                            </p>
-                            {isAdmin && (
-                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
-                                Admin
-                              </span>
-                            )}
+                        <div className="mobile-user-profile p-4">
+                          <div className="flex items-center">
+                            <div className="mobile-user-avatar w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
+                              {user.photoURL ? (
+                                <Image
+                                  src={user.photoURL}
+                                  alt="Profile"
+                                  width={48}
+                                  height={48}
+                                />
+                              ) : (
+                                <User className="w-6 h-6 text-blue-600" />
+                              )}
+                            </div>
+                            <div className="ml-4 flex-1 min-w-0">
+                              <p className="text-white font-semibold text-lg truncate">
+                                {user.displayName || "User"}
+                              </p>
+                              <p className="text-white/80 text-sm truncate">
+                                {user.email}
+                              </p>
+                              {isAdmin && (
+                                <span className="mobile-admin-badge mt-2 inline-block">
+                                  Admin
+                                </span>
+                              )}
+                            </div>
                           </div>
                         </div>
                         {/* Mobile Menu Items */}
-                        <div className="flex flex-col space-y-1">
+                        <div className="flex flex-col space-y-2">
                           <Link
                             href="/profile"
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                            style={{ color: "var(--text-primary)" }}
+                            className="mobile-menu-action flex items-center px-4 py-3"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <User className="w-4 h-4 mr-3" />
-                            Profile
+                            <User className="w-5 h-5 mr-3" />
+                            <span className="mobile-menu-action-text">
+                              Profile
+                            </span>
                           </Link>
                           <Link
                             href="/settings"
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                            style={{ color: "var(--text-primary)" }}
+                            className="mobile-menu-action flex items-center px-4 py-3"
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <Settings className="w-4 h-4 mr-3" />
-                            Settings
+                            <Settings className="w-5 h-5 mr-3" />
+                            <span className="mobile-menu-action-text">
+                              Settings
+                            </span>
                           </Link>
                           {isAdmin && (
                             <Link
                               href="/admin"
-                              className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
+                              className="mobile-menu-action flex items-center px-4 py-3"
                               onClick={() => setIsMenuOpen(false)}
                             >
-                              <Settings className="w-4 h-4 mr-3" />
-                              Admin Dashboard
+                              <Settings className="w-5 h-5 mr-3" />
+                              <span className="mobile-menu-action-text">
+                                Admin Dashboard
+                              </span>
                             </Link>
                           )}
                           <button
@@ -689,11 +672,12 @@ export default function Layout({ children }: LayoutProps) {
                               handleSignOut();
                               setIsMenuOpen(false);
                             }}
-                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors text-left"
-                            style={{ color: "var(--text-secondary)" }}
+                            className="mobile-menu-action flex items-center px-4 py-3 text-left"
                           >
-                            <LogOut className="w-4 h-4 mr-3" />
-                            Sign Out
+                            <LogOut className="w-5 h-5 mr-3" />
+                            <span className="mobile-menu-action-text">
+                              Sign Out
+                            </span>
                           </button>
                         </div>{" "}
                       </div>
