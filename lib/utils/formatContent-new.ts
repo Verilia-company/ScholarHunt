@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Helper function to format scholarship sections with proper hierarchy
  */

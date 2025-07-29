@@ -2,7 +2,6 @@
 
 import React from "react";
 import Link from "next/link";
-import clsx from "clsx";
 import {
   Menu,
   X,
@@ -38,7 +37,6 @@ export default function Layout({ children }: LayoutProps) {
     user,
     loading,
     signInWithGoogle,
-    logout,
     isAdmin,
     silentSignIn,
     initializeOneTap,

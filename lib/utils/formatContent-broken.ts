@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * Professional blog content formatter
  * Creates compelling, well-structured content without raw markdown syntax

@@ -3,7 +3,6 @@
 // app/blog/[slug]/page.tsx
 
 import React, { useState, useEffect } from "react";
-import { notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import {
@@ -19,13 +18,12 @@ import {
 import { blogService, BlogPost } from "@/lib/firebase/services";
 import { trackEvents, event } from "@/lib/analytics";
 import ShareButtons from "@/components/ShareButtons";
-import Layout from "@/components/Layout";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { formatBlogContentConsistent } from "@/lib/utils/formatContent";
 
 interface BlogPostPageProps {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export default function BlogPostPage({ params }: BlogPostPageProps) {
@@ -45,12 +43,17 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
   // Next.js 15 migration: params may be a Promise, unwrap with React.use()
   // See: https://nextjs.org/docs/app/api-reference/file-conventions/page#dynamic-route-params
   const unwrappedParams =
-    typeof (React as any).use === "function"
-      ? (React as any).use(params)
+    typeof (
+      React as unknown as { use?: (promise: Promise<unknown>) => unknown }
+    ).use === "function"
+      ? (
+          React as unknown as { use: (promise: Promise<unknown>) => unknown }
+        ).use(params as Promise<unknown>)
       : params;
   const slug =
-    unwrappedParams && typeof unwrappedParams.slug === "string"
-      ? decodeURIComponent(unwrappedParams.slug)
+    unwrappedParams &&
+    typeof (unwrappedParams as { slug?: string }).slug === "string"
+      ? decodeURIComponent((unwrappedParams as { slug: string }).slug)
           .replace(/%20/g, " ")
           .replace(/\+/g, " ")
           .trim()
@@ -133,9 +136,14 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             );
           console.error("Blog post not found for slug:", slug);
         }
-      } catch (err: any) {
+      } catch (err: unknown) {
         let errorMsg = "Failed to load blog post";
-        if (err && err.code === "permission-denied") {
+        if (
+          err &&
+          typeof err === "object" &&
+          "code" in err &&
+          (err as { code: string }).code === "permission-denied"
+        ) {
           // Try to show more debug info for Firestore rules
           let debugInfo = "";
           if (typeof window !== "undefined" && db && db.app && db.app.options) {
@@ -150,15 +158,34 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
               let user = null;
               if (
                 typeof window !== "undefined" &&
-                (window as any).firebase &&
-                (window as any).firebase.auth
+                (
+                  window as unknown as {
+                    firebase?: { auth?: () => { currentUser: unknown } };
+                  }
+                ).firebase &&
+                (
+                  window as unknown as {
+                    firebase: { auth?: () => { currentUser: unknown } };
+                  }
+                ).firebase.auth
               ) {
-                user = (window as any).firebase.auth().currentUser;
+                user = (
+                  window as unknown as {
+                    firebase: {
+                      auth: () => {
+                        currentUser: { email?: string; uid: string };
+                      };
+                    };
+                  }
+                ).firebase.auth().currentUser;
               }
               debugInfo = user
-                ? `Logged in as: ${user.email || user.uid}`
+                ? `Logged in as: ${
+                    (user as { email?: string; uid: string }).email ||
+                    (user as { uid: string }).uid
+                  }`
                 : "Not logged in (unauthenticated)";
-            } catch (e) {
+            } catch {
               debugInfo = "Could not determine auth state.";
             }
           }
@@ -166,8 +193,8 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
             "Missing or insufficient Firestore permissions. Please check your Firestore rules for the 'blog' collection. " +
             debugInfo +
             "\nSee https://firebase.google.com/docs/firestore/security/get-started";
-        } else if (err && err.message) {
-          errorMsg += ": " + err.message;
+        } else if (err && typeof err === "object" && "message" in err) {
+          errorMsg += ": " + (err as { message: string }).message;
         }
         if (isMounted) setError(errorMsg);
         console.error("Error loading post:", err);
