@@ -358,61 +358,67 @@ export default function Layout({ children }: LayoutProps) {
                   </div>
                 ) : (
                   <div className="hidden lg:flex items-center space-x-3 relative">
-                    <div className="relative profile-dropdown-container">
-                      <button
+                    <div className="desktop-profile-section">
+                      {/* Standalone Profile Avatar */}
+                      <div
+                        className="desktop-profile-avatar"
                         onClick={() =>
                           setShowProfileDropdown(!showProfileDropdown)
                         }
-                        className="desktop-profile-button"
                       >
-                        <div className="w-7 h-7 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
-                          {user.photoURL ? (
-                            <Image
-                              src={user.photoURL}
-                              alt="Profile"
-                              width={48}
-                              height={48}
-                            />
-                          ) : (
-                            <User className="w-4 h-4 text-white" />
-                          )}
-                        </div>
-                        <ChevronDown
-                          className={`w-4 h-4 transition-transform ${
-                            showProfileDropdown ? "rotate-180" : ""
-                          }`}
-                        />
+                        {user.photoURL ? (
+                          <Image
+                            src={user.photoURL}
+                            alt="Profile"
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
+                        ) : (
+                          <User className="w-5 h-5 text-white" />
+                        )}
+                      </div>
+
+                      {/* Separate Menu Button */}
+                      <button
+                        className={`desktop-profile-menu-button ${
+                          showProfileDropdown ? "active" : ""
+                        }`}
+                        onClick={() =>
+                          setShowProfileDropdown(!showProfileDropdown)
+                        }
+                      >
+                        <ChevronDown className="w-4 h-4" />
                       </button>
-                      {/* Profile Dropdown */}
+
+                      {/* Dropdown Menu */}
                       {showProfileDropdown && (
                         <div className="desktop-profile-dropdown">
-                          {/* User Info */}
-                          <div
-                            className="px-4 py-3 border-b"
-                            style={{ borderColor: "rgba(255,255,255,0.1)" }}
-                          >
+                          {/* User Info Header */}
+                          <div className="desktop-dropdown-header">
                             <div className="flex items-center space-x-3">
-                              <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
+                              <div className="desktop-dropdown-avatar">
                                 {user.photoURL ? (
                                   <Image
                                     src={user.photoURL}
                                     alt="Profile"
                                     width={48}
                                     height={48}
+                                    className="rounded-full"
                                   />
                                 ) : (
                                   <User className="w-6 h-6 text-white" />
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="text-sm font-medium truncate text-white">
+                                <p className="desktop-dropdown-name truncate">
                                   {user.displayName || "User"}
                                 </p>
-                                <p className="text-xs truncate text-gray-300">
+                                <p className="desktop-dropdown-email truncate">
                                   {user.email}
                                 </p>
                                 {isAdmin && (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white mt-1">
+                                  <span className="desktop-dropdown-admin-badge">
                                     Admin
                                   </span>
                                 )}
@@ -427,7 +433,7 @@ export default function Layout({ children }: LayoutProps) {
                               className="desktop-dropdown-item"
                               onClick={() => setShowProfileDropdown(false)}
                             >
-                              <User className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <User className="desktop-dropdown-item-icon" />
                               <span className="desktop-dropdown-item-text">
                                 Profile
                               </span>
@@ -437,7 +443,7 @@ export default function Layout({ children }: LayoutProps) {
                               className="desktop-dropdown-item"
                               onClick={() => setShowProfileDropdown(false)}
                             >
-                              <Settings className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <Settings className="desktop-dropdown-item-icon" />
                               <span className="desktop-dropdown-item-text">
                                 Settings
                               </span>
@@ -448,7 +454,7 @@ export default function Layout({ children }: LayoutProps) {
                                 className="desktop-dropdown-item"
                                 onClick={() => setShowProfileDropdown(false)}
                               >
-                                <Settings className="w-4 h-4 desktop-dropdown-item-icon" />
+                                <Settings className="desktop-dropdown-item-icon" />
                                 <span className="desktop-dropdown-item-text">
                                   Admin Dashboard
                                 </span>
@@ -456,25 +462,23 @@ export default function Layout({ children }: LayoutProps) {
                             )}
                           </div>
 
-                          <div
-                            className="border-t py-1"
-                            style={{ borderColor: "rgba(255,255,255,0.1)" }}
-                          >
+                          {/* Sign Out Section */}
+                          <div className="desktop-dropdown-signout">
                             <button
                               onClick={() => {
                                 handleSignOut();
                                 setShowProfileDropdown(false);
                               }}
-                              className="desktop-dropdown-item desktop-dropdown-signout w-full text-left"
+                              className="desktop-dropdown-item w-full"
                             >
-                              <LogOut className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <LogOut className="desktop-dropdown-item-icon" />
                               <span className="desktop-dropdown-item-text">
                                 Sign Out
                               </span>
                             </button>
                           </div>
                         </div>
-                      )}{" "}
+                      )}
                     </div>
                   </div>
                 )}{" "}
