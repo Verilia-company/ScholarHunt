@@ -14,6 +14,14 @@ import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { presenceService } from "../lib/firebase/presence";
 import { useRouter, usePathname } from "next/navigation";
 
+// Helper function to check if email is admin
+const isAdminEmail = (email: string | null): boolean => {
+  if (!email) return false;
+  const adminEmails =
+    process.env.NEXT_PUBLIC_ADMIN_EMAILS?.split(",").map((e) => e.trim()) || [];
+  return adminEmails.includes(email);
+};
+
 // Extend Window interface for Google Identity Services
 declare global {
   interface Window {
@@ -116,14 +124,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUserProfile(updatedProfile);
         } else {
           // Create new user profile
-          // Set mutaawe38@gmail.com as the designated admin
-          const isAdminEmail = firebaseUser.email === "mutaawe38@gmail.com";
+          // Set admin emails from environment variable as the designated admins
+          const isAdmin = isAdminEmail(firebaseUser.email);
           const newProfile: UserProfile = {
             uid: firebaseUser.uid,
             email: firebaseUser.email,
             displayName: firebaseUser.displayName,
             photoURL: firebaseUser.photoURL,
-            role: isAdminEmail ? "admin" : "user",
+            role: isAdmin ? "admin" : "user",
             isActive: true, // Set users as active by default
             createdAt: Timestamp.now(),
             lastLoginAt: Timestamp.now(),
@@ -133,7 +141,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           setUserProfile(newProfile);
           console.log("New user profile created:", firebaseUser.email);
         } // Start presence tracking for authenticated user
-        const isAdminEmail = firebaseUser.email === "mutaawe38@gmail.com";
+        const isAdmin = isAdminEmail(firebaseUser.email);
 
         // Add a small delay to ensure user profile is set before presence tracking
         setTimeout(async () => {
@@ -143,7 +151,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
               displayName: firebaseUser.displayName || undefined,
               email: firebaseUser.email || undefined,
               photoURL: firebaseUser.photoURL || undefined,
-              role: isAdminEmail ? "admin" : "user",
+              role: isAdmin ? "admin" : "user",
             });
           } catch (presenceError) {
             console.error("Error starting presence tracking:", presenceError);
@@ -163,13 +171,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           lastLoginAt: Timestamp.now(),
         }); // Still try to start presence tracking
         try {
-          const isAdminEmail = firebaseUser.email === "mutaawe38@gmail.com";
+          const isAdmin = isAdminEmail(firebaseUser.email);
           await presenceService.initializePresence({
             uid: firebaseUser.uid,
             displayName: firebaseUser.displayName || undefined,
             email: firebaseUser.email || undefined,
             photoURL: firebaseUser.photoURL || undefined,
-            role: isAdminEmail ? "admin" : "user",
+            role: isAdmin ? "admin" : "user",
           });
         } catch (presenceError) {
           console.error("Error starting presence tracking:", presenceError);
