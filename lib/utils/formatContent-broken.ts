@@ -215,7 +215,7 @@ export function formatBlogContentProfessional(content: string): string {
     }
 
     // Regular paragraph - clean up any remaining markdown
-    const cleanContent = trimmedSection
+    let cleanContent = trimmedSection
       .replace(
         /\*\*(.*?)\*\*/g,
         '<strong class="font-semibold text-gray-900">$1</strong>'
@@ -301,7 +301,7 @@ export function formatBlogContentSimple(content: string): string {
       }
 
       // Regular paragraph
-      const formatted = paragraph
+      let formatted = paragraph
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
         .replace(/\n/g, "<br>");

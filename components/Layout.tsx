@@ -3,7 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import clsx from "clsx";
-import { Menu, X, GraduationCap, User, LogOut, Settings } from "lucide-react";
+import {
+  Menu,
+  X,
+  GraduationCap,
+  User,
+  LogOut,
+  Settings,
+  ChevronDown,
+} from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import NewsletterSubscription from "./NewsletterSubscription";
 import { usePageTracking } from "../lib/analytics";
@@ -20,6 +28,7 @@ export default function Layout({ children }: LayoutProps) {
   usePageTracking();
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [showProfileDropdown, setShowProfileDropdown] = React.useState(false);
   const [signInLoading, setSignInLoading] = React.useState(false);
 
   // Toast system
@@ -68,6 +77,21 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [user, loading, initializeOneTap]);
 
+  // Close profile dropdown when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest(".profile-dropdown-container")) {
+        setShowProfileDropdown(false);
+      }
+    };
+
+    if (showProfileDropdown) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [showProfileDropdown]);
   const handleSignIn = async () => {
     try {
       setSignInLoading(true);
@@ -256,222 +280,286 @@ export default function Layout({ children }: LayoutProps) {
       />
 
       <div
-        className="full-width-container min-h-screen"
+        className="min-h-screen"
         style={{ backgroundColor: "var(--background)" }}
       >
-        {/* Responsive Header */}
+        {/* Clean Header */}
         <header
-          className="responsive-nav sticky top-0 z-50 transition-all duration-300 relative"
+          className="sticky top-0 z-50 transition-all duration-300 relative"
           style={{
             background: "var(--brand-primary)",
             boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
           }}
         >
-          <div className="content-wrapper relative" style={{ zIndex: 10 }}>
-            <div className="flex justify-between items-center h-14 sm:h-16 lg:h-18 gap-x-4 lg:gap-x-6 xl:gap-x-8">
-              {/* Logo - Fixed width to prevent compression */}
+          {" "}
+          <div
+            className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 relative"
+            style={{ zIndex: 10 }}
+          >
+            <div className="flex justify-between items-center h-14 sm:h-16">
+              {/* Logo */}
               <Link
                 href="/"
-                className="flex items-center space-x-1.5 sm:space-x-2 flex-shrink-0 min-w-[140px] sm:min-w-[160px] lg:min-w-[180px]"
+                className="flex items-center space-x-1.5 sm:space-x-2"
               >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 lg:w-9 lg:h-9 gradient-primary rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white" />
+                <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
+                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                 </div>
-                <span className="text-responsive-lg font-bold text-white">
+                <span className="text-lg sm:text-xl font-bold text-white">
                   ScholarHunt
                 </span>
-              </Link>
-
-              {/* Professional Navigation Links - Hidden on mobile, visible on desktop */}
-              <nav className="flex-1 items-center justify-center max-md:hidden md:flex">
-                <div
-                  className="flex items-center nav-links navbar-spacing"
-                  style={{ gap: "clamp(12px, 2vw, 32px)" }}
+              </Link>{" "}
+              {/* Desktop Navigation */}
+              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
+                <Link
+                  href="/"
+                  className="font-medium text-white transition-colors hover:opacity-80"
                 >
-                  <Link
-                    href="/"
-                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
-                  >
-                    <span className="relative z-10 text-responsive-base">
-                      Home
-                    </span>
-                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </Link>
-                  <Link
-                    href="/opportunities"
-                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
-                  >
-                    <span className="relative z-10 text-responsive-base">
-                      Opportunities
-                    </span>
-                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
-                  >
-                    <span className="relative z-10 text-responsive-base">
-                      Blog
-                    </span>
-                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-white/90 transition-all duration-300 hover:text-white hover:bg-white/10 rounded-lg group touch-target"
-                  >
-                    <span className="relative z-10 text-responsive-base">
-                      About
-                    </span>
-                    <div className="absolute inset-0 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  </Link>
-                  {/* Admin Navigation Links */}
-                  {isAdmin && (
-                    <>
-                      <div className="w-px h-6 bg-white/30 mx-3 lg:mx-4 xl:mx-6" />
-                      <Link
-                        href="/admin"
-                        className="relative px-2 md:px-3 lg:px-4 xl:px-5 py-2 font-medium text-orange-200 transition-all duration-300 hover:text-white hover:bg-orange-500/20 rounded-lg group touch-target"
-                      >
-                        <span className="relative z-10 text-responsive-base">
-                          Dashboard
-                        </span>
-                        <div className="absolute inset-0 bg-orange-400/10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      </Link>
-                    </>
-                  )}
-                </div>
-              </nav>
-
-              {/* Auth Buttons & Mobile Menu - Properly spaced */}
-              <div className="flex items-center flex-shrink-0 ml-4 lg:ml-6 xl:ml-8">
-                {/* Professional Authentication Buttons - Hidden on mobile, visible on desktop */}
+                  Home
+                </Link>
+                <Link
+                  href="/opportunities"
+                  className="font-medium text-white transition-colors hover:opacity-80"
+                >
+                  Opportunities
+                </Link>
+                <Link
+                  href="/blog"
+                  className="font-medium text-white transition-colors hover:opacity-80"
+                >
+                  Blog
+                </Link>
+                <Link
+                  href="/about"
+                  className="font-medium text-white transition-colors hover:opacity-80"
+                >
+                  About
+                </Link>
+                {/* Admin Navigation Links */}
+                {isAdmin && (
+                  <>
+                    <div className="w-px h-6 bg-white/30" /> {/* Separator */}
+                    <Link
+                      href="/admin"
+                      className={clsx(
+                        "font-medium text-white transition-colors hover:opacity-80"
+                      )}
+                    >
+                      Dashboard
+                    </Link>
+                  </>
+                )}
+              </nav>{" "}
+              {/* Auth Buttons & CTA Button & Mobile Menu */}
+              <div className="flex items-center space-x-2 sm:space-x-4">
+                {/* Authentication Buttons - Desktop only for space */}
                 {!user ? (
-                  <div
-                    className="max-md:hidden md:flex items-center auth-buttons"
-                    style={{ gap: "clamp(16px, 2vw, 32px)" }}
-                  >
+                  <div className="hidden lg:flex items-center space-x-3">
+                    {" "}
                     <button
                       onClick={handleSignIn}
-                      className="btn-mobile relative px-3 md:px-4 lg:px-5 xl:px-6 py-2 lg:py-2.5 xl:py-3 text-responsive-base font-medium text-white border-2 border-white/40 rounded-lg hover:border-white/60 hover:bg-white/10 transition-all duration-300 group overflow-hidden focus-visible"
+                      className="flex items-center px-3 py-1.5 text-sm font-medium text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors"
                       disabled={signInLoading}
                     >
-                      <span className="relative z-10">
-                        {signInLoading ? "Signing in..." : "Login"}
-                      </span>
-                      <div className="absolute inset-0 bg-white/5 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></div>
+                      {signInLoading ? "Signing in..." : "Login"}
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="btn-mobile relative px-3 md:px-4 lg:px-6 xl:px-8 py-2 lg:py-2.5 xl:py-3 text-responsive-base font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 disabled:opacity-50 overflow-hidden group focus-visible"
+                      className="flex items-center px-3 py-1.5 text-sm font-medium bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
                       disabled={signInLoading}
                     >
-                      <span className="relative z-10 font-semibold">
-                        {signInLoading ? "Signing in..." : "Sign Up"}
-                      </span>
-                      <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                      {signInLoading ? "Signing in..." : "Sign Up"}
                     </button>
                   </div>
                 ) : (
-                  <div
-                    className="max-md:hidden md:flex items-center auth-buttons"
-                    style={{ gap: "clamp(16px, 2vw, 32px)" }}
-                  >
-                    {/* Profile Picture - Only show on desktop */}
-                    <div className="relative">
-                      <div className="w-8 h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-2 ring-white/30 shadow-lg">
-                        {user.photoURL ? (
-                          <Image
-                            src={user.photoURL}
-                            alt={`${user.displayName || "User"}'s profile`}
-                            width={40}
-                            height={40}
-                            className="w-full h-full object-cover rounded-full"
-                          />
-                        ) : (
-                          <User className="w-4 h-4 lg:w-5 lg:h-5 xl:w-6 xl:h-6 text-white" />
-                        )}
-                      </div>
-                      {/* Online indicator */}
-                      <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 lg:w-3.5 lg:h-3.5 bg-green-400 rounded-full border-2 border-white shadow-sm"></div>
+                  <div className="hidden lg:flex items-center space-x-3 relative">
+                    <div className="relative profile-dropdown-container">
+                      <button
+                        onClick={() =>
+                          setShowProfileDropdown(!showProfileDropdown)
+                        }
+                        className="flex items-center space-x-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
+                        style={{
+                          backgroundColor: showProfileDropdown
+                            ? "var(--surface-hover)"
+                            : "transparent",
+                        }}
+                      >
+                        <div className="w-7 h-7 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                          {user.photoURL ? (
+                            <Image
+                              src={user.photoURL}
+                              alt="Profile"
+                              width={48}
+                              height={48}
+                            />
+                          ) : (
+                            <User className="w-4 h-4 text-white" />
+                          )}
+                        </div>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            showProfileDropdown ? "rotate-180" : ""
+                          }`}
+                          style={{ color: "var(--text-secondary)" }}
+                        />
+                      </button>
+                      {/* Profile Dropdown */}
+                      {showProfileDropdown && (
+                        <div
+                          className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border py-2"
+                          style={{
+                            backgroundColor: "var(--surface)",
+                            borderColor: "var(--border)",
+                            zIndex: 9999,
+                          }}
+                        >
+                          {/* User Info */}
+                          <div
+                            className="px-4 py-3 border-b"
+                            style={{ borderColor: "var(--border)" }}
+                          >
+                            <div className="flex items-center space-x-3">
+                              <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                                {user.photoURL ? (
+                                  <Image
+                                    src={user.photoURL}
+                                    alt="Profile"
+                                    width={48}
+                                    height={48}
+                                  />
+                                ) : (
+                                  <User className="w-6 h-6 text-white" />
+                                )}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <p
+                                  className="text-sm font-medium truncate"
+                                  style={{ color: "var(--text-primary)" }}
+                                >
+                                  {user.displayName || "User"}
+                                </p>
+                                <p
+                                  className="text-xs truncate"
+                                  style={{ color: "var(--text-secondary)" }}
+                                >
+                                  {user.email}
+                                </p>
+                                {isAdmin && (
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                    Admin
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+
+                          {/* Menu Items */}
+                          <div className="py-1">
+                            <Link
+                              href="/profile"
+                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
+                              style={{ color: "var(--text-primary)" }}
+                              onClick={() => setShowProfileDropdown(false)}
+                            >
+                              <User className="w-4 h-4 mr-3" />
+                              Profile
+                            </Link>
+                            <Link
+                              href="/settings"
+                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
+                              style={{ color: "var(--text-primary)" }}
+                              onClick={() => setShowProfileDropdown(false)}
+                            >
+                              <Settings className="w-4 h-4 mr-3" />
+                              Settings
+                            </Link>
+                            {isAdmin && (
+                              <Link
+                                href="/admin"
+                                className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
+                                style={{ color: "var(--text-primary)" }}
+                                onClick={() => setShowProfileDropdown(false)}
+                              >
+                                <Settings className="w-4 h-4 mr-3" />
+                                Admin Dashboard
+                              </Link>
+                            )}
+                          </div>
+
+                          <div
+                            className="border-t py-1"
+                            style={{ borderColor: "var(--border)" }}
+                          >
+                            <button
+                              onClick={() => {
+                                handleSignOut();
+                                setShowProfileDropdown(false);
+                              }}
+                              className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-50 transition-colors text-left"
+                              style={{ color: "var(--text-secondary)" }}
+                            >
+                              <LogOut className="w-4 h-4 mr-3" />
+                              Sign Out
+                            </button>
+                          </div>
+                        </div>
+                      )}{" "}
                     </div>
-
-                    {/* Professional Sign Out Button - Positioned at rightmost corner */}
-                    <button
-                      onClick={handleSignOut}
-                      className="btn-mobile relative group px-4 md:px-5 lg:px-6 py-2.5 lg:py-3 bg-gradient-to-r from-red-500/10 to-red-600/10 hover:from-red-500/20 hover:to-red-600/20 border border-red-400/30 hover:border-red-400/60 rounded-xl text-white font-medium text-responsive-base transition-all duration-300 hover:shadow-lg hover:shadow-red-500/25 backdrop-blur-sm overflow-hidden focus-visible"
-                      title="Sign out of your account"
-                    >
-                      {/* Animated background gradient */}
-                      <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-red-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-
-                      {/* Button content */}
-                      <span className="relative z-10 flex items-center justify-center space-x-2">
-                        <LogOut className="w-4 h-4 lg:w-5 lg:h-5 transition-transform duration-300 group-hover:translate-x-0.5" />
-                        <span className="font-semibold tracking-wide">
-                          Sign Out
-                        </span>
-                      </span>
-
-                      {/* Shimmer effect on hover */}
-                      <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-700 bg-gradient-to-r from-transparent via-white/10 to-transparent skew-x-12"></div>
-
-                      {/* Subtle border glow */}
-                      <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-red-400/20 to-red-600/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-sm"></div>
-                    </button>
                   </div>
-                )}
-
-                {/* Enhanced Mobile menu button - Only show on small screens with proper spacing */}
+                )}{" "}
+                {/* Mobile menu button */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="mobile-menu-button p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
+                  className="lg:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  style={{ color: "var(--text-primary)" }}
                 >
                   {isMenuOpen ? (
-                    <X className="hamburger-icon" />
+                    <X className="w-6 h-6" />
                   ) : (
-                    <Menu className="hamburger-icon" />
+                    <Menu className="w-6 h-6" />
                   )}
                 </button>
               </div>
-            </div>
-
-            {/* Enhanced Mobile Navigation - Only show on small screens */}
+            </div>{" "}
+            {/* Mobile Navigation */}
             {isMenuOpen && (
               <div
-                className="md:hidden py-4 border-t backdrop-blur-sm"
-                style={{
-                  borderColor: "rgba(255, 255, 255, 0.2)",
-                  background: "rgba(255, 255, 255, 0.05)",
-                }}
+                className="lg:hidden py-4 border-t"
+                style={{ borderColor: "var(--border)" }}
               >
-                <div className="flex flex-col space-y-2 px-3">
+                <div className="flex flex-col space-y-4 px-3">
                   <Link
                     href="/"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
+                    className="font-medium py-2"
+                    style={{ color: "var(--text-primary)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    🏠 Home
+                    Home
                   </Link>
                   <Link
                     href="/opportunities"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
+                    className="font-medium py-2"
+                    style={{ color: "var(--text-primary)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    🎓 Opportunities
+                    Opportunities
                   </Link>
                   <Link
                     href="/blog"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
+                    className="font-medium py-2"
+                    style={{ color: "var(--text-primary)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    📝 Blog
+                    Blog
                   </Link>
                   <Link
                     href="/about"
-                    className="font-medium py-3 px-4 rounded-lg text-white/90 hover:text-white hover:bg-white/10 transition-all duration-300 touch-target text-responsive-base"
+                    className="font-medium py-2"
+                    style={{ color: "var(--text-primary)" }}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    ℹ️ About
+                    About
                   </Link>{" "}
                   {/* Admin Mobile Navigation */}
                   {isAdmin && (
@@ -493,22 +581,26 @@ export default function Layout({ children }: LayoutProps) {
                       </Link>
                     </>
                   )}{" "}
-                  {/* Enhanced Mobile Authentication */}
+                  {/* Mobile Authentication */}
                   <div
                     className="pt-4 border-t"
-                    style={{ borderColor: "rgba(255, 255, 255, 0.2)" }}
+                    style={{ borderColor: "var(--border)" }}
                   >
                     {!user ? (
                       <div className="flex flex-col space-y-3">
+                        {" "}
                         <button
                           onClick={() => {
                             handleSignIn();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-5 py-3.5 text-sm font-medium transition-all duration-300 hover:bg-white/10 border-2 border-white/40 rounded-lg disabled:opacity-50 text-white"
+                          className="flex items-center justify-center px-4 py-3 text-sm font-medium transition-colors hover:opacity-80 border rounded-lg disabled:opacity-50"
+                          style={{
+                            color: "var(--text-primary)",
+                            borderColor: "var(--border)",
+                          }}
                           disabled={signInLoading}
                         >
-                          <span className="mr-2">🔐</span>
                           {signInLoading ? "Signing in..." : "Login"}
                         </button>
                         <button
@@ -516,116 +608,93 @@ export default function Layout({ children }: LayoutProps) {
                             handleSignUp();
                             setIsMenuOpen(false);
                           }}
-                          className="flex items-center justify-center px-5 py-3.5 text-sm font-medium bg-white text-blue-600 rounded-lg hover:bg-gray-50 transition-all duration-300 disabled:opacity-50 shadow-lg font-semibold"
+                          className="flex items-center justify-center px-4 py-3 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50"
                           disabled={signInLoading}
                         >
-                          <span className="mr-2">✨</span>
                           {signInLoading ? "Signing in..." : "Sign Up"}
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col space-y-4">
-                        {/* Improved Mobile User Info */}
-                        <div className="flex items-center px-5 py-4 rounded-xl bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100">
-                          <div className="relative">
-                            <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-3 ring-white shadow-lg">
-                              {user.photoURL ? (
-                                <Image
-                                  src={user.photoURL}
-                                  alt={`${
-                                    user.displayName || "User"
-                                  }'s profile`}
-                                  width={48}
-                                  height={48}
-                                  className="w-full h-full object-cover rounded-full"
-                                />
-                              ) : (
-                                <User className="w-6 h-6 text-white" />
-                              )}
-                            </div>
-                            <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white shadow-sm"></div>
+                      <div className="flex flex-col space-y-3">
+                        {/* Mobile User Info */}
+                        <div
+                          className="flex items-center px-4 py-3 rounded-lg"
+                          style={{ backgroundColor: "var(--surface-hover)" }}
+                        >
+                          <div className="w-10 h-10 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                            {user.photoURL ? (
+                              <Image
+                                src={user.photoURL}
+                                alt="Profile"
+                                width={48}
+                                height={48}
+                              />
+                            ) : (
+                              <User className="w-5 h-5 text-white" />
+                            )}
                           </div>
-                          <div className="ml-4 flex-1 min-w-0">
-                            <h3 className="text-base font-semibold text-gray-900 truncate">
+                          <div className="ml-3 flex-1 min-w-0">
+                            <p
+                              className="text-sm font-medium truncate"
+                              style={{ color: "var(--text-primary)" }}
+                            >
                               {user.displayName || "User"}
-                            </h3>
-                            <p className="text-sm text-gray-600 truncate">
+                            </p>
+                            <p
+                              className="text-xs truncate"
+                              style={{ color: "var(--text-secondary)" }}
+                            >
                               {user.email}
                             </p>
                             {isAdmin && (
-                              <div className="mt-2">
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 ring-1 ring-blue-600/20">
-                                  <svg
-                                    className="w-3 h-3 mr-1"
-                                    fill="currentColor"
-                                    viewBox="0 0 20 20"
-                                  >
-                                    <path
-                                      fillRule="evenodd"
-                                      d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z"
-                                      clipRule="evenodd"
-                                    />
-                                  </svg>
-                                  Admin
-                                </span>
-                              </div>
+                              <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                Admin
+                              </span>
                             )}
                           </div>
                         </div>
-                        {/* Improved Mobile Menu Items */}
+                        {/* Mobile Menu Items */}
                         <div className="flex flex-col space-y-1">
                           <Link
                             href="/profile"
-                            className="flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-all duration-200 group"
+                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                            style={{ color: "var(--text-primary)" }}
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <User className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-600" />
-                            <span className="font-medium">View Profile</span>
+                            <User className="w-4 h-4 mr-3" />
+                            Profile
                           </Link>
                           <Link
                             href="/settings"
-                            className="flex items-center px-5 py-3 text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 rounded-xl transition-all duration-200 group"
+                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                            style={{ color: "var(--text-primary)" }}
                             onClick={() => setIsMenuOpen(false)}
                           >
-                            <Settings className="w-5 h-5 mr-3 text-gray-400 group-hover:text-gray-600" />
-                            <span className="font-medium">Settings</span>
+                            <Settings className="w-4 h-4 mr-3" />
+                            Settings
                           </Link>
                           {isAdmin && (
                             <Link
                               href="/admin"
-                              className="flex items-center px-5 py-3 text-sm text-blue-700 hover:bg-blue-50 hover:text-blue-900 rounded-xl transition-all duration-200 group"
+                              className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors"
+                              style={{ color: "var(--text-primary)" }}
                               onClick={() => setIsMenuOpen(false)}
                             >
-                              <svg
-                                className="w-5 h-5 mr-3 text-blue-400 group-hover:text-blue-600"
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                              <span className="font-medium">
-                                Admin Dashboard
-                              </span>
+                              <Settings className="w-4 h-4 mr-3" />
+                              Admin Dashboard
                             </Link>
                           )}
-
-                          {/* Mobile Logout Section */}
-                          <div className="pt-2 mt-2 border-t border-gray-200">
-                            <button
-                              onClick={() => {
-                                handleSignOut();
-                                setIsMenuOpen(false);
-                              }}
-                              className="flex items-center w-full px-5 py-3 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 rounded-xl transition-all duration-200 text-left group"
-                            >
-                              <LogOut className="w-5 h-5 mr-3 text-red-400 group-hover:text-red-600" />
-                              <span className="font-medium">Sign Out</span>
-                            </button>
-                          </div>
+                          <button
+                            onClick={() => {
+                              handleSignOut();
+                              setIsMenuOpen(false);
+                            }}
+                            className="flex items-center px-4 py-2 text-sm rounded-lg hover:bg-gray-50 transition-colors text-left"
+                            style={{ color: "var(--text-secondary)" }}
+                          >
+                            <LogOut className="w-4 h-4 mr-3" />
+                            Sign Out
+                          </button>
                         </div>{" "}
                       </div>
                     )}
@@ -634,11 +703,9 @@ export default function Layout({ children }: LayoutProps) {
               </div>
             )}
           </div>
-        </header>
-        {/* Main Content with proper responsive wrapper */}
-        <main className="main-content">
-          <div className="content-wrapper">{children}</div>
-        </main>
+        </header>{" "}
+        {/* Main Content */}
+        <main className="flex-1">{children}</main>
         {/* WhatsApp Widget for Expert Advice */}
         <WhatsAppWidget
           phoneNumber="+256759058245"
@@ -646,8 +713,7 @@ export default function Layout({ children }: LayoutProps) {
           position="bottom-right"
         />
         {/* Toast Notifications */}
-        <ToastContainer toasts={toasts} onClose={removeToast} />
-        {/* Footer */}
+        <ToastContainer toasts={toasts} onClose={removeToast} /> {/* Footer */}
         <footer
           style={{
             backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://cdn.pixabay.com/photo/2021/10/30/17/54/desert-6755127_1280.jpg')`,
@@ -658,7 +724,7 @@ export default function Layout({ children }: LayoutProps) {
           }}
           className="text-white relative"
         >
-          <div className="content-wrapper py-8 sm:py-12">
+          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
               {/* Company Info */}
               <div className="col-span-1 sm:col-span-2 lg:col-span-2">
@@ -666,47 +732,47 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
                     <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
                   </div>
-                  <span className="text-responsive-lg font-bold">
+                  <span className="text-lg sm:text-xl font-bold">
                     ScholarHunt
                   </span>
                 </div>
-                <p className="text-gray-300 text-responsive-body mb-3 sm:mb-4 max-w-md">
+                <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4 max-w-md">
                   Connecting Ugandan students with scholarship opportunities
                   worldwide. Your gateway to educational excellence and global
                   opportunities.
                 </p>
-                <div className="text-responsive-caption text-gray-400">
+                <div className="text-xs sm:text-sm text-gray-400">
                   © 2025 ScholarHunt. All rights reserved.
                 </div>
               </div>
 
               {/* Quick Links */}
               <div>
-                <h3 className="font-semibold text-responsive-lg mb-3 sm:mb-4">
+                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
                   Quick Links
                 </h3>
                 <div className="space-y-1.5 sm:space-y-2">
                   <Link
                     href="/opportunities"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Browse Scholarships
                   </Link>
                   <Link
                     href="/submit"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Submit Opportunity
                   </Link>
                   <Link
                     href="/blog"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Blog & Tips
                   </Link>
                   <Link
                     href="/about"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     About Us
                   </Link>
@@ -715,19 +781,19 @@ export default function Layout({ children }: LayoutProps) {
 
               {/* Legal */}
               <div>
-                <h3 className="font-semibold text-responsive-lg mb-3 sm:mb-4">
+                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
                   Legal
                 </h3>
                 <div className="space-y-1.5 sm:space-y-2">
                   <Link
                     href="/privacy-policy"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Privacy Policy
                   </Link>
                   <Link
                     href="/terms-of-service"
-                    className="block text-gray-300 hover:text-white transition-colors text-responsive-body touch-target"
+                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
                   >
                     Terms of Service
                   </Link>
@@ -738,10 +804,10 @@ export default function Layout({ children }: LayoutProps) {
             {/* Newsletter Signup */}
             <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-700">
               <div className="text-center">
-                <h3 className="text-responsive-lg font-semibold mb-2">
+                <h3 className="text-base sm:text-lg font-semibold mb-2">
                   Stay Updated
                 </h3>
-                <p className="text-gray-300 text-responsive-body mb-4 max-w-lg mx-auto">
+                <p className="text-gray-300 text-sm sm:text-base mb-4 max-w-lg mx-auto">
                   Get the latest scholarship opportunities delivered to your
                   inbox.
                 </p>
@@ -758,7 +824,7 @@ export default function Layout({ children }: LayoutProps) {
             {/* AdSense Placeholder - Hidden on mobile to save space */}
             <div className="hidden sm:block mt-6 sm:mt-8 text-center">
               <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 sm:p-4">
-                <small className="text-gray-500 text-responsive-caption">
+                <small className="text-gray-500 text-xs sm:text-sm">
                   {/* AdSense Footer Ad will go here after approval */}
                   Advertisement Space
                 </small>
