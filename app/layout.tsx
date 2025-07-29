@@ -22,6 +22,12 @@ export const metadata: Metadata = {
   authors: [{ name: "ScholarHunt Uganda" }],
   creator: "ScholarHunt Uganda",
   publisher: "ScholarHunt Uganda",
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  },
   robots: {
     index: true,
     follow: true,

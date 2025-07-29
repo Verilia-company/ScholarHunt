@@ -129,6 +129,8 @@ body {
 html {
   scroll-behavior: smooth;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
 }
 
 body {
@@ -143,6 +145,9 @@ body {
   text-rendering: optimizeLegibility;
   background-color: var(--color-bg);
   color: var(--color-text);
+  overflow-x: hidden; /* Prevent horizontal scroll */
+  width: 100%;
+  min-width: 320px; /* Minimum mobile width */
 }
 
 /* Typography Scale */
@@ -1788,5 +1793,258 @@ body {
     background: white !important;
     color: black !important;
     box-shadow: none !important;
+  }
+}
+
+/* Mobile Responsive Layout Fixes */
+/* Prevent horizontal overflow on all screen sizes */
+* {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Container and layout fixes */
+.container,
+.max-w-7xl,
+.max-w-6xl,
+.max-w-5xl,
+.max-w-4xl,
+.max-w-3xl,
+.max-w-2xl,
+.max-w-xl,
+.max-w-lg,
+.max-w-md,
+.max-w-sm {
+  width: 100%;
+  max-width: calc(100vw - 2rem);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Mobile-first responsive containers */
+@media (max-width: 640px) {
+  .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl,
+  .max-w-3xl,
+  .max-w-2xl,
+  .max-w-xl,
+  .max-w-lg,
+  .max-w-md,
+  .max-w-sm {
+    max-width: calc(100vw - 1.5rem);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  /* Reduce massive padding on mobile */
+  .py-32 {
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+  }
+
+  .py-20,
+  .py-24 {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+
+  .mb-20 {
+    margin-bottom: 2rem !important;
+  }
+
+  .mb-16 {
+    margin-bottom: 1.5rem !important;
+  }
+
+  /* Prevent text overflow */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  div,
+  span {
+    word-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  }
+
+  /* Responsive text sizes */
+  .text-hero {
+    font-size: 2rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .text-display {
+    font-size: 2.5rem !important;
+    line-height: 1.1 !important;
+  }
+
+  .text-subtitle {
+    font-size: 1rem !important;
+    line-height: 1.5 !important;
+  }
+
+  /* Prevent wide elements */
+  img,
+  video,
+  iframe,
+  canvas,
+  svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Flexible grids on mobile */
+  .grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  /* Stack flex items on mobile */
+  .flex {
+    flex-wrap: wrap;
+  }
+
+  /* Ensure sections don't overflow */
+  section {
+    overflow-x: hidden;
+    width: 100%;
+  }
+
+  /* Fix for wide buttons or form elements */
+  button,
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  /* Mobile specific glass elements */
+  .glass {
+    padding: 0.5rem 1rem !important;
+    margin: 0 auto;
+    max-width: calc(100vw - 2rem);
+  }
+}
+
+/* Tablet responsive fixes */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .container,
+  .max-w-7xl,
+  .max-w-6xl,
+  .max-w-5xl,
+  .max-w-4xl {
+    max-width: calc(100vw - 3rem);
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+}
+
+/* Ensure no element can cause horizontal scroll */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+/* Fix for any absolute positioned elements */
+.absolute,
+.fixed {
+  max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Responsive utility classes */
+@media (max-width: 640px) {
+  /* Make all containers mobile-friendly */
+  .px-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  .lg\:px-8 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  /* Responsive grids */
+  .grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  .sm\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .md\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lg\:grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  .xl\:grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* Responsive gap */
+  .gap-6 {
+    gap: 1rem !important;
+  }
+
+  .gap-8 {
+    gap: 1rem !important;
+  }
+
+  /* Responsive flex */
+  .flex-row {
+    flex-direction: column !important;
+  }
+
+  .items-center {
+    align-items: stretch !important;
+  }
+
+  /* Glass elements responsive */
+  .glass-strong {
+    padding: 0.75rem !important;
+    margin: 0.5rem 0 !important;
+  }
+
+  /* Button responsive */
+  .btn {
+    width: 100% !important;
+    padding: 0.75rem 1rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  /* Ensure all text fits */
+  .whitespace-nowrap {
+    white-space: normal !important;
   }
 }
