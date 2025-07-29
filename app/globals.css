@@ -2526,3 +2526,16 @@ section {
     --border-primary: #ffffff;
   }
 }
+
+/* ================================
+   CUSTOM SPACING UTILITIES
+   ================================ */
+
+/* Extra large icon containers for professional scholarship cards */
+.w-18 {
+  width: 4.5rem; /* 72px */
+}
+
+.h-18 {
+  height: 4.5rem; /* 72px */
+}
