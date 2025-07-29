@@ -14,6 +14,10 @@ import {
   Calendar,
   Award,
   Star,
+  Mail,
+  CheckCircle,
+  Shield,
+  Zap,
 } from "lucide-react";
 import ScholarshipCard from "@/components/ScholarshipCard";
 import BlogCard from "@/components/BlogCard";
@@ -510,90 +514,124 @@ export default function Home() {
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
-        <div className="relative max-w-5xl mx-auto px-6 lg:px-8 text-center">
+        <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
+          {/* Hero Content */}
           <motion.div
+            className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            {/* Professional Icon Container */}
+            {/* Elegant Icon with Gradient Background */}
             <div
-              className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-8 shadow-xl"
-              style={{ background: "var(--brand-primary)" }}
+              className="inline-flex items-center justify-center w-24 h-24 rounded-2xl mb-8 shadow-2xl"
+              style={{
+                background:
+                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
+                transform: "rotate(-5deg)",
+              }}
             >
-              <Calendar className="w-8 h-8 text-white" />
+              <Calendar className="w-12 h-12 text-white transform rotate-5" />
             </div>
 
-            <h2
-              className="text-hero mb-6 font-bold"
-              style={{ color: "var(--text-primary)" }}
-            >
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
               Stay Ahead of the Game
             </h2>
 
-            <p
-              className="text-subtitle mb-12 max-w-3xl mx-auto leading-relaxed"
-              style={{ color: "var(--text-secondary)" }}
-            >
+            <p className="text-xl md:text-2xl text-gray-600 mb-16 max-w-4xl mx-auto leading-relaxed font-light">
               Get exclusive access to new scholarships, insider application
               tips, and deadline reminders delivered to your inbox every week.
             </p>
           </motion.div>
 
+          {/* Premium Newsletter Card */}
           <motion.div
-            className="max-w-2xl mx-auto"
-            initial={{ y: 30, opacity: 0 }}
+            className="max-w-4xl mx-auto"
+            initial={{ y: 50, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            {/* Professional Newsletter Form */}
-            <div
-              className="card-glass rounded-2xl p-6 shadow-lg border"
-              style={{
-                background: "var(--bg-elevated)",
-                border: "1px solid var(--border-primary)",
-              }}
-            >
-              <div className="flex flex-col sm:flex-row gap-4">
-                <div className="flex-1">
-                  <input
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="w-full px-6 py-4 bg-transparent border-0 outline-none text-lg focus:ring-2 focus:ring-opacity-50 rounded-xl transition-all"
-                    style={{
-                      color: "var(--text-primary)",
-                      background: "rgba(var(--bg-elevated-rgb), 0.5)",
-                      border: "1px solid var(--border-primary)",
-                    }}
-                  />
+            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+              {/* Card Header with Gradient */}
+              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-8 border-b border-gray-100">
+                <div className="flex items-center justify-center gap-4 mb-4">
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
+                    <Mail className="w-6 h-6 text-white" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-800">
+                    Join Our Newsletter
+                  </h3>
                 </div>
-                <motion.button
-                  className="btn btn-primary px-8 py-4 font-semibold rounded-xl shadow-lg flex items-center justify-center gap-3"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  Subscribe Now
-                  <ArrowRight className="w-5 h-5" />
-                </motion.button>
+                <p className="text-gray-600 text-center max-w-2xl mx-auto">
+                  Be the first to know about new scholarship opportunities and
+                  get expert tips delivered straight to your inbox.
+                </p>
+              </div>
+
+              {/* Newsletter Form */}
+              <div className="px-8 py-8">
+                <form className="w-full">
+                  {/* Container with margin like scholarship card */}
+                  <div className="m-4">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                      {/* Email Input - Professional Design with Spacing */}
+                      <div className="flex-1 relative">
+                        <input
+                          type="email"
+                          name="email"
+                          id="newsletter-email"
+                          placeholder="Enter your email address"
+                          className="w-full h-16 pl-6 pr-6 text-lg border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white font-medium text-gray-800 placeholder-gray-500 shadow-sm hover:border-gray-400 transition-all duration-300"
+                        />
+                      </div>
+
+                      {/* Subscribe Button - Professional Spacing */}
+                      <motion.button
+                        type="submit"
+                        className="lg:w-auto w-full h-16 px-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold rounded-2xl border-0 shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-3"
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                      >
+                        Subscribe Now
+                        <ArrowRight className="w-6 h-6" />
+                      </motion.button>
+                    </div>
+                  </div>
+                </form>
+
+                {/* Trust Indicators */}
+                <div className="mt-8 pt-6 border-t border-gray-200">
+                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
+                        <CheckCircle className="w-3 h-3 text-green-600" />
+                      </div>
+                      <span className="font-medium">5,000+ Subscribers</span>
+                    </div>
+
+                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Shield className="w-3 h-3 text-blue-600" />
+                      </div>
+                      <span className="font-medium">No Spam Policy</span>
+                    </div>
+
+                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
+                        <Zap className="w-3 h-3 text-purple-600" />
+                      </div>
+                      <span className="font-medium">Weekly Updates</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-
-            <p
-              className="text-sm mt-6 flex items-center justify-center gap-2"
-              style={{ color: "var(--text-tertiary)" }}
-            >
-              <span className="flex items-center gap-1">
-                <div
-                  className="w-2 h-2 rounded-full"
-                  style={{ background: "var(--brand-accent)" }}
-                />
-                Join 5,000+ students
-              </span>
-              <span>•</span>
-              <span>No spam, unsubscribe anytime</span>
-            </p>
           </motion.div>
         </div>
       </motion.section>
