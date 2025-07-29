@@ -318,179 +318,181 @@ body {
 }
 
 /* Enhanced Dark Mode - Professional & Modern */
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Background colors */
-    --bg-primary: var(--bg-dark-primary);
-    --bg-secondary: var(--bg-dark-secondary);
-    --bg-tertiary: var(--bg-dark-tertiary);
-    --bg-elevated: var(--bg-dark-elevated);
-    --bg-glass: var(--bg-dark-glass);
-    --bg-glass-strong: var(--bg-dark-glass-strong);
-    --bg-overlay: var(--bg-dark-overlay);
+/* DISABLED: Automatic dark mode detection removed */
+/* Dark mode is now only activated via manual toggle with .dark class */
 
-    /* Text colors */
-    --text-primary: var(--text-dark-primary);
-    --text-secondary: var(--text-dark-secondary);
-    --text-tertiary: var(--text-dark-tertiary);
-    --text-quaternary: var(--text-dark-quaternary);
-    --text-muted: var(--text-dark-muted);
+/* Manual Dark Mode Class - Only activated when .dark class is applied */
+.dark {
+  /* Background colors */
+  --bg-primary: var(--bg-dark-primary);
+  --bg-secondary: var(--bg-dark-secondary);
+  --bg-tertiary: var(--bg-dark-tertiary);
+  --bg-elevated: var(--bg-dark-elevated);
+  --bg-glass: var(--bg-dark-glass);
+  --bg-glass-strong: var(--bg-dark-glass-strong);
+  --bg-overlay: var(--bg-dark-overlay);
 
-    /* Border colors */
-    --border-primary: var(--border-dark-primary);
-    --border-secondary: var(--border-dark-secondary);
-    --border-tertiary: var(--border-dark-tertiary);
+  /* Text colors */
+  --text-primary: var(--text-dark-primary);
+  --text-secondary: var(--text-dark-secondary);
+  --text-tertiary: var(--text-dark-tertiary);
+  --text-quaternary: var(--text-dark-quaternary);
+  --text-muted: var(--text-dark-muted);
 
-    /* Adjust brand colors for dark mode */
-    --brand-primary-light: rgba(37, 99, 235, 0.1);
-    --brand-secondary-light: rgba(124, 58, 237, 0.1);
-    --brand-accent-light: rgba(5, 150, 105, 0.1);
-    --brand-warning-light: rgba(245, 158, 11, 0.1);
-    --brand-error-light: rgba(239, 68, 68, 0.1);
+  /* Border colors */
+  --border-primary: var(--border-dark-primary);
+  --border-secondary: var(--border-dark-secondary);
+  --border-tertiary: var(--border-dark-tertiary);
 
-    /* Enhanced shadows for dark mode */
-    --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.2);
-    --shadow-glow-strong: 0 0 40px rgba(37, 99, 235, 0.3);
-    --shadow-colored: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
-      0 8px 10px -6px rgba(0, 0, 0, 0.2);
+  /* Adjust brand colors for dark mode */
+  --brand-primary-light: rgba(37, 99, 235, 0.1);
+  --brand-secondary-light: rgba(124, 58, 237, 0.1);
+  --brand-accent-light: rgba(5, 150, 105, 0.1);
+  --brand-warning-light: rgba(245, 158, 11, 0.1);
+  --brand-error-light: rgba(239, 68, 68, 0.1);
 
-    /* Update legacy variables */
-    --color-bg: var(--bg-primary);
-    --color-text: var(--text-primary);
-    --color-secondary: var(--bg-elevated);
-  }
+  /* Enhanced shadows for dark mode */
+  --shadow-glow: 0 0 20px rgba(37, 99, 235, 0.2);
+  --shadow-glow-strong: 0 0 40px rgba(37, 99, 235, 0.3);
+  --shadow-colored: 0 10px 25px -5px rgba(0, 0, 0, 0.3),
+    0 8px 10px -6px rgba(0, 0, 0, 0.2);
 
-  /* Enhanced form controls for dark mode */
-  input,
-  textarea,
-  select {
-    color: var(--text-primary) !important;
-    background-color: var(--bg-elevated) !important;
-    border-color: var(--border-primary) !important;
-  }
+  /* Update legacy variables */
+  --color-bg: var(--bg-primary);
+  --color-text: var(--text-primary);
+  --color-secondary: var(--bg-elevated);
+}
 
-  input:focus,
-  textarea:focus,
-  select:focus {
-    border-color: var(--brand-primary) !important;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
-  }
+/* Dark mode form controls - only when .dark class is applied */
+.dark input,
+.dark textarea,
+.dark select {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-elevated) !important;
+  border-color: var(--border-primary) !important;
+}
 
-  /* Enhanced placeholder text */
-  input::placeholder,
-  textarea::placeholder {
-    color: var(--text-tertiary) !important;
-    opacity: 0.8;
-  }
+.dark input:focus,
+.dark textarea:focus,
+.dark select:focus {
+  border-color: var(--brand-primary) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
 
-  /* Professional form backgrounds */
-  .bg-white {
-    background-color: var(--bg-elevated) !important;
-  }
+/* Enhanced placeholder text for dark mode */
+.dark input::placeholder,
+.dark textarea::placeholder {
+  color: var(--text-tertiary) !important;
+  opacity: 0.8;
+}
 
-  .bg-gray-50 {
-    background-color: var(--bg-secondary) !important;
-  }
+/* Professional form backgrounds for dark mode */
+.dark .bg-white {
+  background-color: var(--bg-elevated) !important;
+}
 
-  .bg-gray-100 {
-    background-color: var(--bg-tertiary) !important;
-  }
+.dark .bg-gray-50 {
+  background-color: var(--bg-secondary) !important;
+}
 
-  /* Enhanced text color mappings */
-  .text-gray-900 {
-    color: var(--text-primary) !important;
-  }
+.dark .bg-gray-100 {
+  background-color: var(--bg-tertiary) !important;
+}
 
-  .text-gray-800,
-  .text-gray-700 {
-    color: var(--text-secondary) !important;
-  }
+/* Enhanced text color mappings for dark mode */
+.dark .text-gray-900 {
+  color: var(--text-primary) !important;
+}
 
-  .text-gray-600,
-  .text-gray-500 {
-    color: var(--text-tertiary) !important;
-  }
+.dark .text-gray-800,
+.dark .text-gray-700 {
+  color: var(--text-secondary) !important;
+}
 
-  .text-gray-400,
-  .text-gray-300 {
-    color: var(--text-quaternary) !important;
-  }
+.dark .text-gray-600,
+.dark .text-gray-500 {
+  color: var(--text-tertiary) !important;
+}
 
-  /* Professional navigation styling */
-  nav a,
-  .nav-link,
-  .menu-link {
-    color: var(--text-primary) !important;
-    transition: color 0.2s ease;
-  }
+.dark .text-gray-400,
+.dark .text-gray-300 {
+  color: var(--text-quaternary) !important;
+}
 
-  nav a:hover,
-  .nav-link:hover,
-  .menu-link:hover {
-    color: var(--brand-primary) !important;
-  }
+/* Professional navigation styling for dark mode */
+.dark nav a,
+.dark .nav-link,
+.dark .menu-link {
+  color: var(--text-primary) !important;
+  transition: color 0.2s ease;
+}
 
-  /* Enhanced hover states */
-  .hover\:bg-gray-50:hover {
-    background-color: var(--bg-glass) !important;
-  }
+.dark nav a:hover,
+.dark .nav-link:hover,
+.dark .menu-link:hover {
+  color: var(--brand-primary) !important;
+}
 
-  .hover\:bg-gray-100:hover {
-    background-color: var(--bg-glass-strong) !important;
-  }
+/* Enhanced hover states for dark mode */
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--bg-glass) !important;
+}
 
-  /* Professional rich text editor styling */
-  .ProseMirror {
-    color: var(--text-primary) !important;
-    background-color: var(--bg-elevated) !important;
-    border-color: var(--border-primary) !important;
-  }
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--bg-glass-strong) !important;
+}
 
-  /* Enhanced table styling */
-  thead {
-    background-color: var(--bg-secondary) !important;
-  }
+/* Professional rich text editor styling for dark mode */
+.dark .ProseMirror {
+  color: var(--text-primary) !important;
+  background-color: var(--bg-elevated) !important;
+  border-color: var(--border-primary) !important;
+}
 
-  tbody tr:hover {
-    background-color: var(--bg-glass) !important;
-  }
+/* Enhanced table styling for dark mode */
+.dark thead {
+  background-color: var(--bg-secondary) !important;
+}
 
-  /* Professional border styling */
-  .border,
-  .border-t,
-  .border-b,
-  .border-l,
-  .border-r {
-    border-color: var(--border-primary) !important;
-  }
+.dark tbody tr:hover {
+  background-color: var(--bg-glass) !important;
+}
 
-  .border-gray-200 {
-    border-color: var(--border-primary) !important;
-  }
+/* Professional border styling for dark mode */
+.dark .border,
+.dark .border-t,
+.dark .border-b,
+.dark .border-l,
+.dark .border-r {
+  border-color: var(--border-primary) !important;
+}
 
-  .border-gray-300 {
-    border-color: var(--border-secondary) !important;
-  }
+.dark .border-gray-200 {
+  border-color: var(--border-primary) !important;
+}
 
-  /* Enhanced button styling */
-  button.text-gray-500,
-  button.text-gray-600,
-  button.text-gray-700 {
-    color: var(--text-secondary) !important;
-  }
+.dark .border-gray-300 {
+  border-color: var(--border-secondary) !important;
+}
 
-  button.hover\:text-gray-700:hover,
-  button.hover\:text-gray-800:hover,
-  button.hover\:text-gray-900:hover {
-    color: var(--text-primary) !important;
-  }
+/* Enhanced button styling for dark mode */
+.dark button.text-gray-500,
+.dark button.text-gray-600,
+.dark button.text-gray-700 {
+  color: var(--text-secondary) !important;
+}
 
-  /* Professional card styling */
-  .bg-white .shadow,
-  .bg-white.shadow {
-    background-color: var(--bg-elevated) !important;
-    box-shadow: var(--shadow-lg) !important;
-  }
+.dark button.hover\:text-gray-700:hover,
+.dark button.hover\:text-gray-800:hover,
+.dark button.hover\:text-gray-900:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Professional card styling for dark mode */
+.dark .bg-white .shadow,
+.dark .bg-white.shadow {
+  background-color: var(--bg-elevated) !important;
+  box-shadow: var(--shadow-lg) !important;
 }
 
 /* Enhanced Base Styles */
@@ -1534,6 +1536,8 @@ body {
     --bg-elevated: #ffffff;
   }
 
+  /* DISABLED: High contrast dark mode detection removed */
+  /*
   @media (prefers-color-scheme: dark) {
     :root {
       --border-primary: #ffffff;
@@ -1543,6 +1547,7 @@ body {
       --bg-elevated: #000000;
     }
   }
+  */
 }
 
 /* Reduced Motion Support */
@@ -1974,39 +1979,20 @@ body {
 }
 
 /* ================================
-   DARK MODE SUPPORT
+   DARK MODE SUPPORT - MANUAL ONLY
    ================================ */
 
+/* DISABLED: Automatic dark mode detection removed */
+/* Dark mode is now only activated via manual toggle with .dark class */
+/*
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Switch to dark mode backgrounds */
-    --background: var(--bg-dark-primary);
-    --surface: var(--bg-dark-elevated);
-
-    /* Switch to dark mode text colors */
-    --text-primary: var(--text-dark-primary);
-    --text-secondary: var(--text-dark-secondary);
-    --text-tertiary: var(--text-dark-tertiary);
-    --text-quaternary: var(--text-dark-quaternary);
-    --text-muted: var(--text-dark-muted);
-
-    /* Dark mode borders */
-    --border-primary: var(--border-dark-primary);
-    --border-secondary: var(--border-dark-secondary);
-    --border-tertiary: var(--border-dark-tertiary);
-
-    /* Dark mode backgrounds in use */
-    --bg-primary: var(--bg-dark-primary);
-    --bg-secondary: var(--bg-dark-secondary);
-    --bg-tertiary: var(--bg-dark-tertiary);
-    --bg-elevated: var(--bg-dark-elevated);
-    --bg-glass: var(--bg-dark-glass);
-    --bg-glass-strong: var(--bg-dark-glass-strong);
-    --bg-overlay: var(--bg-dark-overlay);
+    // All automatic dark mode styles disabled
   }
 }
+*/
 
-/* Explicit dark mode class support */
+/* Manual Dark Mode Class Support - Only activated when .dark class is applied */
 .dark {
   /* Switch to dark mode backgrounds */
   --background: var(--bg-dark-primary);
@@ -2474,14 +2460,27 @@ section {
   }
 }
 
-/* Mobile Menu Button Centering */
+/* Mobile Menu Button Centering - Only applies when visible */
 .mobile-menu-button {
-  display: flex;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
   position: relative;
+}
+
+/* Only apply flex display on mobile screens */
+@media (max-width: 767px) {
+  .mobile-menu-button {
+    display: flex;
+  }
+}
+
+/* Hide on desktop screens */
+@media (min-width: 768px) {
+  .mobile-menu-button {
+    display: none !important;
+  }
 }
 
 .mobile-menu-button svg {

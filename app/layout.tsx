@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../contexts/AuthContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
 import { jsonLdWebsite, jsonLdOrganization } from "../lib/seo";
 import DynamicScripts from "../components/DynamicScripts";
 
@@ -66,9 +67,11 @@ export default function RootLayout({
             incognito mode.
           </div>
         </noscript>
-        <AuthProvider>
-          <Layout>{children}</Layout>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <Layout>{children}</Layout>
+          </AuthProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

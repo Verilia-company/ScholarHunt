@@ -10,6 +10,7 @@ import { usePageTracking } from "../lib/analytics";
 import { ToastContainer, useToast } from "./Toast";
 import WhatsAppWidget from "./WhatsAppWidget";
 import Image from "next/image";
+import ThemeToggle from "./ThemeToggle";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -424,7 +425,7 @@ export default function Layout({ children }: LayoutProps) {
                 {/* Enhanced Mobile menu button - Only show on small screens with proper spacing */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="md:hidden mobile-menu-button p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
+                  className="mobile-menu-button p-3 rounded-lg hover:bg-white/10 transition-all duration-300 text-white border border-white/30 hover:border-white/50 touch-target focus-visible ml-3"
                 >
                   {isMenuOpen ? (
                     <X className="hamburger-icon" />
@@ -635,6 +636,12 @@ export default function Layout({ children }: LayoutProps) {
             )}
           </div>
         </header>
+        {/* Floating Theme Toggle - Positioned at top-right corner below navbar */}
+        <div className="fixed top-20 right-4 z-40 md:top-24 md:right-6 lg:right-8">
+          <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-2 border border-gray-200/50 dark:border-gray-700/50">
+            <ThemeToggle />
+          </div>
+        </div>
         {/* Main Content with proper responsive wrapper */}
         <main className="main-content">
           <div className="content-wrapper">{children}</div>
