@@ -517,15 +517,25 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <div className="inline-flex items-center justify-center w-20 h-20 bg-white/20 backdrop-blur-sm rounded-full mb-8 border border-white/30">
-              <Calendar className="w-10 h-10 text-white" />
+            {/* Professional Icon Container */}
+            <div
+              className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-8 shadow-xl"
+              style={{ background: "var(--brand-primary)" }}
+            >
+              <Calendar className="w-8 h-8 text-white" />
             </div>
 
-            <h2 className="text-hero text-white mb-6">
+            <h2
+              className="text-hero mb-6 font-bold"
+              style={{ color: "var(--text-primary)" }}
+            >
               Stay Ahead of the Game
             </h2>
 
-            <p className="text-subtitle text-white/80 mb-12 max-w-3xl mx-auto">
+            <p
+              className="text-subtitle mb-12 max-w-3xl mx-auto leading-relaxed"
+              style={{ color: "var(--text-secondary)" }}
+            >
               Get exclusive access to new scholarships, insider application
               tips, and deadline reminders delivered to your inbox every week.
             </p>
@@ -538,15 +548,29 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="glass-strong rounded-2xl p-2">
-              <div className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="email"
-                  placeholder="Enter your email address"
-                  className="flex-1 px-6 py-4 bg-transparent border-0 outline-none text-white placeholder-white/60 text-lg focus-ring rounded-xl"
-                />
+            {/* Professional Newsletter Form */}
+            <div
+              className="card-glass rounded-2xl p-6 shadow-lg border"
+              style={{
+                background: "var(--bg-elevated)",
+                border: "1px solid var(--border-primary)",
+              }}
+            >
+              <div className="flex flex-col sm:flex-row gap-4">
+                <div className="flex-1">
+                  <input
+                    type="email"
+                    placeholder="Enter your email address"
+                    className="w-full px-6 py-4 bg-transparent border-0 outline-none text-lg focus:ring-2 focus:ring-opacity-50 rounded-xl transition-all"
+                    style={{
+                      color: "var(--text-primary)",
+                      background: "rgba(var(--bg-elevated-rgb), 0.5)",
+                      border: "1px solid var(--border-primary)",
+                    }}
+                  />
+                </div>
                 <motion.button
-                  className="btn btn-lg px-8 py-4 bg-white text-gray-900 font-semibold rounded-xl hover:bg-gray-100 transition-all duration-300 shadow-lg"
+                  className="btn btn-primary px-8 py-4 font-semibold rounded-xl shadow-lg flex items-center justify-center gap-3"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -556,8 +580,19 @@ export default function Home() {
               </div>
             </div>
 
-            <p className="text-sm text-white/60 mt-4">
-              Join 5,000+ students • No spam, unsubscribe anytime
+            <p
+              className="text-sm mt-6 flex items-center justify-center gap-2"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              <span className="flex items-center gap-1">
+                <div
+                  className="w-2 h-2 rounded-full"
+                  style={{ background: "var(--brand-accent)" }}
+                />
+                Join 5,000+ students
+              </span>
+              <span>•</span>
+              <span>No spam, unsubscribe anytime</span>
             </p>
           </motion.div>
         </div>

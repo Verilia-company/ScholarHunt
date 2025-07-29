@@ -56,7 +56,8 @@ export default function NewsletterSubscription({
       });
       setEmail("");
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       if (errorMessage === "Email already subscribed") {
         setMessage({
           type: "error",
@@ -77,7 +78,7 @@ export default function NewsletterSubscription({
     <div className={className}>
       <form
         onSubmit={handleSubmit}
-        className={compact ? "flex gap-2" : "space-y-3 sm:space-y-4"}
+        className={compact ? "flex gap-3" : "space-y-4"}
       >
         <div className={compact ? "flex-1" : "flex-1"}>
           <input
@@ -85,51 +86,69 @@ export default function NewsletterSubscription({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={placeholder}
-            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border-0 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base ${
+            className={`w-full px-4 py-3 border-0 focus:ring-2 focus:outline-none text-sm rounded-lg transition-all focus:ring-opacity-50 ${
               compact ? "rounded-lg" : "rounded-lg"
             } ${inputClassName}`}
+            style={{
+              background: "var(--bg-elevated)",
+              border: "1px solid var(--border-primary)",
+              color: "var(--text-primary)",
+            }}
             disabled={isSubmitting}
           />
         </div>
         <button
           type="submit"
           disabled={isSubmitting || !email.trim()}
-          className={`px-4 sm:px-6 py-2.5 sm:py-3 font-medium text-sm sm:text-base transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+          className={`px-6 py-3 font-medium text-sm transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg ${
             compact
               ? "whitespace-nowrap rounded-lg"
               : "w-full sm:w-auto rounded-lg"
           } ${
-            buttonClassName || "btn-accent"
-          } flex items-center justify-center gap-1.5 sm:gap-2`}
+            buttonClassName || "btn btn-primary"
+          } flex items-center justify-center gap-2`}
         >
           {isSubmitting ? (
             <>
-              <div className="animate-spin rounded-full h-3 w-3 sm:h-4 sm:w-4 border-b-2 border-white"></div>
+              <div
+                className="animate-spin rounded-full h-4 w-4 border-b-2"
+                style={{ borderColor: "currentColor" }}
+              ></div>
               <span className="hidden sm:inline">Subscribing...</span>
               <span className="sm:hidden">...</span>
             </>
           ) : (
             <>
-              <Mail className="h-3 w-3 sm:h-4 sm:w-4" />
+              <Mail className="h-4 w-4" />
               {buttonText}
             </>
           )}
         </button>
       </form>
 
-      {/* Message Display */}
+      {/* Professional Message Display */}
       {message && (
         <div
-          className={`mt-2 sm:mt-3 p-2.5 sm:p-3 rounded-lg flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm ${
-            message.type === "success"
-              ? "bg-green-50 text-green-800 border border-green-200"
-              : "bg-red-50 text-red-800 border border-red-200"
+          className={`mt-3 p-3 rounded-lg flex items-center gap-2 text-sm shadow-sm ${
+            message.type === "success" ? "border" : "border"
           }`}
+          style={{
+            background:
+              message.type === "success"
+                ? "rgba(var(--success-rgb), 0.1)"
+                : "rgba(var(--error-rgb), 0.1)",
+            border:
+              message.type === "success"
+                ? "1px solid var(--success)"
+                : "1px solid var(--error)",
+            color:
+              message.type === "success" ? "var(--success)" : "var(--error)",
+          }}
         >
           {message.type === "success" ? (
-            <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <CheckCircle className="h-4 w-4 flex-shrink-0" />
           ) : (
-            <AlertCircle className="h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
+            <AlertCircle className="h-4 w-4 flex-shrink-0" />
           )}
           <span>{message.text}</span>
         </div>
