@@ -583,7 +583,17 @@ export default function Home() {
                           name="email"
                           id="newsletter-email"
                           placeholder="Enter your email address"
-                          className="w-full h-16 pl-6 pr-6 text-lg border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white font-medium text-gray-800 placeholder-gray-500 shadow-sm hover:border-gray-400 transition-all duration-300"
+                          autoComplete="email"
+                          spellCheck="false"
+                          role="textbox"
+                          aria-label="Email address for newsletter"
+                          className="w-full h-16 px-6 py-4 text-lg border-2 border-gray-300 rounded-2xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 bg-white font-normal text-gray-900 placeholder-gray-400 shadow-sm hover:border-gray-400 transition-all duration-300 leading-normal"
+                          style={{
+                            paddingLeft: "20px",
+                            paddingRight: "20px",
+                            lineHeight: "1.5",
+                            letterSpacing: "0.01em",
+                          }}
                         />
                       </div>
 
