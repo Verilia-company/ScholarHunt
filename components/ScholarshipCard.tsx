@@ -152,25 +152,25 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
               {scholarship.description}
             </p>
 
-            {/* Information Grid - Clean Layout like BlogCard */}
-            <div className="space-y-4 mb-6">
-              {/* Scholarship Value */}
-              <div className="flex items-center gap-3">
+            {/* Information Grid - Clean Layout with consistent structure */}
+            <div className="space-y-5 mb-6">
+              {/* Scholarship Value - Always show */}
+              <div className="flex items-center gap-4 p-3 rounded-lg bg-transparent hover:bg-opacity-50 transition-colors">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                  className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg flex-shrink-0"
                   style={{ background: "var(--brand-accent)" }}
                 >
                   <DollarSign className="h-5 w-5 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p
-                    className="text-micro uppercase tracking-wider font-semibold"
+                    className="text-micro uppercase tracking-wider font-semibold mb-1"
                     style={{ color: "var(--text-tertiary)" }}
                   >
                     Scholarship Value
                   </p>
                   <p
-                    className="font-medium text-sm"
+                    className="font-medium text-sm leading-relaxed"
                     style={{ color: "var(--brand-accent)" }}
                   >
                     {scholarship.amount}
@@ -178,10 +178,10 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 </div>
               </div>
 
-              {/* Application Deadline */}
-              <div className="flex items-center gap-3">
+              {/* Application Deadline - Always show */}
+              <div className="flex items-center gap-4 p-3 rounded-lg bg-transparent hover:bg-opacity-50 transition-colors">
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                  className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg flex-shrink-0"
                   style={{
                     background: isUndisclosed
                       ? "var(--text-quaternary)"
@@ -192,15 +192,15 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 >
                   <Calendar className="h-5 w-5 text-white" />
                 </div>
-                <div>
+                <div className="flex-1">
                   <p
-                    className="text-micro uppercase tracking-wider font-semibold"
+                    className="text-micro uppercase tracking-wider font-semibold mb-1"
                     style={{ color: "var(--text-tertiary)" }}
                   >
                     Application Deadline
                   </p>
                   <p
-                    className="font-medium text-sm"
+                    className="font-medium text-sm leading-relaxed"
                     style={{
                       color: isUndisclosed
                         ? "var(--text-secondary)"
@@ -212,7 +212,7 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                     {formatDeadline(scholarship.deadline)}
                     {!isExpired && !isUndisclosed && daysRemaining && (
                       <span
-                        className="block text-xs font-normal"
+                        className="block text-xs font-normal mt-1"
                         style={{ color: "var(--text-tertiary)" }}
                       >
                         {daysRemaining} days remaining
@@ -222,50 +222,48 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 </div>
               </div>
 
-              {/* Education Level */}
-              {scholarship.level && (
-                <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
-                    style={{ background: "var(--brand-secondary)" }}
-                  >
-                    <GraduationCap className="h-5 w-5 text-white" />
-                  </div>
-                  <div>
-                    <p
-                      className="text-micro uppercase tracking-wider font-semibold"
-                      style={{ color: "var(--text-tertiary)" }}
-                    >
-                      Education Level
-                    </p>
-                    <p
-                      className="font-medium text-sm"
-                      style={{ color: "var(--text-primary)" }}
-                    >
-                      {scholarship.level}
-                    </p>
-                  </div>
+              {/* Education Level - Always show with fallback */}
+              <div className="flex items-center gap-4 p-3 rounded-lg bg-transparent hover:bg-opacity-50 transition-colors">
+                <div
+                  className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg flex-shrink-0"
+                  style={{ background: "var(--brand-secondary)" }}
+                >
+                  <GraduationCap className="h-5 w-5 text-white" />
                 </div>
-              )}
+                <div className="flex-1">
+                  <p
+                    className="text-micro uppercase tracking-wider font-semibold mb-1"
+                    style={{ color: "var(--text-tertiary)" }}
+                  >
+                    Education Level
+                  </p>
+                  <p
+                    className="font-medium text-sm leading-relaxed"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    {scholarship.level || "All Levels"}
+                  </p>
+                </div>
+              </div>
 
-              {/* Study Location */}
+              {/* Study Location - Always show with fallback */}
               {scholarship.location && (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-4 p-3 rounded-lg bg-transparent hover:bg-opacity-50 transition-colors">
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg"
+                    className="w-10 h-10 rounded-full flex items-center justify-center shadow-lg flex-shrink-0"
                     style={{ background: "var(--brand-primary)" }}
                   >
                     <MapPin className="h-5 w-5 text-white" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p
-                      className="text-micro uppercase tracking-wider font-semibold"
+                      className="text-micro uppercase tracking-wider font-semibold mb-1"
                       style={{ color: "var(--text-tertiary)" }}
                     >
                       Study Location
                     </p>
                     <p
-                      className="font-medium text-sm"
+                      className="font-medium text-sm leading-relaxed"
                       style={{ color: "var(--text-primary)" }}
                     >
                       {scholarship.location}
