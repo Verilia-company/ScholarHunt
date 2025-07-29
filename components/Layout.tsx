@@ -310,40 +310,26 @@ export default function Layout({ children }: LayoutProps) {
                 </span>
               </Link>{" "}
               {/* Desktop Navigation */}
-              <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
-                <Link
-                  href="/"
-                  className="font-medium text-white transition-colors hover:opacity-80"
-                >
-                  Home
+              <nav className="hidden lg:flex items-center space-x-3 xl:space-x-4">
+                <Link href="/" className="desktop-nav-link">
+                  🏠 Home
                 </Link>
-                <Link
-                  href="/opportunities"
-                  className="font-medium text-white transition-colors hover:opacity-80"
-                >
-                  Opportunities
+                <Link href="/opportunities" className="desktop-nav-link">
+                  🎓 Opportunities
                 </Link>
-                <Link
-                  href="/blog"
-                  className="font-medium text-white transition-colors hover:opacity-80"
-                >
-                  Blog
+                <Link href="/blog" className="desktop-nav-link">
+                  📝 Blog
                 </Link>
-                <Link
-                  href="/about"
-                  className="font-medium text-white transition-colors hover:opacity-80"
-                >
-                  About
+                <Link href="/about" className="desktop-nav-link">
+                  ℹ️ About
                 </Link>
                 {/* Admin Navigation Links */}
                 {isAdmin && (
                   <>
-                    <div className="w-px h-6 bg-white/30" /> {/* Separator */}
+                    <div className="nav-separator" />
                     <Link
                       href="/admin"
-                      className={clsx(
-                        "font-medium text-white transition-colors hover:opacity-80"
-                      )}
+                      className="desktop-admin-link desktop-nav-link"
                     >
                       Dashboard
                     </Link>
@@ -355,17 +341,16 @@ export default function Layout({ children }: LayoutProps) {
                 {/* Authentication Buttons - Desktop only for space */}
                 {!user ? (
                   <div className="hidden lg:flex items-center space-x-3">
-                    {" "}
                     <button
                       onClick={handleSignIn}
-                      className="flex items-center px-3 py-1.5 text-sm font-medium text-white border border-white/30 rounded-lg hover:bg-white/10 transition-colors"
+                      className="desktop-auth-login"
                       disabled={signInLoading}
                     >
                       {signInLoading ? "Signing in..." : "Login"}
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="flex items-center px-3 py-1.5 text-sm font-medium bg-white text-gray-900 rounded-lg hover:bg-gray-100 transition-colors disabled:opacity-50"
+                      className="desktop-auth-signup"
                       disabled={signInLoading}
                     >
                       {signInLoading ? "Signing in..." : "Sign Up"}
@@ -378,14 +363,9 @@ export default function Layout({ children }: LayoutProps) {
                         onClick={() =>
                           setShowProfileDropdown(!showProfileDropdown)
                         }
-                        className="flex items-center space-x-2 px-2 py-1.5 rounded-lg hover:bg-gray-50 transition-colors"
-                        style={{
-                          backgroundColor: showProfileDropdown
-                            ? "var(--surface-hover)"
-                            : "transparent",
-                        }}
+                        className="desktop-profile-button"
                       >
-                        <div className="w-7 h-7 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                        <div className="w-7 h-7 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
                           {user.photoURL ? (
                             <Image
                               src={user.photoURL}
@@ -401,26 +381,18 @@ export default function Layout({ children }: LayoutProps) {
                           className={`w-4 h-4 transition-transform ${
                             showProfileDropdown ? "rotate-180" : ""
                           }`}
-                          style={{ color: "var(--text-secondary)" }}
                         />
                       </button>
                       {/* Profile Dropdown */}
                       {showProfileDropdown && (
-                        <div
-                          className="absolute right-0 mt-2 w-64 rounded-lg shadow-lg border py-2"
-                          style={{
-                            backgroundColor: "var(--surface)",
-                            borderColor: "var(--border)",
-                            zIndex: 9999,
-                          }}
-                        >
+                        <div className="desktop-profile-dropdown">
                           {/* User Info */}
                           <div
                             className="px-4 py-3 border-b"
-                            style={{ borderColor: "var(--border)" }}
+                            style={{ borderColor: "rgba(255,255,255,0.1)" }}
                           >
                             <div className="flex items-center space-x-3">
-                              <div className="w-12 h-12 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
+                              <div className="w-12 h-12 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
                                 {user.photoURL ? (
                                   <Image
                                     src={user.photoURL}
@@ -433,20 +405,14 @@ export default function Layout({ children }: LayoutProps) {
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p
-                                  className="text-sm font-medium truncate"
-                                  style={{ color: "var(--text-primary)" }}
-                                >
+                                <p className="text-sm font-medium truncate text-white">
                                   {user.displayName || "User"}
                                 </p>
-                                <p
-                                  className="text-xs truncate"
-                                  style={{ color: "var(--text-secondary)" }}
-                                >
+                                <p className="text-xs truncate text-gray-300">
                                   {user.email}
                                 </p>
                                 {isAdmin && (
-                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 mt-1">
+                                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gradient-to-r from-blue-600 to-indigo-600 text-white mt-1">
                                     Admin
                                   </span>
                                 )}
@@ -458,49 +424,53 @@ export default function Layout({ children }: LayoutProps) {
                           <div className="py-1">
                             <Link
                               href="/profile"
-                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
+                              className="desktop-dropdown-item"
                               onClick={() => setShowProfileDropdown(false)}
                             >
-                              <User className="w-4 h-4 mr-3" />
-                              Profile
+                              <User className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <span className="desktop-dropdown-item-text">
+                                Profile
+                              </span>
                             </Link>
                             <Link
                               href="/settings"
-                              className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                              style={{ color: "var(--text-primary)" }}
+                              className="desktop-dropdown-item"
                               onClick={() => setShowProfileDropdown(false)}
                             >
-                              <Settings className="w-4 h-4 mr-3" />
-                              Settings
+                              <Settings className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <span className="desktop-dropdown-item-text">
+                                Settings
+                              </span>
                             </Link>
                             {isAdmin && (
                               <Link
                                 href="/admin"
-                                className="flex items-center px-4 py-2 text-sm hover:bg-gray-50 transition-colors"
-                                style={{ color: "var(--text-primary)" }}
+                                className="desktop-dropdown-item"
                                 onClick={() => setShowProfileDropdown(false)}
                               >
-                                <Settings className="w-4 h-4 mr-3" />
-                                Admin Dashboard
+                                <Settings className="w-4 h-4 desktop-dropdown-item-icon" />
+                                <span className="desktop-dropdown-item-text">
+                                  Admin Dashboard
+                                </span>
                               </Link>
                             )}
                           </div>
 
                           <div
                             className="border-t py-1"
-                            style={{ borderColor: "var(--border)" }}
+                            style={{ borderColor: "rgba(255,255,255,0.1)" }}
                           >
                             <button
                               onClick={() => {
                                 handleSignOut();
                                 setShowProfileDropdown(false);
                               }}
-                              className="flex items-center w-full px-4 py-2 text-sm hover:bg-gray-50 transition-colors text-left"
-                              style={{ color: "var(--text-secondary)" }}
+                              className="desktop-dropdown-item desktop-dropdown-signout w-full text-left"
                             >
-                              <LogOut className="w-4 h-4 mr-3" />
-                              Sign Out
+                              <LogOut className="w-4 h-4 desktop-dropdown-item-icon" />
+                              <span className="desktop-dropdown-item-text">
+                                Sign Out
+                              </span>
                             </button>
                           </div>
                         </div>

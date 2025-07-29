@@ -1000,6 +1000,230 @@ body {
   font-weight: 500;
 }
 
+/* Clean Desktop Navigation Styles */
+.desktop-nav-link {
+  position: relative;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  border-radius: 0.375rem;
+}
+
+.desktop-nav-link:hover {
+  color: #ffffff;
+  font-weight: 600;
+  transform: translateY(-1px);
+}
+
+/* Admin Desktop Nav Link - Clean & Distinctive */
+.desktop-admin-link {
+  color: #10b981 !important;
+  font-weight: 500;
+}
+
+.desktop-admin-link:hover {
+  color: #34d399 !important;
+  font-weight: 600;
+}
+
+/* Clean Desktop Auth Buttons */
+.desktop-auth-login {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.desktop-auth-login:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.desktop-auth-signup {
+  background: rgba(255, 255, 255, 0.15);
+  border: none;
+  border-radius: 0.375rem;
+  padding: 0.5rem 1rem;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: white;
+}
+
+.desktop-auth-signup:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-1px);
+}
+
+/* Clean Desktop Profile Button */
+.desktop-profile-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.desktop-profile-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+.desktop-profile-button svg {
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+.desktop-profile-button:hover svg {
+  color: rgba(255, 255, 255, 1);
+}
+
+/* Clean Desktop Profile Dropdown */
+.desktop-profile-dropdown {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  animation: slideDown 0.3s ease-out;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  margin-top: 0.5rem;
+  width: 16rem;
+  z-index: 50;
+}
+
+.desktop-dropdown-header {
+  background: rgba(37, 99, 235, 0.05);
+  border-bottom: 1px solid rgba(37, 99, 235, 0.1);
+  padding: 1rem;
+}
+
+.desktop-dropdown-avatar {
+  background: linear-gradient(135deg, #2563eb 0%, #6366f1 100%);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.desktop-dropdown-name {
+  color: #1f2937;
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.25rem;
+}
+
+.desktop-dropdown-email {
+  color: #6b7280;
+  font-size: 0.8rem;
+}
+
+.desktop-dropdown-admin-badge {
+  background: linear-gradient(135deg, #059669 0%, #2563eb 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0.25rem 0.5rem;
+  border-radius: 9999px;
+  margin-top: 0.5rem;
+  display: inline-block;
+}
+
+.desktop-dropdown-item {
+  background: transparent;
+  border: none;
+  padding: 0.75rem 1rem;
+  transition: all 0.2s ease;
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.desktop-dropdown-item:hover {
+  background: rgba(37, 99, 235, 0.08);
+}
+
+.desktop-dropdown-item-icon {
+  color: #6b7280;
+  transition: color 0.2s ease;
+  width: 1rem;
+  height: 1rem;
+}
+
+.desktop-dropdown-item:hover .desktop-dropdown-item-icon {
+  color: #2563eb;
+}
+
+.desktop-dropdown-item-text {
+  color: #374151;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.desktop-dropdown-item:hover .desktop-dropdown-item-text {
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.desktop-dropdown-signout {
+  border-top: 1px solid rgba(37, 99, 235, 0.1);
+  margin-top: 0.25rem;
+}
+
+.desktop-dropdown-signout:hover {
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.desktop-dropdown-signout .desktop-dropdown-item-icon {
+  color: #ef4444;
+}
+
+.desktop-dropdown-signout .desktop-dropdown-item-text {
+  color: #ef4444;
+}
+
+.desktop-dropdown-signout:hover .desktop-dropdown-item-icon,
+.desktop-dropdown-signout:hover .desktop-dropdown-item-text {
+  color: #dc2626;
+}
+
+/* Navigation Separator */
+.nav-separator {
+  width: 1px;
+  height: 1.5rem;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.5),
+    transparent
+  );
+  margin: 0 1rem;
+}
+
 /* Print Styles */
 @media print {
   * {
