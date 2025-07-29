@@ -210,80 +210,27 @@ function OpportunitiesContent() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      {/* Elegant Header with Soft Colors */}
+      {/* Clean Header */}
       <div
         className="relative overflow-hidden py-20"
-        style={{
-          background: "linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)",
-          position: "relative",
-        }}
+        style={{ background: "var(--brand-primary)" }}
       >
-        {/* Soft gradient overlay */}
-        <div
-          className="absolute inset-0"
-          style={{
-            background:
-              "linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%)",
-          }}
-        ></div>
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <div
             className="inline-flex items-center gap-2 rounded-full px-6 py-3 mb-8"
-            style={{
-              background: "rgba(255, 255, 255, 0.2)",
-              backdropFilter: "blur(12px)",
-              border: "1px solid rgba(255, 255, 255, 0.3)",
-            }}
+            style={{ background: "rgba(255, 255, 255, 0.1)" }}
           >
-            <Search
-              className="w-5 h-5"
-              style={{ color: "rgba(255, 255, 255, 0.9)" }}
-            />
-            <span
-              className="font-medium"
-              style={{ color: "rgba(255, 255, 255, 0.9)" }}
-            >
-              Discover Your Future
-            </span>
+            <Search className="w-5 h-5 text-white" />
+            <span className="font-medium text-white">Discover Your Future</span>
           </div>
 
-          <h1 className="text-display mb-6">
-            <span
-              className="font-bold"
-              style={{
-                color: "rgba(255, 255, 255, 0.95)",
-                textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
-                fontSize: "clamp(2.5rem, 8vw, 6rem)",
-                lineHeight: "1.1",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Scholarship
-            </span>
+          <h1 className="text-display mb-6 text-white">
+            Scholarship
             <br />
-            <span
-              className="font-bold"
-              style={{
-                color: "rgba(255, 255, 255, 0.95)",
-                textShadow: "0 1px 3px rgba(0, 0, 0, 0.3)",
-                fontSize: "clamp(2.5rem, 8vw, 6rem)",
-                lineHeight: "1.1",
-                letterSpacing: "-0.02em",
-              }}
-            >
-              Opportunities
-            </span>
+            <span className="text-white opacity-90">Opportunities</span>
           </h1>
 
-          <p
-            className="text-subtitle max-w-4xl mx-auto"
-            style={{
-              color: "rgba(255, 255, 255, 0.85)",
-              textShadow: "0 1px 2px rgba(0, 0, 0, 0.2)",
-              fontSize: "clamp(1.125rem, 2vw, 1.5rem)",
-              lineHeight: "1.6",
-            }}
-          >
+          <p className="text-subtitle max-w-4xl mx-auto text-white opacity-80">
             Discover scholarship opportunities that match your academic goals
             and background. Use our advanced filters to find the perfect
             scholarships for you.
@@ -316,7 +263,9 @@ function OpportunitiesContent() {
                     type="text"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="flex-1 px-6 py-6 text-lg bg-transparent border-0 outline-none focus-ring"
+                    spellCheck="false"
+                    autoComplete="off"
+                    className="input-google-search flex-1"
                     style={{
                       color: "var(--text-primary)",
                     }}
@@ -655,8 +604,14 @@ function OpportunitiesContent() {
                 <input
                   type="email"
                   placeholder="Enter your email address"
-                  className="flex-1 px-4 py-3 bg-transparent border-0 outline-none text-sm focus-ring rounded-lg"
-                  style={{ color: "var(--text-primary)" }}
+                  spellCheck="false"
+                  autoComplete="email"
+                  className="input-google flex-1"
+                  style={{
+                    background: "transparent",
+                    color: "var(--text-primary)",
+                    border: "1px solid var(--border-primary)",
+                  }}
                 />
                 <button className="btn btn-primary">Subscribe Now</button>
               </div>

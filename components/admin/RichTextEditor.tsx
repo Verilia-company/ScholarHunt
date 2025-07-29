@@ -495,7 +495,9 @@ export default function RichTextEditor({
                 type="text"
                 value={targetKeyword}
                 onChange={(e) => setTargetKeyword(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm"
+                spellCheck="false"
+                autoComplete="off"
+                className="input-google"
                 placeholder="Enter target keyword"
               />
             </div>
@@ -660,7 +662,9 @@ export default function RichTextEditor({
                   type="url"
                   value={linkUrl}
                   onChange={(e) => setLinkUrl(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                  spellCheck="false"
+                  autoComplete="url"
+                  className="input-google"
                   placeholder="https://example.com"
                 />
               </div>

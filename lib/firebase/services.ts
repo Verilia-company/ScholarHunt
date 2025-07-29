@@ -473,7 +473,7 @@ export const blogService = {
   },
 
   // Helper function to format blog post content
-  formatBlogPostContent(post: BlogPost): BlogPost {
+  formatBlogPostContent(post: Record<string, unknown>): BlogPost {
     // Function to format content for HTML display
     const formatContent = (content: string) => {
       if (!content) return "";
@@ -571,18 +571,21 @@ export const blogService = {
     return {
       ...post,
       // Format content for proper HTML display
-      content: formatContent(post.content || ""),
+      content: formatContent((post as { content?: string }).content || ""),
       // Use local SVG if available, otherwise use professional backup images
       image:
-        post.image &&
-        post.image.startsWith("/blog/") &&
-        post.image.endsWith(".svg")
-          ? post.image
-          : getBackupImage(post.title),
+        (post as { image?: string }).image &&
+        (post as { image: string }).image.startsWith("/blog/") &&
+        (post as { image: string }).image.endsWith(".svg")
+          ? (post as { image: string }).image
+          : getBackupImage((post as { title?: string }).title || ""),
       // Ensure proper date handling
-      createdAt: post.createdAt || new Date(),
-      publishedAt: post.publishedAt || post.createdAt || new Date(),
-      updatedAt: post.updatedAt || new Date(),
+      createdAt: (post as { createdAt?: Date }).createdAt || new Date(),
+      publishedAt:
+        (post as { publishedAt?: Date }).publishedAt ||
+        (post as { createdAt?: Date }).createdAt ||
+        new Date(),
+      updatedAt: (post as { updatedAt?: Date }).updatedAt || new Date(),
     } as BlogPost;
   },
 
@@ -591,7 +594,7 @@ export const blogService = {
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
-      const rawPost = { id: docSnap.id, ...docSnap.data() } as BlogPost;
+      const rawPost = { id: docSnap.id, ...docSnap.data() };
       return this.formatBlogPostContent(rawPost);
     }
     return null;
@@ -603,7 +606,7 @@ export const blogService = {
 
     if (!querySnapshot.empty) {
       const doc = querySnapshot.docs[0];
-      const rawPost = { id: doc.id, ...doc.data() } as BlogPost;
+      const rawPost = { id: doc.id, ...doc.data() };
       return this.formatBlogPostContent(rawPost);
     }
     return null;
@@ -797,16 +800,25 @@ export const blogService = {
         if (!dateField) return 0;
         if (dateField instanceof Date) return dateField.getTime();
         if (typeof dateField === "string") return new Date(dateField).getTime();
-        if (typeof dateField === "object" && dateField !== null) {
-          const obj = dateField as Record<string, unknown>;
-          if (obj.toDate && typeof obj.toDate === "function") {
-            return (obj.toDate() as Date).getTime(); // Firestore Timestamp
-          }
-          if (obj.seconds && typeof obj.seconds === "number") {
-            return new Date(obj.seconds * 1000).getTime(); // Firestore Timestamp object
-          }
+        if (
+          typeof dateField === "object" &&
+          dateField &&
+          "toDate" in dateField &&
+          typeof (dateField as { toDate: unknown }).toDate === "function"
+        ) {
+          return (dateField as { toDate: () => Date }).toDate().getTime(); // Firestore Timestamp
         }
-        return 0;
+        if (
+          typeof dateField === "object" &&
+          dateField &&
+          "seconds" in dateField &&
+          typeof (dateField as { seconds: unknown }).seconds === "number"
+        ) {
+          return new Date(
+            (dateField as { seconds: number }).seconds * 1000
+          ).getTime(); // Firestore Timestamp object
+        }
+        return 0; // fallback for unknown date formats
       };
 
       const aDate = getDateValue(a.publishedAt || a.createdAt);

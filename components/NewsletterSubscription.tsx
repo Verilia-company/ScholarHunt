@@ -56,7 +56,8 @@ export default function NewsletterSubscription({
       });
       setEmail("");
     } catch (error: unknown) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      const errorMessage =
+        error instanceof Error ? error.message : "Unknown error";
       if (errorMessage === "Email already subscribed") {
         setMessage({
           type: "error",
@@ -85,9 +86,9 @@ export default function NewsletterSubscription({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder={placeholder}
-            className={`w-full px-3 sm:px-4 py-2.5 sm:py-3 border-0 focus:ring-2 focus:ring-blue-500 focus:outline-none text-sm sm:text-base ${
-              compact ? "rounded-lg" : "rounded-lg"
-            } ${inputClassName}`}
+            spellCheck="false"
+            autoComplete="email"
+            className={`input-google ${compact ? "" : ""} ${inputClassName}`}
             disabled={isSubmitting}
           />
         </div>

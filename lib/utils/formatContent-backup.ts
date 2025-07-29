@@ -1,7 +1,7 @@
+/* eslint-disable */
 /**
  * Helper function to format scholarship sections with proper hierarchy
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatScholarshipSection(
   title: string,
   description: string,
@@ -252,7 +252,7 @@ export function formatBlogContentProfessional(content: string): string {
               // Extract title (usually first 2-4 words that form a concept)
               if (words.length > 5) {
                 // Look for natural breaking points like "Taking time", "Financial Stability", etc.
-                const titleWords = [];
+                let titleWords = [];
                 for (let i = 0; i < words.length; i++) {
                   titleWords.push(words[i]);
                   // Stop if we have 2-4 words and the next seems like start of description
@@ -369,7 +369,7 @@ export function formatBlogContentSimple(content: string): string {
       }
 
       // Regular paragraph
-      const formatted = paragraph
+      let formatted = paragraph
         .replace(/\*\*(.*?)\*\*/g, '<strong class="font-semibold">$1</strong>')
         .replace(/\*(.*?)\*/g, '<em class="italic">$1</em>')
         .replace(/\n/g, "<br>");

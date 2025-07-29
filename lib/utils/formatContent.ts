@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Helper function to format scholarship sections with proper hierarchy
+ * @internal - used only within this module
  */
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function formatScholarshipSection(
   title: string,
   description: string,

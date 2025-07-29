@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../contexts/AuthContext";
-import { ThemeProvider } from "../contexts/ThemeContext";
 import { jsonLdWebsite, jsonLdOrganization } from "../lib/seo";
 import DynamicScripts from "../components/DynamicScripts";
 
@@ -45,8 +44,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ colorScheme: "light" }}>
       <head>
+        <meta name="color-scheme" content="light" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            html { color-scheme: light !important; }
+            * { color-scheme: light !important; }
+          `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite) }}
@@ -67,11 +75,9 @@ export default function RootLayout({
             incognito mode.
           </div>
         </noscript>
-        <ThemeProvider>
-          <AuthProvider>
-            <Layout>{children}</Layout>
-          </AuthProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <Layout>{children}</Layout>
+        </AuthProvider>
       </body>
     </html>
   );

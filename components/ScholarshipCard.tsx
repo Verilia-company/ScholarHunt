@@ -1,6 +1,13 @@
 import React from "react";
 import Link from "next/link";
-import { Calendar, MapPin, DollarSign, GraduationCap, Clock, ExternalLink } from "lucide-react";
+import {
+  Calendar,
+  MapPin,
+  DollarSign,
+  GraduationCap,
+  Clock,
+  ExternalLink,
+} from "lucide-react";
 import { motion } from "framer-motion";
 import { Scholarship } from "@/lib/firebase/services";
 import { trackEvents } from "@/lib/analytics";
@@ -58,11 +65,11 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
       whileHover={{ y: -8, scale: 1.02 }}
       transition={{ duration: 0.4, ease: "easeOut" }}
     >
-      <div 
+      <div
         className="card-glass h-full flex flex-col overflow-hidden group-hover:border-opacity-50 transition-all duration-500"
-        style={{ 
-          background: 'var(--bg-elevated)',
-          border: '1px solid var(--border-primary)'
+        style={{
+          background: "var(--bg-elevated)",
+          border: "1px solid var(--border-primary)",
         }}
       >
         {/* Clean Header */}
@@ -71,13 +78,15 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
             <div className="flex justify-between items-start mb-4">
               <div className="flex gap-2 flex-wrap">
                 {scholarship.type && (
-                  <span className={`badge ${
-                    scholarship.type === "International"
-                      ? "badge-primary"
-                      : scholarship.type === "Local"
-                      ? "badge-success"
-                      : "badge-warning"
-                  }`}>
+                  <span
+                    className={`badge ${
+                      scholarship.type === "International"
+                        ? "badge-primary"
+                        : scholarship.type === "Local"
+                        ? "badge-success"
+                        : "badge-warning"
+                    }`}
+                  >
                     {scholarship.type}
                   </span>
                 )}
@@ -88,39 +97,40 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                   </span>
                 )}
                 {isExpired && !isUndisclosed && (
-                  <span className="badge" style={{ 
-                    background: 'var(--bg-glass)',
-                    color: 'var(--text-tertiary)',
-                    border: '1px solid var(--border-primary)'
-                  }}>
+                  <span
+                    className="badge"
+                    style={{
+                      background: "var(--bg-glass)",
+                      color: "var(--text-tertiary)",
+                      border: "1px solid var(--border-primary)",
+                    }}
+                  >
                     Expired
                   </span>
                 )}
                 {isUndisclosed && (
-                  <span className="badge badge-warning">
-                    Open Application
-                  </span>
+                  <span className="badge badge-warning">Open Application</span>
                 )}
               </div>
             </div>
 
             {/* Title and Provider */}
             <div className="mb-6">
-              <h3 
+              <h3
                 className="text-title font-bold mb-3 group-hover:text-gradient transition-all duration-300 line-clamp-2 leading-tight"
-                style={{ color: 'var(--text-primary)' }}
+                style={{ color: "var(--text-primary)" }}
               >
                 {scholarship.title}
               </h3>
               {scholarship.provider && (
                 <div className="flex items-center gap-2">
-                  <div 
+                  <div
                     className="w-2 h-2 rounded-full"
-                    style={{ background: 'var(--brand-primary)' }}
+                    style={{ background: "var(--brand-primary)" }}
                   />
-                  <p 
+                  <p
                     className="text-sm font-medium"
-                    style={{ color: 'var(--text-secondary)' }}
+                    style={{ color: "var(--text-secondary)" }}
                   >
                     {scholarship.provider}
                   </p>
@@ -132,9 +142,9 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
 
         {/* Content */}
         <div className="px-6 pb-6 flex-grow flex flex-col">
-          <p 
+          <p
             className="text-body line-clamp-3 leading-relaxed mb-8 flex-grow"
-            style={{ color: 'var(--text-secondary)' }}
+            style={{ color: "var(--text-secondary)" }}
           >
             {scholarship.description}
           </p>
@@ -143,19 +153,22 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
           <div className="space-y-4 mb-8">
             {/* Amount */}
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-accent)' }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                style={{ background: "var(--brand-accent)" }}
+              >
                 <DollarSign className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <p 
+                <p
                   className="text-micro uppercase tracking-wider font-semibold mb-1"
-                  style={{ color: 'var(--text-tertiary)' }}
+                  style={{ color: "var(--text-tertiary)" }}
                 >
                   Scholarship Value
                 </p>
-                <p 
+                <p
                   className="font-bold text-lg"
-                  style={{ color: 'var(--brand-accent)' }}
+                  style={{ color: "var(--brand-accent)" }}
                 >
                   {scholarship.amount}
                 </p>
@@ -164,40 +177,42 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
 
             {/* Deadline */}
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{
-                background: isUndisclosed
-                  ? 'var(--text-quaternary)'
-                  : isUrgent
-                  ? 'var(--brand-error)'
-                  : 'var(--brand-primary)'
-              }}>
+              <div
+                className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                style={{
+                  background: isUndisclosed
+                    ? "var(--text-quaternary)"
+                    : isUrgent
+                    ? "var(--brand-error)"
+                    : "var(--brand-primary)",
+                }}
+              >
                 <Calendar className="h-6 w-6 text-white" />
               </div>
               <div className="flex-1">
-                <p 
+                <p
                   className="text-micro uppercase tracking-wider font-semibold mb-1"
-                  style={{ color: 'var(--text-tertiary)' }}
+                  style={{ color: "var(--text-tertiary)" }}
                 >
                   Application Deadline
                 </p>
-                <p className={`font-bold text-lg ${
-                  isUndisclosed
-                    ? ""
-                    : isUrgent
-                    ? ""
-                    : ""
-                }`} style={{ 
-                  color: isUndisclosed
-                    ? 'var(--text-secondary)'
-                    : isUrgent
-                    ? 'var(--brand-error)'
-                    : 'var(--text-primary)'
-                }}>
+                <p
+                  className={`font-bold text-lg ${
+                    isUndisclosed ? "" : isUrgent ? "" : ""
+                  }`}
+                  style={{
+                    color: isUndisclosed
+                      ? "var(--text-secondary)"
+                      : isUrgent
+                      ? "var(--brand-error)"
+                      : "var(--text-primary)",
+                  }}
+                >
                   {formatDeadline(scholarship.deadline)}
                   {!isExpired && !isUndisclosed && (
-                    <span 
+                    <span
                       className="block text-sm font-normal mt-1"
-                      style={{ color: 'var(--text-tertiary)' }}
+                      style={{ color: "var(--text-tertiary)" }}
                     >
                       {daysRemaining} days remaining
                     </span>
@@ -211,19 +226,22 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
               <div className="grid grid-cols-1 gap-4">
                 {scholarship.level && (
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-secondary)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      style={{ background: "var(--brand-secondary)" }}
+                    >
                       <GraduationCap className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <p 
+                      <p
                         className="text-micro uppercase tracking-wider font-semibold mb-1"
-                        style={{ color: 'var(--text-tertiary)' }}
+                        style={{ color: "var(--text-tertiary)" }}
                       >
                         Education Level
                       </p>
-                      <p 
+                      <p
                         className="font-bold"
-                        style={{ color: 'var(--text-primary)' }}
+                        style={{ color: "var(--text-primary)" }}
                       >
                         {scholarship.level}
                       </p>
@@ -232,19 +250,22 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                 )}
                 {scholarship.location && (
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg" style={{ background: 'var(--brand-primary)' }}>
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center shadow-lg"
+                      style={{ background: "var(--brand-primary)" }}
+                    >
                       <MapPin className="h-6 w-6 text-white" />
                     </div>
                     <div className="flex-1">
-                      <p 
+                      <p
                         className="text-micro uppercase tracking-wider font-semibold mb-1"
-                        style={{ color: 'var(--text-tertiary)' }}
+                        style={{ color: "var(--text-tertiary)" }}
                       >
                         Study Location
                       </p>
-                      <p 
+                      <p
                         className="font-bold"
-                        style={{ color: 'var(--text-primary)' }}
+                        style={{ color: "var(--text-primary)" }}
                       >
                         {scholarship.location}
                       </p>
@@ -270,11 +291,13 @@ export default function ScholarshipCard({ scholarship }: ScholarshipCardProps) {
                   : "btn btn-primary"
               }`}
               style={{
-                ...(isExpired && !isUndisclosed ? {
-                  background: 'var(--bg-glass)',
-                  color: 'var(--text-tertiary)',
-                  border: '1px solid var(--border-primary)'
-                } : {})
+                ...(isExpired && !isUndisclosed
+                  ? {
+                      background: "var(--bg-glass)",
+                      color: "var(--text-tertiary)",
+                      border: "1px solid var(--border-primary)",
+                    }
+                  : {}),
               }}
             >
               {isExpired && !isUndisclosed ? (
