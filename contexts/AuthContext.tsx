@@ -95,6 +95,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const unsubscribe = onAuthStateChanged(
       auth,
       (user) => {
+        // Check for force logout flag
+        if (typeof window !== "undefined") {
+          const forceLogout = sessionStorage.getItem("forceLogout");
+          if (forceLogout === "true") {
+            console.log("🔄 Force logout detected, clearing user state");
+            sessionStorage.removeItem("forceLogout");
+            setUser(null);
+            setUserProfile(null);
+            setLoading(false);
+            return;
+          }
+        }
+
         setUser(user);
         setLoading(false);
       },
@@ -376,12 +389,40 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
+      console.log("Starting logout process...");
+      console.log("Current user before logout:", user?.email);
+
       // Clean up presence tracking before signing out
-      await presenceService.cleanup();
+      if (user) {
+        try {
+          await presenceService.cleanup();
+        } catch (presenceError) {
+          console.warn("Presence cleanup failed:", presenceError);
+        }
+      }
+
+      // Force sign out from Firebase
       await signOut(auth);
-      console.log("User signed out");
+
+      // Force state update
+      setUser(null);
+      setUserProfile(null);
+
+      console.log("User signed out successfully");
+
+      // Clear all auth-related storage
+      if (typeof window !== "undefined") {
+        localStorage.clear();
+        sessionStorage.clear();
+      }
     } catch (error) {
       console.error("Error signing out:", error);
+
+      // Force refresh as fallback
+      if (typeof window !== "undefined") {
+        window.location.reload();
+      }
+
       throw error;
     }
   }; // Debug environment variables in production

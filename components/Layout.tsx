@@ -93,6 +93,22 @@ export default function Layout({ children }: LayoutProps) {
     }
   }, [showProfileDropdown]);
 
+  // Close mobile menu when clicking outside
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Element;
+      if (!target.closest(".mobile-menu-container")) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+      return () =>
+        document.removeEventListener("mousedown", handleClickOutside);
+    }
+  }, [isMenuOpen]);
+
   const handleSignIn = async () => {
     try {
       setSignInLoading(true);
@@ -147,14 +163,28 @@ export default function Layout({ children }: LayoutProps) {
   //   }
   // };
 
-  const handleSignOut = async () => {
+  const handleSignOut = () => {
+    console.log("🔴 DIRECT SignOut clicked!");
+
+    // Super direct approach - just clear everything and reload
     try {
-      await logout();
+      console.log("🧹 Clearing storage and reloading...");
+
       if (typeof window !== "undefined") {
-        sessionStorage.removeItem("skipSignInPrompt");
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Add a flag to indicate we want to be logged out
+        sessionStorage.setItem("forceLogout", "true");
+
+        // Reload the page
+        window.location.reload();
       }
     } catch (error) {
-      console.error("Sign out failed:", error);
+      console.error("❌ Error in direct signout:", error);
+      // Force reload anyway
+      window.location.reload();
     }
   };
   return (
@@ -466,11 +496,17 @@ export default function Layout({ children }: LayoutProps) {
                           {/* Sign Out Section */}
                           <div className="desktop-dropdown-signout">
                             <button
-                              onClick={() => {
+                              onClick={(e) => {
+                                console.log("🖱️ DESKTOP SIGNOUT CLICKED!");
+                                e.preventDefault();
+                                e.stopPropagation();
+
+                                // Direct signout approach
                                 handleSignOut();
                                 setShowProfileDropdown(false);
                               }}
                               className="desktop-dropdown-item w-full"
+                              type="button"
                             >
                               <LogOut className="desktop-dropdown-item-icon" />
                               <span className="desktop-dropdown-item-text">
@@ -483,186 +519,190 @@ export default function Layout({ children }: LayoutProps) {
                     </div>
                   </div>
                 )}
-                {/* Mobile menu button */}
-                <button
-                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                  className="hamburger-button lg:hidden"
-                >
-                  {isMenuOpen ? (
-                    <X className="w-6 h-6" />
-                  ) : (
-                    <Menu className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
-            </div>{" "}
-            {/* Mobile Navigation */}
-            {isMenuOpen && (
-              <div className="mobile-menu-container lg:hidden py-6">
-                <div className="flex flex-col space-y-3 px-4">
-                  <Link
-                    href="/"
-                    className="mobile-menu-link px-4 py-3 flex items-center"
-                    onClick={() => setIsMenuOpen(false)}
+                {/* Mobile menu container */}
+                <div className="relative lg:hidden mobile-menu-container">
+                  <button
+                    onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    className="hamburger-button"
                   >
-                    <span className="mobile-menu-link-text">🏠 Home</span>
-                  </Link>
-                  <Link
-                    href="/opportunities"
-                    className="mobile-menu-link px-4 py-3 flex items-center"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <span className="mobile-menu-link-text">
-                      🎓 Opportunities
-                    </span>
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="mobile-menu-link px-4 py-3 flex items-center"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <span className="mobile-menu-link-text">📝 Blog</span>
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="mobile-menu-link px-4 py-3 flex items-center"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <span className="mobile-menu-link-text">ℹ️ About</span>
-                  </Link>{" "}
-                  {/* Admin Mobile Navigation */}
-                  {isAdmin && (
-                    <div className="mobile-admin-section p-4 mt-4">
-                      <div className="flex items-center justify-between mb-3">
-                        <span className="mobile-admin-badge">
-                          ⚡ Admin Access
-                        </span>
-                      </div>
-                      <Link
-                        href="/admin"
-                        className="mobile-menu-link px-4 py-3 flex items-center"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <span className="mobile-menu-link-text">
-                          🛠️ Dashboard
-                        </span>
-                      </Link>
-                    </div>
-                  )}{" "}
-                  {/* Mobile Authentication */}
-                  <div className="mt-6 pt-4">
-                    {!user ? (
-                      <div className="flex flex-col space-y-3">
-                        <button
-                          onClick={() => {
-                            handleSignIn();
-                            setIsMenuOpen(false);
-                          }}
-                          className="mobile-auth-button px-6 py-3 text-center"
-                          disabled={signInLoading}
-                        >
-                          <span className="mobile-auth-button-text">
-                            {signInLoading ? "Signing in..." : "🔐 Login"}
-                          </span>
-                        </button>
-                        <button
-                          onClick={() => {
-                            handleSignUp();
-                            setIsMenuOpen(false);
-                          }}
-                          className="mobile-auth-button-primary px-6 py-3 text-center rounded-lg"
-                          disabled={signInLoading}
-                        >
-                          {signInLoading ? "Signing in..." : "✨ Sign Up"}
-                        </button>
-                      </div>
+                    {isMenuOpen ? (
+                      <X className="w-6 h-6" />
                     ) : (
-                      <div className="flex flex-col space-y-4">
-                        {/* Mobile User Info */}
-                        <div className="mobile-user-profile p-4">
-                          <div className="flex items-center">
-                            <div className="mobile-user-avatar w-12 h-12 rounded-full overflow-hidden flex items-center justify-center">
-                              {user.photoURL ? (
-                                <Image
-                                  src={user.photoURL}
-                                  alt="Profile"
-                                  width={48}
-                                  height={48}
-                                />
-                              ) : (
-                                <User className="w-6 h-6 text-blue-600" />
-                              )}
+                      <Menu className="w-6 h-6" />
+                    )}
+                  </button>
+
+                  {/* Top-right dropdown menu */}
+                  {isMenuOpen && (
+                    <div className="absolute top-full right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-2xl z-50 lg:hidden">
+                      <div className="p-4">
+                        {/* Navigation Links - Compact List */}
+                        <div className="space-y-1 mb-4">
+                          <Link
+                            href="/"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <span className="text-lg mr-3">🏠</span>
+                            <span className="font-medium text-gray-700 text-sm">
+                              Home
+                            </span>
+                          </Link>
+                          <Link
+                            href="/opportunities"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <span className="text-lg mr-3">🎓</span>
+                            <span className="font-medium text-gray-700 text-sm">
+                              Opportunities
+                            </span>
+                          </Link>
+                          <Link
+                            href="/blog"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <span className="text-lg mr-3">📝</span>
+                            <span className="font-medium text-gray-700 text-sm">
+                              Blog
+                            </span>
+                          </Link>
+                          <Link
+                            href="/about"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            <span className="text-lg mr-3">ℹ️</span>
+                            <span className="font-medium text-gray-700 text-sm">
+                              About
+                            </span>
+                          </Link>
+                        </div>
+
+                        {/* Authentication Section */}
+                        {!user ? (
+                          <div className="space-y-2 border-t border-gray-200/50 pt-3">
+                            <button
+                              onClick={() => {
+                                handleSignIn();
+                                setIsMenuOpen(false);
+                              }}
+                              className="top-right-auth-button w-full flex items-center justify-center px-3 py-2 bg-gray-100/80 hover:bg-gray-200/80 rounded-lg transition-all duration-300"
+                              disabled={signInLoading}
+                            >
+                              <span className="text-sm mr-2">🔐</span>
+                              <span className="font-medium text-gray-700 text-sm">
+                                {signInLoading ? "Signing in..." : "Login"}
+                              </span>
+                            </button>
+                            <button
+                              onClick={() => {
+                                handleSignUp();
+                                setIsMenuOpen(false);
+                              }}
+                              className="top-right-auth-button-primary w-full flex items-center justify-center px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all duration-300"
+                              disabled={signInLoading}
+                            >
+                              <span className="text-sm mr-2">✨</span>
+                              <span className="font-medium text-white text-sm">
+                                {signInLoading ? "Signing in..." : "Sign Up"}
+                              </span>
+                            </button>
+                          </div>
+                        ) : (
+                          <div className="border-t border-gray-200/50 pt-3">
+                            {/* Compact User Profile */}
+                            <div className="top-right-user-profile bg-gradient-to-r from-blue-50/80 to-indigo-50/80 rounded-lg p-3 mb-3">
+                              <div className="flex items-center">
+                                <div className="top-right-user-avatar relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
+                                  {user.photoURL ? (
+                                    <Image
+                                      src={user.photoURL}
+                                      alt="Profile"
+                                      width={32}
+                                      height={32}
+                                      className="rounded-full"
+                                    />
+                                  ) : (
+                                    <User className="w-4 h-4 text-white" />
+                                  )}
+                                  {/* Active status indicator */}
+                                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 border border-white rounded-full"></div>
+                                </div>
+                                <div className="ml-2 flex-1 min-w-0">
+                                  <p className="font-semibold text-gray-800 text-xs truncate">
+                                    {user.displayName || "User"}
+                                  </p>
+                                  <p className="text-gray-600 text-xs truncate">
+                                    {user.email}
+                                  </p>
+                                  {isAdmin && (
+                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mt-0.5">
+                                      Admin ⚡
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
                             </div>
-                            <div className="ml-4 flex-1 min-w-0">
-                              <p className="text-white font-semibold text-lg truncate">
-                                {user.displayName || "User"}
-                              </p>
-                              <p className="text-white/80 text-sm truncate">
-                                {user.email}
-                              </p>
-                              {isAdmin && (
-                                <span className="mobile-admin-badge mt-2 inline-block">
-                                  Admin
+
+                            {/* Quick Actions */}
+                            <div className="space-y-1">
+                              <Link
+                                href="/profile"
+                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-gray-100/60 rounded-lg transition-all duration-300"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                <User className="w-4 h-4 mr-2 text-gray-500" />
+                                <span className="font-medium text-gray-700 text-sm">
+                                  Profile
                                 </span>
+                              </Link>
+                              <Link
+                                href="/settings"
+                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-gray-100/60 rounded-lg transition-all duration-300"
+                                onClick={() => setIsMenuOpen(false)}
+                              >
+                                <Settings className="w-4 h-4 mr-2 text-gray-500" />
+                                <span className="font-medium text-gray-700 text-sm">
+                                  Settings
+                                </span>
+                              </Link>
+                              {isAdmin && (
+                                <Link
+                                  href="/admin"
+                                  className="top-right-action-link flex items-center px-3 py-2 hover:bg-emerald-50/60 rounded-lg transition-all duration-300"
+                                  onClick={() => setIsMenuOpen(false)}
+                                >
+                                  <Settings className="w-4 h-4 mr-2 text-emerald-600" />
+                                  <span className="font-medium text-emerald-700 text-sm">
+                                    Admin Dashboard
+                                  </span>
+                                </Link>
                               )}
+                              <button
+                                onClick={() => {
+                                  handleSignOut();
+                                  setIsMenuOpen(false);
+                                }}
+                                className="top-right-action-link w-full flex items-center px-3 py-2 hover:bg-red-50/60 rounded-lg transition-all duration-300"
+                              >
+                                <LogOut className="w-4 h-4 mr-2 text-red-500" />
+                                <span className="font-medium text-red-600 text-sm">
+                                  Sign Out
+                                </span>
+                              </button>
                             </div>
                           </div>
-                        </div>
-                        {/* Mobile Menu Items */}
-                        <div className="flex flex-col space-y-2">
-                          <Link
-                            href="/profile"
-                            className="mobile-menu-action flex items-center px-4 py-3"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            <User className="w-5 h-5 mr-3" />
-                            <span className="mobile-menu-action-text">
-                              Profile
-                            </span>
-                          </Link>
-                          <Link
-                            href="/settings"
-                            className="mobile-menu-action flex items-center px-4 py-3"
-                            onClick={() => setIsMenuOpen(false)}
-                          >
-                            <Settings className="w-5 h-5 mr-3" />
-                            <span className="mobile-menu-action-text">
-                              Settings
-                            </span>
-                          </Link>
-                          {isAdmin && (
-                            <Link
-                              href="/admin"
-                              className="mobile-menu-action flex items-center px-4 py-3"
-                              onClick={() => setIsMenuOpen(false)}
-                            >
-                              <Settings className="w-5 h-5 mr-3" />
-                              <span className="mobile-menu-action-text">
-                                Admin Dashboard
-                              </span>
-                            </Link>
-                          )}
-                          <button
-                            onClick={() => {
-                              handleSignOut();
-                              setIsMenuOpen(false);
-                            }}
-                            className="mobile-menu-action flex items-center px-4 py-3 text-left"
-                          >
-                            <LogOut className="w-5 h-5 mr-3" />
-                            <span className="mobile-menu-action-text">
-                              Sign Out
-                            </span>
-                          </button>
-                        </div>{" "}
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+            </div>
           </div>
-        </header>{" "}
+        </header>
         {/* Main Content */}
         <main className="flex-1">{children}</main>
         {/* WhatsApp Widget for Expert Advice */}
