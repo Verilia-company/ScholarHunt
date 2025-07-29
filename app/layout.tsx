@@ -44,8 +44,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" style={{ colorScheme: "light" }}>
       <head>
+        <meta name="color-scheme" content="light" />
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
+            html { color-scheme: light !important; }
+            * { color-scheme: light !important; }
+          `,
+          }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite) }}

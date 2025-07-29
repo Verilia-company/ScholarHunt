@@ -92,6 +92,7 @@ export default function Layout({ children }: LayoutProps) {
         document.removeEventListener("mousedown", handleClickOutside);
     }
   }, [showProfileDropdown]);
+
   const handleSignIn = async () => {
     try {
       setSignInLoading(true);
@@ -357,7 +358,7 @@ export default function Layout({ children }: LayoutProps) {
                     </button>
                   </div>
                 ) : (
-                  <div className="hidden lg:flex items-center space-x-3 relative">
+                  <div className="hidden lg:flex items-center space-x-3 relative profile-dropdown-container">
                     <div className="desktop-profile-section">
                       {/* Standalone Profile Avatar */}
                       <div
@@ -481,7 +482,7 @@ export default function Layout({ children }: LayoutProps) {
                       )}
                     </div>
                   </div>
-                )}{" "}
+                )}
                 {/* Mobile menu button */}
                 <button
                   onClick={() => setIsMenuOpen(!isMenuOpen)}
