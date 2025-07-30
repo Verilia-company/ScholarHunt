@@ -64,42 +64,112 @@ export default function AboutPage() {
   }, []);
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      {/* Clean Hero Section */}
+      {/* Enhanced Professional Hero Section */}
       <motion.section
         ref={heroRef}
-        className="relative overflow-hidden py-32"
-        style={{ background: "var(--brand-primary)" }}
+        className="relative overflow-hidden py-20 lg:py-24"
         initial={{ opacity: 0 }}
         animate={{ opacity: heroInView ? 1 : 0 }}
         transition={{ duration: 0.8 }}
       >
-        <div className="relative max-w-7xl mx-auto px-6 lg:px-8 text-center">
+        {/* Vibrant Background Gradient */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, #1e40af 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #a855f7 100%)",
+          }}
+        />
+
+        {/* Enhanced Brand Accent Layer */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            background: `
+              radial-gradient(ellipse 120% 80% at 25% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
+              radial-gradient(ellipse 100% 60% at 75% 80%, rgba(168, 85, 247, 0.3) 0%, transparent 60%),
+              radial-gradient(ellipse 80% 100% at 50% 0%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)
+            `,
+          }}
+        />
+
+        {/* Dynamic Texture for Depth */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            background: `
+              linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%),
+              linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.08) 50%, transparent 55%),
+              radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)
+            `,
+            backgroundSize: "80px 80px, 80px 80px, 200px 200px, 200px 200px",
+          }}
+        />
+
+        {/* Content Readability Enhancement */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.3) 100%)",
+          }}
+        />
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 text-center">
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 50, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.2 }}
           >
-            <div
-              className="inline-flex items-center gap-3 rounded-full px-6 py-3 mb-8"
-              style={{ background: "rgba(255, 255, 255, 0.1)" }}
-            >
-              <Heart className="w-5 h-5 text-white" />
-              <span className="font-medium text-white">
+            {/* Professional Badge */}
+            <div className="inline-flex items-center gap-3 rounded-2xl px-8 py-4 mb-8 bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg">
+              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-green-300 flex items-center justify-center shadow-lg">
+                <Heart className="w-5 h-5 text-gray-900" />
+              </div>
+              <span className="font-semibold text-white text-lg">
                 Our Story & Mission
               </span>
+              <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
             </div>
 
-            <h1 className="text-display mb-8 text-white">
-              Transforming Dreams Into
+            {/* Enhanced Title */}
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight">
+              <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-lg">
+                Transforming Dreams Into
+              </span>
               <br />
-              <span className="text-white opacity-90">Reality</span>
+              <span className="bg-gradient-to-r from-yellow-200 via-green-200 to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
+                Reality
+              </span>
             </h1>
 
-            <p className="text-subtitle max-w-4xl mx-auto leading-relaxed text-white opacity-80">
+            {/* Enhanced Description */}
+            <p className="text-xl lg:text-2xl max-w-4xl mx-auto leading-relaxed text-blue-50 font-medium mb-10">
               Born from struggle, built with purpose. We&apos;re revolutionizing
               how students discover and access life-changing scholarship
               opportunities.
             </p>
+
+            {/* Professional Stats/Values */}
+            <div className="flex flex-wrap justify-center items-center gap-6 lg:gap-8">
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                <span className="text-blue-100 font-medium">
+                  Passion-Driven Mission
+                </span>
+              </div>
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                <span className="text-blue-100 font-medium">Global Impact</span>
+              </div>
+              <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+                <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+                <span className="text-blue-100 font-medium">
+                  Student-First Approach
+                </span>
+              </div>
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -656,7 +726,9 @@ export default function AboutPage() {
               {[
                 {
                   component: Facebook,
-                  href: settings?.socialMedia?.facebook || "https://www.facebook.com/share/16g4GXRe6r/",
+                  href:
+                    settings?.socialMedia?.facebook ||
+                    "https://www.facebook.com/share/16g4GXRe6r/",
                   color: "hover:text-blue-500",
                   gradient: "from-blue-400 to-blue-600",
                 },
@@ -668,7 +740,9 @@ export default function AboutPage() {
                 },
                 {
                   component: Linkedin,
-                  href: settings?.socialMedia?.linkedin || "https://linkedin.com/company/scholarhunt-uganda",
+                  href:
+                    settings?.socialMedia?.linkedin ||
+                    "https://linkedin.com/company/scholarhunt-uganda",
                   color: "hover:text-blue-600",
                   gradient: "from-blue-500 to-indigo-600",
                 },
