@@ -9,7 +9,6 @@ import {
   MapPin,
   DollarSign,
   GraduationCap,
-  Tag,
   ExternalLink,
   ArrowLeft,
   AlertTriangle,
@@ -28,9 +27,7 @@ import {
   Globe,
   University,
   FileText,
-  Heart,
   Star,
-  Sparkles,
 } from "lucide-react";
 import { scholarshipService, Scholarship } from "@/lib/firebase/services";
 // ShareButtons component removed as it's not being used

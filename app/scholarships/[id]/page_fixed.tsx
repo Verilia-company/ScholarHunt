@@ -9,7 +9,6 @@ import {
   MapPin,
   DollarSign,
   GraduationCap,
-  Tag,
   ExternalLink,
   ArrowLeft,
   AlertTriangle,
@@ -28,9 +27,7 @@ import {
   Globe,
   University,
   FileText,
-  Heart,
   Star,
-  Sparkles,
 } from "lucide-react";
 import { scholarshipService, Scholarship } from "@/lib/firebase/services";
 // ShareButtons component removed as it's not being used
@@ -88,9 +85,9 @@ import {
 // Custom logger that only logs in development
 const isDevelopment = process.env.NODE_ENV === "development";
 const logger = {
-  log: (...args: any[]) => isDevelopment && console.log(...args),
-  error: (...args: any[]) => isDevelopment && console.error(...args),
-  warn: (...args: any[]) => isDevelopment && console.warn(...args),
+  log: (...args: unknown[]) => isDevelopment && console.log(...args),
+  error: (...args: unknown[]) => isDevelopment && console.error(...args),
+  warn: (...args: unknown[]) => isDevelopment && console.warn(...args),
 };
 
 // Enhanced component for application requirements with rich formatting and consistent styling
@@ -151,7 +148,7 @@ const formatRichContent = (content: string) => {
   if (!content) return null;
 
   // Clean up content: remove special symbols and normalize line breaks
-  let cleanedContent = content
+  const cleanedContent = content
     .replace(/[";]/g, "") // Remove semicolon and quote symbols
     .replace(/\s*nest\s*/gi, "\n") // Replace "nest" with line break
     .replace(/\s*stop\s*/gi, "\n\n") // Replace "stop" with paragraph break
@@ -182,7 +179,7 @@ const formatRichContent = (content: string) => {
         }
 
         // Second part contains the document list - convert to bullet points
-        let documentList = parts[1].trim();
+        const documentList = parts[1].trim();
 
         // Split on common patterns that indicate new document items
         const documentItems = documentList

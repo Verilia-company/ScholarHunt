@@ -3,15 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  Menu,
-  X,
-  GraduationCap,
-  User,
-  LogOut,
-  Settings,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, X, User, LogOut, Settings, ChevronDown } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import NewsletterSubscription from "./NewsletterSubscription";
 import { usePageTracking } from "../lib/analytics";
