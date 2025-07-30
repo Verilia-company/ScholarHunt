@@ -1036,19 +1036,19 @@ export default function ScholarshipDetailPage() {
                 </Link>
               </motion.div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
                 {/* Main Hero Content */}
-                <div className="lg:col-span-2">
+                <div className="xl:col-span-2">
                   {/* Status Badges */}
                   <motion.div
-                    className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6"
+                    className="flex flex-wrap gap-2 mb-3 sm:mb-4 lg:mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     {scholarship.type && (
                       <div
-                        className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ${
+                        className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold ${
                           scholarship.type === "International"
                             ? "bg-blue-500/20 text-blue-200 border border-blue-400/30"
                             : scholarship.type === "Local"
@@ -1056,31 +1056,29 @@ export default function ScholarshipDetailPage() {
                             : "bg-purple-500/20 text-purple-200 border border-purple-400/30"
                         }`}
                       >
-                        <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
-                        {scholarship.type}
+                        <Globe className="h-3 w-3" />
+                        <span className="truncate">{scholarship.type}</span>
                       </div>
                     )}
                     {isUrgent && !isExpired && !isUndisclosed && (
-                      <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-xs sm:text-sm font-semibold animate-pulse">
-                        <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className="whitespace-nowrap">
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-xs font-semibold animate-pulse">
+                        <Clock className="h-3 w-3" />
+                        <span className="truncate">
                           Urgent - {daysRemaining} days left
                         </span>
                       </div>
                     )}
                     {isUndisclosed && (
-                      <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs sm:text-sm font-semibold">
-                        <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
-                        <span className="whitespace-nowrap">
-                          Open Application
-                        </span>
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs font-semibold">
+                        <CheckCircle className="h-3 w-3" />
+                        <span className="truncate">Open Application</span>
                       </div>
                     )}
                   </motion.div>
 
                   {/* Title */}
                   <motion.h1
-                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight"
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6 leading-tight break-words"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
@@ -1093,13 +1091,13 @@ export default function ScholarshipDetailPage() {
                   {/* Provider */}
                   {scholarship.provider && (
                     <motion.div
-                      className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-6 sm:mb-8"
+                      className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 mb-4 sm:mb-6"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <University className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300 flex-shrink-0" />
-                      <span className="text-white font-medium text-sm sm:text-base">
+                      <University className="h-4 w-4 text-blue-300 flex-shrink-0" />
+                      <span className="text-white font-medium text-sm break-words">
                         Offered by{" "}
                         <span className="font-bold text-blue-200">
                           {scholarship.provider}
@@ -1110,34 +1108,34 @@ export default function ScholarshipDetailPage() {
 
                   {/* Quick Stats */}
                   <motion.div
-                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8"
+                    className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 sm:mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
                   >
-                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4">
-                      <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-400 mb-2" />
+                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3">
+                      <DollarSign className="h-5 w-5 text-green-400 mb-2" />
                       <div className="text-xs text-gray-300 mb-1">Value</div>
-                      <div className="text-sm sm:text-base font-bold text-white break-words">
+                      <div className="text-sm font-bold text-white break-words">
                         {scholarship.amount}
                       </div>
                     </div>
                     {scholarship.level && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4">
-                        <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400 mb-2" />
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3">
+                        <GraduationCap className="h-5 w-5 text-purple-400 mb-2" />
                         <div className="text-xs text-gray-300 mb-1">Level</div>
-                        <div className="text-sm sm:text-base font-bold text-white break-words">
+                        <div className="text-sm font-bold text-white break-words">
                           {scholarship.level}
                         </div>
                       </div>
                     )}
                     {scholarship.location && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
-                        <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400 mb-2" />
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:col-span-2">
+                        <MapPin className="h-5 w-5 text-orange-400 mb-2" />
                         <div className="text-xs text-gray-300 mb-1">
                           Location
                         </div>
-                        <div className="text-sm sm:text-base font-bold text-white break-words">
+                        <div className="text-sm font-bold text-white break-words">
                           {scholarship.location}
                         </div>
                       </div>
@@ -1147,15 +1145,15 @@ export default function ScholarshipDetailPage() {
 
                 {/* Action Card */}
                 <motion.div
-                  className="lg:col-span-1"
+                  className="xl:col-span-1"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  <div className="lg:sticky lg:top-24">
+                  <div className="xl:sticky xl:top-24">
                     <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-4 sm:p-6 shadow-2xl">
                       <div className="text-center mb-4 sm:mb-6">
-                        <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-3 sm:mb-4">
+                        <div className="inline-flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-3">
                           <Award className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
                           <span className="text-xs sm:text-sm font-semibold text-green-300">
                             Scholarship Opportunity
@@ -1170,7 +1168,7 @@ export default function ScholarshipDetailPage() {
                       </div>
 
                       {/* Application Deadline */}
-                      <div className="bg-white/5 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+                      <div className="bg-white/5 rounded-xl p-3 mb-4 sm:mb-6">
                         <div className="flex items-center gap-2 sm:gap-3">
                           <Calendar
                             className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${
@@ -1202,7 +1200,7 @@ export default function ScholarshipDetailPage() {
 
                       {/* Apply Button */}
                       {isExpired && !isUndisclosed ? (
-                        <div className="text-center p-3 sm:p-4 bg-red-500/10 border border-red-400/30 rounded-xl">
+                        <div className="text-center p-3 bg-red-500/10 border border-red-400/30 rounded-xl">
                           <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-red-400 mx-auto mb-2" />
                           <div className="text-xs sm:text-sm font-medium text-red-300 mb-1">
                             Application Period Closed
@@ -1215,11 +1213,11 @@ export default function ScholarshipDetailPage() {
                       ) : (
                         <motion.button
                           onClick={handleApplyClick}
-                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
+                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5" />
+                          <ExternalLink className="h-4 w-4" />
                           <span className="break-words">
                             {scholarship.applicationUrl
                               ? "Apply Now"
