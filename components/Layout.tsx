@@ -714,62 +714,47 @@ export default function Layout({ children }: LayoutProps) {
         <ToastContainer toasts={toasts} onClose={removeToast} />
         {/* Professional Footer */}
         <footer className="relative overflow-hidden">
-          {/* Main Gradient Background */}
+          {/* Vibrant Professional Background */}
           <div
             className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(135deg, #1e3a8a 0%, #3730a3 25%, #581c87 50%, #7c2d12 75%, #0f172a 100%)",
+                "linear-gradient(135deg, #1e40af 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #a855f7 100%)",
             }}
           />
 
-          {/* Overlay Pattern Background */}
+          {/* Enhanced Brand Accent Layer */}
           <div
             className="absolute inset-0 opacity-20"
             style={{
-              backgroundImage: `
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)
+              background: `
+                radial-gradient(ellipse 120% 80% at 25% 20%, rgba(59, 130, 246, 0.3) 0%, transparent 60%),
+                radial-gradient(ellipse 100% 60% at 75% 80%, rgba(168, 85, 247, 0.25) 0%, transparent 60%),
+                radial-gradient(ellipse 80% 100% at 50% 0%, rgba(34, 197, 94, 0.15) 0%, transparent 50%)
               `,
-              backgroundSize: "800px 800px, 600px 600px, 400px 400px",
-              animation: "float 25s ease-in-out infinite",
             }}
           />
 
-          {/* Geometric Pattern Overlay */}
+          {/* Dynamic Texture for Depth */}
           <div
-            className="absolute inset-0 opacity-5"
-            style={{
-              backgroundImage: `
-                linear-gradient(30deg, transparent 48%, rgba(255, 255, 255, 0.1) 49%, rgba(255, 255, 255, 0.1) 51%, transparent 52%),
-                linear-gradient(60deg, transparent 48%, rgba(255, 255, 255, 0.05) 49%, rgba(255, 255, 255, 0.05) 51%, transparent 52%),
-                linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.03) 49%, rgba(255, 255, 255, 0.03) 51%, transparent 52%)
-              `,
-              backgroundSize: "120px 120px, 80px 80px, 60px 60px",
-            }}
-          />
-
-          {/* Professional Mesh Gradient Overlay */}
-          <div
-            className="absolute inset-0 opacity-40"
+            className="absolute inset-0 opacity-10"
             style={{
               background: `
-                radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at top right, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom left, rgba(5, 150, 105, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.1) 0%, transparent 50%)
+                linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%),
+                linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.08) 50%, transparent 55%),
+                radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.1) 0%, transparent 50%)
               `,
+              backgroundSize: "80px 80px, 80px 80px, 200px 200px, 200px 200px",
             }}
           />
 
-          {/* Subtle Texture Overlay */}
+          {/* Content Readability Enhancement */}
           <div
-            className="absolute inset-0 opacity-30"
+            className="absolute inset-0"
             style={{
               background:
-                "linear-gradient(135deg, transparent 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%)",
-              backgroundSize: "20px 20px",
+                "linear-gradient(to bottom, rgba(15, 23, 42, 0.2) 0%, rgba(15, 23, 42, 0.4) 100%)",
             }}
           />
 
@@ -800,35 +785,37 @@ export default function Layout({ children }: LayoutProps) {
                       </div>
                     </div>
 
-                    <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-md">
-                      Empowering Ugandan students to achieve their academic
+                    <p className="text-blue-50 text-lg leading-relaxed mb-8 max-w-md">
+                      Empowering students worldwide to achieve their academic
                       dreams through comprehensive scholarship discovery and
-                      application support.
+                      expert application support.
                     </p>
 
                     {/* Stats */}
                     <div className="grid grid-cols-3 gap-6 mb-8">
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                        <div className="text-2xl font-bold text-yellow-300 mb-1">
                           500+
                         </div>
-                        <div className="text-slate-400 text-sm">
+                        <div className="text-blue-200 text-sm font-medium">
                           Scholarships
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                        <div className="text-2xl font-bold text-green-300 mb-1">
                           10K+
                         </div>
-                        <div className="text-slate-400 text-sm">
+                        <div className="text-blue-200 text-sm font-medium">
                           Students Helped
                         </div>
                       </div>
                       <div className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                        <div className="text-2xl font-bold text-purple-300 mb-1">
                           50+
                         </div>
-                        <div className="text-slate-400 text-sm">Countries</div>
+                        <div className="text-blue-200 text-sm font-medium">
+                          Countries
+                        </div>
                       </div>
                     </div>
 
@@ -836,10 +823,10 @@ export default function Layout({ children }: LayoutProps) {
                     <div className="flex space-x-4">
                       <a
                         href="#"
-                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-blue-500 transition-all duration-300 group"
+                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-blue-400 hover:scale-110 transition-all duration-300 group shadow-lg"
                       >
                         <svg
-                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          className="w-5 h-5 text-blue-100 group-hover:text-white"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -848,10 +835,10 @@ export default function Layout({ children }: LayoutProps) {
                       </a>
                       <a
                         href="#"
-                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-blue-600 transition-all duration-300 group"
+                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-blue-600 hover:scale-110 transition-all duration-300 group shadow-lg"
                       >
                         <svg
-                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          className="w-5 h-5 text-blue-100 group-hover:text-white"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -860,10 +847,10 @@ export default function Layout({ children }: LayoutProps) {
                       </a>
                       <a
                         href="#"
-                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-green-500 transition-all duration-300 group"
+                        className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-green-500 hover:scale-110 transition-all duration-300 group shadow-lg"
                       >
                         <svg
-                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          className="w-5 h-5 text-green-100 group-hover:text-white"
                           fill="currentColor"
                           viewBox="0 0 24 24"
                         >
@@ -890,7 +877,7 @@ export default function Layout({ children }: LayoutProps) {
                       <div className="space-y-3">
                         <Link
                           href="/opportunities"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 group"
+                          className="block text-slate-100 hover:text-blue-300 transition-colors duration-300 group"
                         >
                           <span className="flex items-center">
                             Browse Scholarships
@@ -911,25 +898,25 @@ export default function Layout({ children }: LayoutProps) {
                         </Link>
                         <Link
                           href="/opportunities?type=undergraduate"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-yellow-300 transition-colors duration-300 font-medium"
                         >
                           Undergraduate Programs
                         </Link>
                         <Link
                           href="/opportunities?type=graduate"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-yellow-300 transition-colors duration-300 font-medium"
                         >
                           Graduate Programs
                         </Link>
                         <Link
                           href="/opportunities?type=research"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-yellow-300 transition-colors duration-300 font-medium"
                         >
                           Research Opportunities
                         </Link>
                         <Link
                           href="/submit"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-yellow-300 transition-colors duration-300 font-medium"
                         >
                           Submit Scholarship
                         </Link>
@@ -949,31 +936,31 @@ export default function Layout({ children }: LayoutProps) {
                       <div className="space-y-3">
                         <Link
                           href="/blog"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-green-300 transition-colors duration-300 font-medium"
                         >
                           Success Stories
                         </Link>
                         <Link
                           href="/blog?category=tips"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-green-300 transition-colors duration-300 font-medium"
                         >
                           Application Tips
                         </Link>
                         <Link
                           href="/blog?category=guides"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-green-300 transition-colors duration-300 font-medium"
                         >
                           Study Guides
                         </Link>
                         <Link
                           href="/about"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-green-300 transition-colors duration-300 font-medium"
                         >
                           About ScholarHunt
                         </Link>
                         <Link
                           href="#"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-green-300 transition-colors duration-300 font-medium"
                         >
                           Help Center
                         </Link>
@@ -993,31 +980,31 @@ export default function Layout({ children }: LayoutProps) {
                       <div className="space-y-3">
                         <Link
                           href="/about"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-purple-300 transition-colors duration-300 font-medium"
                         >
                           Our Mission
                         </Link>
                         <Link
                           href="#"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-purple-300 transition-colors duration-300 font-medium"
                         >
                           Contact Us
                         </Link>
                         <Link
                           href="/privacy-policy"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-purple-300 transition-colors duration-300 font-medium"
                         >
                           Privacy Policy
                         </Link>
                         <Link
                           href="/terms-of-service"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-purple-300 transition-colors duration-300 font-medium"
                         >
                           Terms of Service
                         </Link>
                         <Link
                           href="#"
-                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                          className="block text-blue-100 hover:text-purple-300 transition-colors duration-300 font-medium"
                         >
                           Partnerships
                         </Link>
@@ -1040,9 +1027,9 @@ export default function Layout({ children }: LayoutProps) {
                 <h3 className="text-2xl font-bold text-white mb-3">
                   Never Miss an Opportunity
                 </h3>
-                <p className="text-slate-300 text-lg max-w-2xl mx-auto">
-                  Join 10,000+ students who get weekly scholarship alerts and
-                  exclusive application tips.
+                <p className="text-blue-100 text-lg max-w-2xl mx-auto font-medium">
+                  Join 10,000+ students worldwide who get weekly scholarship
+                  alerts and exclusive application tips.
                 </p>
               </div>
 
@@ -1056,10 +1043,10 @@ export default function Layout({ children }: LayoutProps) {
               </div>
 
               {/* Trust Indicators */}
-              <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-slate-400 text-sm">
-                <div className="flex items-center gap-2">
+              <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-blue-200 text-sm font-medium">
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-full backdrop-blur-sm">
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-green-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1069,11 +1056,11 @@ export default function Layout({ children }: LayoutProps) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  Secure & Private
+                  <span className="text-blue-100">Secure & Private</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-full backdrop-blur-sm">
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-yellow-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
@@ -1083,32 +1070,32 @@ export default function Layout({ children }: LayoutProps) {
                       clipRule="evenodd"
                     />
                   </svg>
-                  No Spam Guarantee
+                  <span className="text-blue-100">No Spam Guarantee</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 bg-white/10 px-3 py-2 rounded-full backdrop-blur-sm">
                   <svg
-                    className="w-4 h-4"
+                    className="w-4 h-4 text-purple-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                   >
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
-                  24/7 Support
+                  <span className="text-blue-100">24/7 Support</span>
                 </div>
               </div>
             </motion.div>
 
             {/* Bottom Bar */}
-            <div className="py-6 border-t border-slate-700/50">
+            <div className="py-6 border-t border-blue-700/30">
               <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
-                <div className="text-slate-400 text-sm">
-                  © 2025 ScholarHunt Uganda. All rights reserved. Made with ❤️
-                  for Ugandan students.
+                <div className="text-blue-200 text-sm font-medium">
+                  © 2025 ScholarHunt. All rights reserved. Made with ❤️ for
+                  students worldwide.
                 </div>
-                <div className="flex items-center gap-6 text-slate-400 text-sm">
-                  <span className="flex items-center gap-2">
+                <div className="flex items-center gap-6 text-blue-200 text-sm font-medium">
+                  <span className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
                     <svg
-                      className="w-4 h-4"
+                      className="w-4 h-4 text-green-300"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                     >
@@ -1118,10 +1105,15 @@ export default function Layout({ children }: LayoutProps) {
                         clipRule="evenodd"
                       />
                     </svg>
-                    Proudly Ugandan
+                    <span className="text-blue-100">Global Platform</span>
                   </span>
-                  <span>•</span>
-                  <span>Status: All Systems Operational</span>
+                  <span className="text-blue-300">•</span>
+                  <span className="flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full backdrop-blur-sm">
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <span className="text-blue-100">
+                      All Systems Operational
+                    </span>
+                  </span>
                 </div>
               </div>
             </div>
