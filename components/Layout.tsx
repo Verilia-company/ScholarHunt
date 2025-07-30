@@ -315,10 +315,12 @@ export default function Layout({ children }: LayoutProps) {
       >
         {/* Clean Header */}
         <header
-          className="sticky top-0 z-50 transition-all duration-300 relative"
+          className="sticky top-0 z-50 transition-all duration-300 relative backdrop-blur-xl"
           style={{
-            background: "var(--brand-primary)",
-            boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+            background:
+              "linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(59, 130, 246, 0.9) 25%, rgba(99, 102, 241, 0.9) 50%, rgba(139, 92, 246, 0.9) 75%, rgba(168, 85, 247, 0.9) 100%)",
+            boxShadow: "0 4px 24px 0 rgba(80, 80, 180, 0.15)",
+            borderBottom: "1.5px solid rgba(255,255,255,0.15)",
           }}
         >
           {" "}
@@ -330,38 +332,56 @@ export default function Layout({ children }: LayoutProps) {
               {/* Logo */}
               <Link
                 href="/"
-                className="flex items-center space-x-1.5 sm:space-x-2"
+                className="flex items-center gap-2 group"
+                style={{ minWidth: 0 }}
               >
-                <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
-                  <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl flex items-center justify-center overflow-hidden bg-white/20 border-2 border-white/30 shadow-lg group-hover:scale-105 transition-transform duration-200">
+                  <Image
+                    src="/scholarHuntLogo.jpg"
+                    alt="ScholarHunt Logo"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-cover rounded-xl"
+                    priority
+                  />
                 </div>
-                <span className="text-lg sm:text-xl font-bold text-white">
+                <span className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-yellow-300 via-white to-green-200 bg-clip-text text-transparent tracking-tight drop-shadow-lg group-hover:opacity-90 transition-opacity duration-200">
                   ScholarHunt
                 </span>
-              </Link>{" "}
+              </Link>
               {/* Desktop Navigation */}
               <nav className="hidden lg:flex items-center space-x-3 xl:space-x-4">
-                <Link href="/" className="desktop-nav-link">
-                  🏠 Home
-                </Link>
-                <Link href="/opportunities" className="desktop-nav-link">
-                  🎓 Opportunities
-                </Link>
-                <Link href="/blog" className="desktop-nav-link">
-                  📝 Blog
-                </Link>
-                <Link href="/about" className="desktop-nav-link">
-                  ℹ️ About
-                </Link>
+                {[
+                  { href: "/", label: "Home", icon: "🏠" },
+                  {
+                    href: "/opportunities",
+                    label: "Opportunities",
+                    icon: "🎓",
+                  },
+                  { href: "/blog", label: "Blog", icon: "📝" },
+                  { href: "/about", label: "About", icon: "ℹ️" },
+                ].map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="relative px-4 py-2 font-semibold text-white/90 hover:text-yellow-300 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 rounded-xl group"
+                  >
+                    <span className="mr-2 text-lg">{item.icon}</span>
+                    <span>{item.label}</span>
+                    <span className="absolute left-4 -bottom-1 w-6 h-1 bg-gradient-to-r from-yellow-300 to-green-200 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200" />
+                  </Link>
+                ))}
                 {/* Admin Navigation Links */}
                 {isAdmin && (
                   <>
-                    <div className="nav-separator" />
+                    <div className="w-1 h-8 bg-gradient-to-b from-yellow-300 to-green-200 rounded-full mx-2" />
                     <Link
                       href="/admin"
-                      className="desktop-admin-link desktop-nav-link"
+                      className="relative px-4 py-2 font-semibold text-green-200 hover:text-yellow-300 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 rounded-xl group"
                     >
-                      Dashboard
+                      <span className="mr-2 text-lg">🛠️</span>
+                      <span>Dashboard</span>
+                      <span className="absolute left-4 -bottom-1 w-6 h-1 bg-gradient-to-r from-yellow-300 to-green-200 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-200" />
                     </Link>
                   </>
                 )}
@@ -373,14 +393,14 @@ export default function Layout({ children }: LayoutProps) {
                   <div className="hidden lg:flex items-center space-x-3">
                     <button
                       onClick={handleSignIn}
-                      className="desktop-auth-login"
+                      className="px-6 py-2 rounded-xl font-bold bg-gradient-to-r from-yellow-300 to-green-300 text-gray-900 shadow-lg hover:from-yellow-400 hover:to-green-400 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300"
                       disabled={signInLoading}
                     >
                       {signInLoading ? "Signing in..." : "Login"}
                     </button>
                     <button
                       onClick={handleSignUp}
-                      className="desktop-auth-signup"
+                      className="px-6 py-2 rounded-xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-400"
                       disabled={signInLoading}
                     >
                       {signInLoading ? "Signing in..." : "Sign Up"}
@@ -391,10 +411,13 @@ export default function Layout({ children }: LayoutProps) {
                     <div className="desktop-profile-section">
                       {/* Standalone Profile Avatar */}
                       <div
-                        className="desktop-profile-avatar"
+                        className="desktop-profile-avatar ring-2 ring-yellow-200/80 hover:ring-green-200/80 transition-all duration-200"
                         onClick={() =>
                           setShowProfileDropdown(!showProfileDropdown)
                         }
+                        tabIndex={0}
+                        role="button"
+                        aria-label="Open profile menu"
                       >
                         {user.photoURL ? (
                           <Image
@@ -408,7 +431,6 @@ export default function Layout({ children }: LayoutProps) {
                           <User className="w-5 h-5 text-white" />
                         )}
                       </div>
-
                       {/* Separate Menu Button */}
                       <button
                         className={`desktop-profile-menu-button ${
@@ -417,15 +439,16 @@ export default function Layout({ children }: LayoutProps) {
                         onClick={() =>
                           setShowProfileDropdown(!showProfileDropdown)
                         }
+                        tabIndex={0}
+                        aria-label="Toggle profile dropdown"
                       >
                         <ChevronDown className="w-4 h-4" />
                       </button>
-
                       {/* Dropdown Menu */}
                       {showProfileDropdown && (
-                        <div className="desktop-profile-dropdown">
+                        <div className="desktop-profile-dropdown bg-white/95 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-2xl p-4 mt-2 absolute right-0 top-full z-50 min-w-[220px]">
                           {/* User Info Header */}
-                          <div className="desktop-dropdown-header">
+                          <div className="desktop-dropdown-header mb-3">
                             <div className="flex items-center space-x-3">
                               <div className="desktop-dropdown-avatar">
                                 {user.photoURL ? (
@@ -441,26 +464,25 @@ export default function Layout({ children }: LayoutProps) {
                                 )}
                               </div>
                               <div className="flex-1 min-w-0">
-                                <p className="desktop-dropdown-name truncate">
+                                <p className="desktop-dropdown-name truncate font-bold text-gray-900">
                                   {user.displayName || "User"}
                                 </p>
-                                <p className="desktop-dropdown-email truncate">
+                                <p className="desktop-dropdown-email truncate text-xs text-gray-500">
                                   {user.email}
                                 </p>
                                 {isAdmin && (
-                                  <span className="desktop-dropdown-admin-badge">
+                                  <span className="desktop-dropdown-admin-badge bg-gradient-to-r from-yellow-300 to-green-200 text-xs px-2 py-0.5 rounded-full ml-1 font-semibold text-gray-900">
                                     Admin
                                   </span>
                                 )}
                               </div>
                             </div>
                           </div>
-
                           {/* Menu Items */}
                           <div className="py-1">
                             <Link
                               href="/profile"
-                              className="desktop-dropdown-item"
+                              className="desktop-dropdown-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 text-gray-700"
                               onClick={() => setShowProfileDropdown(false)}
                             >
                               <User className="desktop-dropdown-item-icon" />
@@ -470,7 +492,7 @@ export default function Layout({ children }: LayoutProps) {
                             </Link>
                             <Link
                               href="/settings"
-                              className="desktop-dropdown-item"
+                              className="desktop-dropdown-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 text-gray-700"
                               onClick={() => setShowProfileDropdown(false)}
                             >
                               <Settings className="desktop-dropdown-item-icon" />
@@ -481,7 +503,7 @@ export default function Layout({ children }: LayoutProps) {
                             {isAdmin && (
                               <Link
                                 href="/admin"
-                                className="desktop-dropdown-item"
+                                className="desktop-dropdown-item flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-blue-50/80 transition-all duration-200 text-gray-700"
                                 onClick={() => setShowProfileDropdown(false)}
                               >
                                 <Settings className="desktop-dropdown-item-icon" />
@@ -491,20 +513,16 @@ export default function Layout({ children }: LayoutProps) {
                               </Link>
                             )}
                           </div>
-
                           {/* Sign Out Section */}
-                          <div className="desktop-dropdown-signout">
+                          <div className="desktop-dropdown-signout mt-2">
                             <button
                               onClick={(e) => {
-                                console.log("🖱️ DESKTOP SIGNOUT CLICKED!");
                                 e.preventDefault();
                                 e.stopPropagation();
-
-                                // Direct signout approach
                                 handleSignOut();
                                 setShowProfileDropdown(false);
                               }}
-                              className="desktop-dropdown-item w-full"
+                              className="desktop-dropdown-item w-full flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-red-50/80 transition-all duration-200 text-red-600 font-semibold"
                               type="button"
                             >
                               <LogOut className="desktop-dropdown-item-icon" />
@@ -533,47 +551,54 @@ export default function Layout({ children }: LayoutProps) {
 
                   {/* Top-right dropdown menu */}
                   {isMenuOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-80 bg-white/95 backdrop-blur-xl border border-gray-200/50 rounded-2xl shadow-2xl z-50 lg:hidden">
+                    <div
+                      className="absolute top-full right-0 mt-2 w-80 backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl z-50 lg:hidden"
+                      style={{
+                        background:
+                          "linear-gradient(135deg, rgba(30, 64, 175, 0.9) 0%, rgba(59, 130, 246, 0.9) 25%, rgba(99, 102, 241, 0.9) 50%, rgba(139, 92, 246, 0.9) 75%, rgba(168, 85, 247, 0.9) 100%)",
+                        boxShadow: "0 8px 32px 0 rgba(80, 80, 180, 0.2)",
+                      }}
+                    >
                       <div className="p-4">
                         {/* Navigation Links - Compact List */}
                         <div className="space-y-1 mb-4">
                           <Link
                             href="/"
-                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span className="text-lg mr-3">🏠</span>
-                            <span className="font-medium text-gray-700 text-sm">
+                            <span className="font-medium text-white text-sm">
                               Home
                             </span>
                           </Link>
                           <Link
                             href="/opportunities"
-                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span className="text-lg mr-3">🎓</span>
-                            <span className="font-medium text-gray-700 text-sm">
+                            <span className="font-medium text-white text-sm">
                               Opportunities
                             </span>
                           </Link>
                           <Link
                             href="/blog"
-                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span className="text-lg mr-3">📝</span>
-                            <span className="font-medium text-gray-700 text-sm">
+                            <span className="font-medium text-white text-sm">
                               Blog
                             </span>
                           </Link>
                           <Link
                             href="/about"
-                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-blue-50/80"
+                            className="top-right-mobile-link flex items-center px-3 py-2.5 rounded-lg transition-all duration-300 hover:bg-white/20 backdrop-blur-sm"
                             onClick={() => setIsMenuOpen(false)}
                           >
                             <span className="text-lg mr-3">ℹ️</span>
-                            <span className="font-medium text-gray-700 text-sm">
+                            <span className="font-medium text-white text-sm">
                               About
                             </span>
                           </Link>
@@ -581,17 +606,17 @@ export default function Layout({ children }: LayoutProps) {
 
                         {/* Authentication Section */}
                         {!user ? (
-                          <div className="space-y-2 border-t border-gray-200/50 pt-3">
+                          <div className="space-y-2 border-t border-white/30 pt-3">
                             <button
                               onClick={() => {
                                 handleSignIn();
                                 setIsMenuOpen(false);
                               }}
-                              className="top-right-auth-button w-full flex items-center justify-center px-3 py-2 bg-gray-100/80 hover:bg-gray-200/80 rounded-lg transition-all duration-300"
+                              className="top-right-auth-button w-full flex items-center justify-center px-3 py-2 bg-white/20 hover:bg-white/30 rounded-lg transition-all duration-300 backdrop-blur-sm"
                               disabled={signInLoading}
                             >
                               <span className="text-sm mr-2">🔐</span>
-                              <span className="font-medium text-gray-700 text-sm">
+                              <span className="font-medium text-white text-sm">
                                 {signInLoading ? "Signing in..." : "Login"}
                               </span>
                             </button>
@@ -600,21 +625,21 @@ export default function Layout({ children }: LayoutProps) {
                                 handleSignUp();
                                 setIsMenuOpen(false);
                               }}
-                              className="top-right-auth-button-primary w-full flex items-center justify-center px-3 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all duration-300"
+                              className="top-right-auth-button-primary w-full flex items-center justify-center px-3 py-2 bg-gradient-to-r from-yellow-300 to-green-300 hover:from-yellow-400 hover:to-green-400 rounded-lg transition-all duration-300 text-gray-900"
                               disabled={signInLoading}
                             >
                               <span className="text-sm mr-2">✨</span>
-                              <span className="font-medium text-white text-sm">
+                              <span className="font-medium text-gray-900 text-sm">
                                 {signInLoading ? "Signing in..." : "Sign Up"}
                               </span>
                             </button>
                           </div>
                         ) : (
-                          <div className="border-t border-gray-200/50 pt-3">
+                          <div className="border-t border-white/30 pt-3">
                             {/* Compact User Profile */}
-                            <div className="top-right-user-profile bg-gradient-to-r from-blue-50/80 to-indigo-50/80 rounded-lg p-3 mb-3">
+                            <div className="top-right-user-profile bg-white/20 backdrop-blur-sm rounded-lg p-3 mb-3">
                               <div className="flex items-center">
-                                <div className="top-right-user-avatar relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-r from-blue-600 to-indigo-600 flex items-center justify-center">
+                                <div className="top-right-user-avatar relative w-8 h-8 rounded-full overflow-hidden bg-gradient-to-r from-yellow-300 to-green-300 flex items-center justify-center">
                                   {user.photoURL ? (
                                     <Image
                                       src={user.photoURL}
@@ -624,20 +649,20 @@ export default function Layout({ children }: LayoutProps) {
                                       className="rounded-full"
                                     />
                                   ) : (
-                                    <User className="w-4 h-4 text-white" />
+                                    <User className="w-4 h-4 text-gray-900" />
                                   )}
                                   {/* Active status indicator */}
-                                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 border border-white rounded-full"></div>
+                                  <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 border border-white rounded-full"></div>
                                 </div>
                                 <div className="ml-2 flex-1 min-w-0">
-                                  <p className="font-semibold text-gray-800 text-xs truncate">
+                                  <p className="font-semibold text-white text-xs truncate">
                                     {user.displayName || "User"}
                                   </p>
-                                  <p className="text-gray-600 text-xs truncate">
+                                  <p className="text-blue-100 text-xs truncate">
                                     {user.email}
                                   </p>
                                   {isAdmin && (
-                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 mt-0.5">
+                                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-yellow-300 text-gray-900 mt-0.5">
                                       Admin ⚡
                                     </span>
                                   )}
@@ -649,32 +674,32 @@ export default function Layout({ children }: LayoutProps) {
                             <div className="space-y-1">
                               <Link
                                 href="/profile"
-                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-gray-100/60 rounded-lg transition-all duration-300"
+                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-white/20 rounded-lg transition-all duration-300 backdrop-blur-sm"
                                 onClick={() => setIsMenuOpen(false)}
                               >
-                                <User className="w-4 h-4 mr-2 text-gray-500" />
-                                <span className="font-medium text-gray-700 text-sm">
+                                <User className="w-4 h-4 mr-2 text-blue-100" />
+                                <span className="font-medium text-white text-sm">
                                   Profile
                                 </span>
                               </Link>
                               <Link
                                 href="/settings"
-                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-gray-100/60 rounded-lg transition-all duration-300"
+                                className="top-right-action-link flex items-center px-3 py-2 hover:bg-white/20 rounded-lg transition-all duration-300 backdrop-blur-sm"
                                 onClick={() => setIsMenuOpen(false)}
                               >
-                                <Settings className="w-4 h-4 mr-2 text-gray-500" />
-                                <span className="font-medium text-gray-700 text-sm">
+                                <Settings className="w-4 h-4 mr-2 text-blue-100" />
+                                <span className="font-medium text-white text-sm">
                                   Settings
                                 </span>
                               </Link>
                               {isAdmin && (
                                 <Link
                                   href="/admin"
-                                  className="top-right-action-link flex items-center px-3 py-2 hover:bg-emerald-50/60 rounded-lg transition-all duration-300"
+                                  className="top-right-action-link flex items-center px-3 py-2 hover:bg-yellow-300/20 rounded-lg transition-all duration-300 backdrop-blur-sm"
                                   onClick={() => setIsMenuOpen(false)}
                                 >
-                                  <Settings className="w-4 h-4 mr-2 text-emerald-600" />
-                                  <span className="font-medium text-emerald-700 text-sm">
+                                  <Settings className="w-4 h-4 mr-2 text-yellow-300" />
+                                  <span className="font-medium text-yellow-200 text-sm">
                                     Admin Dashboard
                                   </span>
                                 </Link>
@@ -684,10 +709,10 @@ export default function Layout({ children }: LayoutProps) {
                                   handleSignOut();
                                   setIsMenuOpen(false);
                                 }}
-                                className="top-right-action-link w-full flex items-center px-3 py-2 hover:bg-red-50/60 rounded-lg transition-all duration-300"
+                                className="top-right-action-link w-full flex items-center px-3 py-2 hover:bg-red-400/20 rounded-lg transition-all duration-300 backdrop-blur-sm"
                               >
-                                <LogOut className="w-4 h-4 mr-2 text-red-500" />
-                                <span className="font-medium text-red-600 text-sm">
+                                <LogOut className="w-4 h-4 mr-2 text-red-300" />
+                                <span className="font-medium text-red-200 text-sm">
                                   Sign Out
                                 </span>
                               </button>
@@ -771,11 +796,14 @@ export default function Layout({ children }: LayoutProps) {
                     viewport={{ once: true }}
                   >
                     <div className="flex items-center space-x-3 mb-6">
-                      <div
-                        className="w-12 h-12 rounded-xl flex items-center justify-center"
-                        style={{ background: "var(--gradient-primary)" }}
-                      >
-                        <GraduationCap className="w-7 h-7 text-white" />
+                      <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20">
+                        <Image
+                          src="/scholarHuntLogo.jpg"
+                          alt="ScholarHunt Logo"
+                          width={48}
+                          height={48}
+                          className="w-full h-full object-cover rounded-lg"
+                        />
                       </div>
                       <div>
                         <h3 className="text-2xl font-bold text-white">
