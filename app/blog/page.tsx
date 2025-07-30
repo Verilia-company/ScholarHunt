@@ -166,28 +166,132 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
       {/* Clean Hero Section */}
-      <div
-        className="text-white"
-        style={{ background: "var(--brand-primary)" }}
-      >
-        <div className="container mx-auto px-4 py-16">
+      {/* Enhanced Professional Header */}
+      <div className="relative overflow-hidden py-20 lg:py-24">
+        {/* Vibrant Background Gradient */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(135deg, #1e40af 0%, #3b82f6 25%, #6366f1 50%, #8b5cf6 75%, #a855f7 100%)",
+          }}
+        />
+
+        {/* Enhanced Brand Accent Layer */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            background: `
+              radial-gradient(ellipse 120% 80% at 25% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 60%),
+              radial-gradient(ellipse 100% 60% at 75% 80%, rgba(168, 85, 247, 0.3) 0%, transparent 60%),
+              radial-gradient(ellipse 80% 100% at 50% 0%, rgba(34, 197, 94, 0.2) 0%, transparent 50%)
+            `,
+          }}
+        />
+
+        {/* Dynamic Texture for Depth */}
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            background: `
+              linear-gradient(45deg, transparent 45%, rgba(255, 255, 255, 0.1) 50%, transparent 55%),
+              linear-gradient(-45deg, transparent 45%, rgba(255, 255, 255, 0.08) 50%, transparent 55%),
+              radial-gradient(circle at 30% 70%, rgba(34, 197, 94, 0.15) 0%, transparent 50%),
+              radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)
+            `,
+            backgroundSize: "80px 80px, 80px 80px, 200px 200px, 200px 200px",
+          }}
+        />
+
+        {/* Content Readability Enhancement */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.3) 100%)",
+          }}
+        />
+
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          {/* Professional Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-center"
+            className="inline-flex items-center gap-3 rounded-2xl px-8 py-4 mb-8 bg-white/10 backdrop-blur-xl border border-white/20 shadow-lg"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              ScholarHunt Blog
-            </h1>
-            <p className="text-xl md:text-2xl mb-8 opacity-90">
-              Insights, Tips, and Stories from the World of Scholarships
-            </p>
-            <p className="text-lg opacity-80 max-w-3xl mx-auto">
-              Discover valuable insights, expert advice, and inspiring stories
-              to help you navigate your educational journey and find the perfect
-              scholarship opportunities.
-            </p>
+            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-yellow-300 to-green-300 flex items-center justify-center shadow-lg">
+              <svg
+                className="w-5 h-5 text-gray-900"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+            </div>
+            <span className="font-semibold text-white text-lg">
+              Expert Insights & Stories
+            </span>
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+          </motion.div>
+
+          {/* Enhanced Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold mb-8 leading-tight"
+          >
+            <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent drop-shadow-lg">
+              ScholarHunt
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-yellow-200 via-green-200 to-blue-200 bg-clip-text text-transparent drop-shadow-lg">
+              Blog
+            </span>
+          </motion.h1>
+
+          {/* Enhanced Subtitle */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl lg:text-2xl mb-6 text-blue-50 leading-relaxed font-medium"
+          >
+            Insights, Tips, and Stories from the World of Scholarships
+          </motion.p>
+
+          {/* Enhanced Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-lg lg:text-xl max-w-4xl mx-auto text-blue-50 leading-relaxed font-medium mb-10"
+          >
+            Discover valuable insights, expert advice, and inspiring stories to
+            help you navigate your educational journey and find the perfect
+            scholarship opportunities.
+          </motion.p>
+
+          {/* Professional Stats/Features */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            className="flex flex-wrap justify-center items-center gap-6 lg:gap-8"
+          >
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <div className="w-3 h-3 rounded-full bg-green-400"></div>
+              <span className="text-blue-100 font-medium">Weekly Articles</span>
+            </div>
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+              <span className="text-blue-100 font-medium">Expert Tips</span>
+            </div>
+            <div className="flex items-center gap-3 bg-white/10 backdrop-blur-sm px-6 py-3 rounded-full border border-white/20">
+              <div className="w-3 h-3 rounded-full bg-purple-400"></div>
+              <span className="text-blue-100 font-medium">Success Stories</span>
+            </div>
           </motion.div>
         </div>
       </div>

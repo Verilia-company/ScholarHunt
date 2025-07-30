@@ -37,6 +37,417 @@ import {
   useScrollTracking,
 } from "@/lib/analytics"; // Added for analytics tracking
 
+/*
+ * SCHOLARSHIP CONTENT FORMATTING GUIDE
+ * ===================================
+ *
+ * This component supports rich text formatting for scholarship descriptions and requirements.
+ * Here's how to format content in the admin interface for best results:
+ *
+ * 1. PARAGRAPHS: Separate paragraphs with double line breaks (\n\n)
+ *
+ * 2. BULLET POINTS: Use any of these formats:
+ *    • Item one
+ *    - Item two
+ *    * Item three
+ *
+ * 3. NUMBERED LISTS: Use standard numbering:
+ *    1. First step
+ *    2. Second step
+ *
+ * 4. DOCUMENT LISTS: Include keywords like "documents", "requirements", "certificates":
+ *    Required documents:
+ *    • Academic transcripts
+ *    • Proof of language proficiency
+ *    • Recommendation letters
+ *
+ * 5. STEP-BY-STEP INSTRUCTIONS: Use action words like "Click", "Visit", "Apply":
+ *    To apply for this scholarship:
+ *
+ *    Visit the official website at [URL]
+ *    Click on the application portal
+ *    Complete the online form
+ *    Submit required documents:
+ *    • CV/Resume
+ *    • Motivation letter
+ *    • Academic transcripts
+ *
+ *    Submit your application before the deadline
+ *
+ * The system will automatically:
+ * - Format paragraphs with proper spacing
+ * - Convert bullets to styled list items
+ * - Highlight document requirements with special styling
+ * - Add visual indicators for step-by-step instructions
+ * - Style headers and sub-sections appropriately
+ */
+
+// Custom logger that only logs in development
+const isDevelopment = process.env.NODE_ENV === "development";
+const logger = {
+  log: (...args: unknown[]) => isDevelopment && console.log(...args),
+  error: (...args: unknown[]) => isDevelopment && console.error(...args),
+  warn: (...args: unknown[]) => isDevelopment && console.warn(...args),
+};
+
+// Enhanced component for application requirements with rich formatting and consistent styling
+const ApplicationRequirement = ({
+  requirement,
+  index,
+}: {
+  requirement: string;
+  index: number;
+}) => {
+  // Check if this is a complex requirement with multiple sections
+  const hasStructuredContent =
+    requirement.includes(":") &&
+    (requirement.includes("\n") || requirement.length > 200);
+
+  // Check if this looks like step-by-step instructions
+  const isStepByStep =
+    /\b(step|click|visit|choose|apply|prepare|submit)\b/i.test(requirement) &&
+    requirement.split("\n").length > 3;
+
+  if (hasStructuredContent || isStepByStep) {
+    return (
+      <div className="flex items-start gap-4">
+        <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
+          <span className="text-green-700 font-bold text-sm">{index + 1}</span>
+        </div>
+        <div className="flex-1">
+          <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+            <div className="prose prose-sm max-w-none">
+              {isStepByStep ? (
+                <div className="space-y-4">
+                  <div className="bg-white rounded-lg p-4 border border-green-100">
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                      <span className="text-sm font-semibold text-green-700 uppercase tracking-wide">
+                        Application Steps
+                      </span>
+                    </div>
+                    {formatRichContent(requirement)}
+                  </div>
+                </div>
+              ) : (
+                formatRichContent(requirement)
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // For simple requirements, use consistent numbered list format
+  return renderNumberedListItem(requirement, index, "green");
+};
+
+// Enhanced helper function to format rich text content with improved paragraph and bullet parsing
+const formatRichContent = (content: string) => {
+  if (!content) return null;
+
+  // Clean up content: remove special symbols and normalize line breaks
+  const cleanedContent = content
+    .replace(/[";]/g, "") // Remove semicolon and quote symbols
+    .replace(/\s*nest\s*/gi, "\n") // Replace "nest" with line break
+    .replace(/\s*stop\s*/gi, "\n\n") // Replace "stop" with paragraph break
+    .replace(/–bulletin/gi, "\n• ") // Replace "–bulletin" with bullet point
+    .replace(/\s+/g, " ") // Normalize multiple spaces
+    .trim();
+
+  // Enhanced paragraph detection: split on existing line breaks, semicolons, and periods followed by capital letters
+  let paragraphs = [];
+
+  // First try splitting by existing double line breaks
+  if (cleanedContent.includes("\n\n")) {
+    paragraphs = cleanedContent.split(/\n\s*\n/).filter((para) => para.trim());
+  } else {
+    // Special handling for document lists and requirements
+    // Look for patterns like "documents;" or "following:" followed by lists
+    const documentListPattern =
+      /(?:documents?|following|requirements?|submit|include|provide)[;:]/i;
+
+    if (documentListPattern.test(cleanedContent)) {
+      // Split at the document list introduction
+      const parts = cleanedContent.split(documentListPattern);
+      if (parts.length > 1) {
+        // First part is the introduction
+        const intro = parts[0].trim();
+        if (intro) {
+          paragraphs.push(intro);
+        }
+
+        // Second part contains the document list - convert to bullet points
+        const documentList = parts[1].trim();
+
+        // Split on common patterns that indicate new document items
+        const documentItems = documentList
+          .split(/(?:\s{2,}(?=[A-Z])|(?<=\.)\s+(?=[A-Z])|(?<=\))\s+(?=[A-Z]))/)
+          .filter((item) => item.trim().length > 5)
+          .map((item) => item.trim());
+
+        if (documentItems.length > 1) {
+          // Format as document list
+          const listHeader = "Required documents:";
+          const formattedList = documentItems
+            .map((item) => `• ${item}`)
+            .join("\n");
+          paragraphs.push(`${listHeader}\n${formattedList}`);
+        } else {
+          // If splitting didn't work well, try sentence-based splitting
+          const sentences = documentList
+            .split(/(?<=[.!?])\s+(?=[A-Z])/)
+            .filter((s) => s.trim());
+          paragraphs.push(...sentences);
+        }
+      } else {
+        paragraphs = [cleanedContent];
+      }
+    } else {
+      // If no document list pattern, try other methods
+      // Split on semicolons followed by space and capital letter, or period followed by space and capital letter
+      const splitPattern =
+        /(?:\.\s+(?=[A-Z])|;\s*(?=[A-Z])|(?<=\.)\s*-\s*Advertisement\s*-\s*)/g;
+      paragraphs = cleanedContent
+        .split(splitPattern)
+        .filter((para) => para.trim());
+
+      // If still one long paragraph, try splitting on sentences that are likely paragraph breaks
+      if (paragraphs.length === 1) {
+        const sentencePattern = /(?<=[.!?])\s+(?=[A-Z])/g;
+        const sentences = cleanedContent.split(sentencePattern);
+
+        // Group sentences into logical paragraphs (every 2-3 sentences)
+        paragraphs = [];
+        for (let i = 0; i < sentences.length; i += 2) {
+          const paragraph = sentences
+            .slice(i, i + 2)
+            .join(" ")
+            .trim();
+          if (paragraph) {
+            paragraphs.push(paragraph);
+          }
+        }
+      }
+    }
+  }
+
+  // Clean up paragraphs and remove artifacts
+  paragraphs = paragraphs
+    .map((para) => para.replace(/^\s*-\s*Advertisement\s*-\s*/i, "").trim())
+    .filter((para) => para.length > 10); // Remove very short paragraphs
+
+  return paragraphs.map((paragraph, paraIndex) => {
+    const trimmedPara = paragraph.trim();
+
+    // Handle special sections like "including:" or "should:" or "documents:" or application steps
+    const hasColonHeader = /^[^:]+:$/.test(trimmedPara.split("\n")[0]);
+    const isDocumentList =
+      /\b(documents?|requirements?|certificates?|proof|form|prepare|submit|required documents|following)\b/i.test(
+        trimmedPara
+      );
+    const isApplicationSteps =
+      /\b(apply|click|visit|go to|choose|step|application)\b/i.test(
+        trimmedPara
+      );
+
+    // Check if this paragraph has bullet points or document items
+    const hasExplicitBullets =
+      /^\s*[•\-\*]/.test(trimmedPara) || trimmedPara.includes("\n•");
+
+    if (hasColonHeader || hasExplicitBullets) {
+      const lines = trimmedPara.split("\n");
+      const header = hasColonHeader ? lines[0] : "Required items:";
+      const listItems = hasColonHeader
+        ? lines.slice(1).filter((line) => line.trim())
+        : lines;
+
+      return (
+        <div key={paraIndex} className="mb-6">
+          {hasColonHeader && (
+            <h4 className="font-semibold text-gray-900 mb-3 text-base flex items-center gap-2">
+              {isDocumentList && (
+                <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+              )}
+              {isApplicationSteps && (
+                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+              )}
+              {header}
+            </h4>
+          )}
+          {listItems.length > 0 && (
+            <div
+              className={
+                isDocumentList
+                  ? "bg-blue-50 rounded-lg p-4 border border-blue-100"
+                  : isApplicationSteps
+                  ? "bg-green-50 rounded-lg p-4 border border-green-100"
+                  : ""
+              }
+            >
+              <ul className="space-y-3 ml-4">
+                {listItems.map((item, itemIndex) => {
+                  const cleanItem = item
+                    .replace(/^\s*[•\-\*]\s*/, "")
+                    .replace(/^\s*\d+\.\s*/, "")
+                    .trim();
+                  return cleanItem ? (
+                    <li
+                      key={itemIndex}
+                      className="text-gray-700 leading-relaxed flex items-start gap-3"
+                    >
+                      <span
+                        className={`font-bold text-sm mt-1 flex-shrink-0 ${
+                          isDocumentList
+                            ? "text-blue-600"
+                            : isApplicationSteps
+                            ? "text-green-600"
+                            : "text-gray-600"
+                        }`}
+                      >
+                        {isDocumentList ? "📄" : isApplicationSteps ? "▶" : "•"}
+                      </span>
+                      <span className="flex-1">{cleanItem}</span>
+                    </li>
+                  ) : null;
+                })}
+              </ul>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    // Check if paragraph contains bullet points or numbered items
+    const lines = trimmedPara.split("\n").filter((line) => line.trim());
+
+    // If it's a single line, render as paragraph
+    if (lines.length === 1) {
+      // Check if it's a step or instruction
+      const isStep =
+        /^\d+\.\s/.test(trimmedPara) ||
+        /^(step|click|visit|choose|apply)/i.test(trimmedPara);
+
+      return (
+        <div
+          key={paraIndex}
+          className={`mb-4 ${isStep ? "pl-4 border-l-2 border-blue-200" : ""}`}
+        >
+          <p className="text-gray-700 leading-relaxed">
+            {isStep && (
+              <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+            )}
+            {trimmedPara}
+          </p>
+        </div>
+      );
+    }
+
+    // Check if lines are bullet points or numbered items
+    const isBulletList = lines.some(
+      (line) => /^\s*[•\-\*]\s/.test(line) || /^\s*\d+\.\s/.test(line)
+    );
+
+    if (isBulletList) {
+      return (
+        <div key={paraIndex} className="mb-4">
+          <ul className="space-y-3 ml-4">
+            {lines.map((line, lineIndex) => {
+              const cleanLine = line
+                .replace(/^\s*[•\-\*]\s*/, "")
+                .replace(/^\s*\d+\.\s*/, "")
+                .trim();
+              return cleanLine ? (
+                <li
+                  key={lineIndex}
+                  className="text-gray-700 leading-relaxed flex items-start gap-3"
+                >
+                  <span className="text-blue-600 font-bold text-sm mt-1 flex-shrink-0">
+                    •
+                  </span>
+                  <span className="flex-1">{cleanLine}</span>
+                </li>
+              ) : null;
+            })}
+          </ul>
+        </div>
+      );
+    }
+
+    // For other multi-line content, render as separate paragraphs with step indicators
+    return (
+      <div key={paraIndex} className="mb-4 space-y-3">
+        {lines.map((line, lineIndex) => {
+          const trimmedLine = line.trim();
+          const isStep =
+            /^\d+\.\s/.test(trimmedLine) ||
+            /^(step|click|visit|choose|apply)/i.test(trimmedLine);
+
+          return trimmedLine ? (
+            <div
+              key={lineIndex}
+              className={`${
+                isStep
+                  ? "pl-4 border-l-2 border-blue-200 bg-blue-50 rounded-r-lg py-2 pr-2"
+                  : ""
+              }`}
+            >
+              <p className="text-gray-700 leading-relaxed">
+                {isStep && (
+                  <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                )}
+                {trimmedLine}
+              </p>
+            </div>
+          ) : null;
+        })}
+      </div>
+    );
+  });
+};
+
+// Enhanced helper function to render numbered list items with consistent formatting
+const renderNumberedListItem = (
+  content: string,
+  index: number,
+  colorScheme: "purple" | "green"
+) => {
+  const colorClasses = {
+    purple: {
+      bg: "bg-purple-100",
+      text: "text-purple-700",
+      border: "border-purple-200",
+      bgSection: "bg-purple-50",
+    },
+    green: {
+      bg: "bg-green-100",
+      text: "text-green-700",
+      border: "border-green-200",
+      bgSection: "bg-green-50",
+    },
+  };
+
+  const colors = colorClasses[colorScheme];
+
+  return (
+    <div key={index} className="flex items-start gap-4">
+      <div
+        className={`flex-shrink-0 w-8 h-8 ${colors.bg} rounded-full flex items-center justify-center mt-1`}
+      >
+        <span className={`${colors.text} font-bold text-sm`}>{index + 1}</span>
+      </div>
+      <div className="flex-1">
+        <div
+          className={`${colors.bgSection} rounded-lg p-4 border ${colors.border}`}
+        >
+          {formatRichContent(content)}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function ScholarshipDetailPage() {
   const params = useParams();
   const id = params.id as string;
@@ -103,7 +514,7 @@ export default function ScholarshipDetailPage() {
       await scholarshipService.getScholarships({ limit: 1 });
       return true;
     } catch (error) {
-      console.error("Firebase connection test failed:", error);
+      logger.error("Firebase connection test failed:", error);
       return false;
     }
   };
@@ -114,12 +525,12 @@ export default function ScholarshipDetailPage() {
         setError(null); // Clear any previous errors
 
         // Add debugging for mobile
-        console.log("Fetching scholarship with ID:", id);
-        console.log(
+        logger.log("Fetching scholarship with ID:", id);
+        logger.log(
           "User agent:",
           typeof navigator !== "undefined" ? navigator.userAgent : "Unknown"
         );
-        console.log(
+        logger.log(
           "Window dimensions:",
           typeof window !== "undefined"
             ? `${window.innerWidth}x${window.innerHeight}`
@@ -129,14 +540,14 @@ export default function ScholarshipDetailPage() {
         const isMobile =
           typeof window !== "undefined" && window.innerWidth < 768;
         if (isMobile || retryCount > 0) {
-          console.log("Testing Firebase connection...");
+          logger.log("Testing Firebase connection...");
           const connectionOk = await testFirebaseConnection();
           if (!connectionOk) {
             throw new Error(
               "Firebase connection failed - please check your internet connection"
             );
           }
-          console.log("Firebase connection test passed");
+          logger.log("Firebase connection test passed");
         }
 
         // Create a timeout promise for mobile networks
@@ -158,7 +569,7 @@ export default function ScholarshipDetailPage() {
           timeoutPromise,
         ])) as Scholarship | null;
 
-        console.log("Scholarship data received:", data ? "Success" : "No data");
+        logger.log("Scholarship data received:", data ? "Success" : "No data");
         if (data) {
           setScholarship(data);
           // Track scholarship view
@@ -177,12 +588,12 @@ export default function ScholarshipDetailPage() {
             // Continue without failing
           }
         } else {
-          console.log("No scholarship found for ID:", id);
+          logger.log("No scholarship found for ID:", id);
           setError("Scholarship not found");
         }
       } catch (err) {
-        console.error("Error fetching scholarship:", err);
-        console.error("Error details:", {
+        logger.error("Error fetching scholarship:", err);
+        logger.error("Error details:", {
           message: err instanceof Error ? err.message : "Unknown error",
           stack: err instanceof Error ? err.stack : "No stack trace",
           cause: err instanceof Error ? err.cause : "No cause",
@@ -364,7 +775,7 @@ export default function ScholarshipDetailPage() {
         trackEvents.scholarshipShare(scholarship.id, "copy_link");
       }
     } catch (err) {
-      console.error("Failed to copy: ", err);
+      logger.error("Failed to copy: ", err);
     }
   };
 
@@ -595,13 +1006,17 @@ export default function ScholarshipDetailPage() {
 
         {/* Enhanced Hero Section */}
         <motion.div
-          className="relative overflow-hidden bg-white"
+          className="relative overflow-hidden"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
         >
-          {/* Content overlay */}
-          <div className="relative">
+          {/* Vibrant Background Gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 via-indigo-500/25 via-purple-500/20 via-fuchsia-500/15 to-pink-500/20"></div>
+          <div className="absolute inset-0 bg-gradient-to-tr from-cyan-400/10 via-blue-500/20 to-indigo-600/15"></div>
+
+          {/* Glass overlay */}
+          <div className="relative backdrop-blur-sm border-b border-white/20">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
               {/* Breadcrumb Navigation */}
               <motion.div
@@ -612,7 +1027,7 @@ export default function ScholarshipDetailPage() {
               >
                 <Link
                   href="/opportunities"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-200 group"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group"
                 >
                   <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
                   <span className="font-medium">Back to Opportunities</span>
@@ -633,10 +1048,10 @@ export default function ScholarshipDetailPage() {
                       <div
                         className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
                           scholarship.type === "International"
-                            ? "bg-blue-100 text-blue-700 border border-blue-300"
+                            ? "bg-blue-500/20 text-blue-200 border border-blue-400/30"
                             : scholarship.type === "Local"
-                            ? "bg-green-100 text-green-700 border border-green-300"
-                            : "bg-purple-100 text-purple-700 border border-purple-300"
+                            ? "bg-green-500/20 text-green-200 border border-green-400/30"
+                            : "bg-purple-500/20 text-purple-200 border border-purple-400/30"
                         }`}
                       >
                         <Globe className="h-4 w-4" />
@@ -644,13 +1059,13 @@ export default function ScholarshipDetailPage() {
                       </div>
                     )}
                     {isUrgent && !isExpired && !isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 text-red-700 border border-red-300 text-sm font-semibold animate-pulse">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-sm font-semibold animate-pulse">
                         <Clock className="h-4 w-4" />
                         Urgent - {daysRemaining} days left
                       </div>
                     )}
                     {isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 text-sm font-semibold">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-sm font-semibold">
                         <CheckCircle className="h-4 w-4" />
                         Open Application
                       </div>
@@ -659,26 +1074,28 @@ export default function ScholarshipDetailPage() {
 
                   {/* Title */}
                   <motion.h1
-                    className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-gray-900"
+                    className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
                   >
-                    {scholarship.title}
+                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+                      {scholarship.title}
+                    </span>
                   </motion.h1>
 
                   {/* Provider */}
                   {scholarship.provider && (
                     <motion.div
-                      className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gray-100 border border-gray-300 mb-8"
+                      className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <University className="h-5 w-5 text-blue-600" />
-                      <span className="text-gray-700 font-medium">
+                      <University className="h-5 w-5 text-blue-300" />
+                      <span className="text-white font-medium">
                         Offered by{" "}
-                        <span className="font-bold text-blue-600">
+                        <span className="font-bold text-blue-200">
                           {scholarship.provider}
                         </span>
                       </span>
@@ -692,29 +1109,29 @@ export default function ScholarshipDetailPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
                   >
-                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                      <DollarSign className="h-6 w-6 text-green-600 mb-2" />
-                      <div className="text-xs text-gray-500 mb-1">Value</div>
-                      <div className="text-sm font-bold text-gray-900 truncate">
+                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+                      <DollarSign className="h-6 w-6 text-green-400 mb-2" />
+                      <div className="text-xs text-gray-300 mb-1">Value</div>
+                      <div className="text-sm font-bold text-white truncate">
                         {scholarship.amount}
                       </div>
                     </div>
                     {scholarship.level && (
-                      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                        <GraduationCap className="h-6 w-6 text-purple-600 mb-2" />
-                        <div className="text-xs text-gray-500 mb-1">Level</div>
-                        <div className="text-sm font-bold text-gray-900 truncate">
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+                        <GraduationCap className="h-6 w-6 text-purple-400 mb-2" />
+                        <div className="text-xs text-gray-300 mb-1">Level</div>
+                        <div className="text-sm font-bold text-white truncate">
                           {scholarship.level}
                         </div>
                       </div>
                     )}
                     {scholarship.location && (
-                      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                        <MapPin className="h-6 w-6 text-orange-600 mb-2" />
-                        <div className="text-xs text-gray-500 mb-1">
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
+                        <MapPin className="h-6 w-6 text-orange-400 mb-2" />
+                        <div className="text-xs text-gray-300 mb-1">
                           Location
                         </div>
-                        <div className="text-sm font-bold text-gray-900 truncate">
+                        <div className="text-sm font-bold text-white truncate">
                           {scholarship.location}
                         </div>
                       </div>
@@ -730,45 +1147,45 @@ export default function ScholarshipDetailPage() {
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
                   <div className="sticky top-24">
-                    <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-lg">
+                    <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-6 shadow-2xl">
                       <div className="text-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-300 mb-4">
-                          <Award className="h-4 w-4 text-green-600" />
-                          <span className="text-sm font-semibold text-green-700">
+                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-4">
+                          <Award className="h-4 w-4 text-green-400" />
+                          <span className="text-sm font-semibold text-green-300">
                             Scholarship Opportunity
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">
+                        <h3 className="text-lg font-bold text-white mb-2">
                           Ready to Apply?
                         </h3>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-300">
                           Take the next step towards your academic future
                         </p>
                       </div>
 
                       {/* Application Deadline */}
-                      <div className="bg-gray-100 rounded-xl p-4 mb-6">
+                      <div className="bg-white/5 rounded-xl p-4 mb-6">
                         <div className="flex items-center gap-3">
                           <Calendar
                             className={`h-5 w-5 ${
                               isUndisclosed
-                                ? "text-gray-500"
+                                ? "text-gray-400"
                                 : isUrgent
-                                ? "text-red-600"
-                                : "text-blue-600"
+                                ? "text-red-400"
+                                : "text-blue-400"
                             }`}
                           />
                           <div>
-                            <div className="text-xs text-gray-500 mb-1">
+                            <div className="text-xs text-gray-400 mb-1">
                               Application Deadline
                             </div>
                             <div
                               className={`font-semibold ${
                                 isUndisclosed
-                                  ? "text-gray-700"
+                                  ? "text-gray-300"
                                   : isUrgent
-                                  ? "text-red-700"
-                                  : "text-gray-900"
+                                  ? "text-red-300"
+                                  : "text-white"
                               }`}
                             >
                               {formatDeadline(scholarship.deadline)}
@@ -825,8 +1242,8 @@ export default function ScholarshipDetailPage() {
                   About This Scholarship
                 </h2>
                 <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="text-gray-700 leading-relaxed whitespace-pre-line text-lg">
-                    {scholarship.description}
+                  <div className="text-gray-700 leading-relaxed">
+                    {formatRichContent(scholarship.description)}
                   </div>
                 </div>
               </div>
@@ -882,18 +1299,8 @@ export default function ScholarshipDetailPage() {
                   <div className="bg-white rounded-2xl p-8 border border-purple-200 shadow-lg">
                     <div className="space-y-4">
                       {scholarship.eligibility.map(
-                        (criteria: string, index: number) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                              <span className="text-purple-700 font-bold text-sm">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <p className="text-gray-700 leading-relaxed flex-1">
-                              {criteria}
-                            </p>
-                          </div>
-                        )
+                        (criteria: string, index: number) =>
+                          renderNumberedListItem(criteria, index, "purple")
                       )}
                     </div>
                   </div>
@@ -914,18 +1321,15 @@ export default function ScholarshipDetailPage() {
                     </h2>
                     <div className="bg-white rounded-2xl p-8 border border-green-200 shadow-lg">
                       <div className="space-y-4">
-                        {scholarship.requirements.map((requirement, index) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                              <span className="text-green-700 font-bold text-sm">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <p className="text-gray-700 leading-relaxed flex-1">
-                              {requirement}
-                            </p>
-                          </div>
-                        ))}
+                        {scholarship.requirements.map(
+                          (requirement: string, index: number) => (
+                            <ApplicationRequirement
+                              key={index}
+                              requirement={requirement}
+                              index={index}
+                            />
+                          )
+                        )}
                       </div>
                     </div>
                   </motion.div>

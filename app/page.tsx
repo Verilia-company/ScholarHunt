@@ -18,6 +18,11 @@ import {
   CheckCircle,
   Shield,
   Zap,
+  GraduationCap,
+  ChevronDown,
+  Users,
+  Clock,
+  Heart,
 } from "lucide-react";
 import ScholarshipCard from "@/components/ScholarshipCard";
 import BlogCard from "@/components/BlogCard";
@@ -104,7 +109,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
-      {/* Clean Hero Section */}
+      {/* Enhanced Hero Section - Professional Redesign */}
       <motion.section
         ref={heroRef}
         className="relative overflow-hidden min-h-screen flex items-center justify-center"
@@ -113,81 +118,103 @@ export default function Home() {
         animate={{ opacity: heroInView ? 1 : 0 }}
         transition={{ duration: 0.8 }}
       >
-        {/* Simple Background Pattern */}
+        {/* Enhanced Background Elements */}
         <div className="absolute inset-0 overflow-hidden">
+          {/* Primary Gradient Background */}
           <div
-            className="absolute inset-0 opacity-5"
+            className="absolute inset-0 opacity-10"
             style={{ background: "var(--gradient-primary)" }}
           />
+
+          {/* Professional Floating Elements */}
+          <div className="absolute top-20 left-10 w-80 h-80 bg-gradient-to-r from-blue-400 to-cyan-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse animation-delay-2s"></div>
+          <div className="absolute bottom-20 left-1/2 transform -translate-x-1/2 w-64 h-64 bg-gradient-to-r from-indigo-400 to-blue-500 rounded-full mix-blend-multiply filter blur-2xl opacity-15 animate-pulse animation-delay-4s"></div>
+
+          {/* Professional Geometric Patterns */}
+          <div className="absolute top-32 right-32 w-32 h-32 border-2 border-blue-200/30 rounded-full animate-spin-slow"></div>
+          <div className="absolute bottom-40 left-20 w-20 h-20 bg-gradient-to-r from-yellow-200/40 to-orange-200/40 rounded-lg rotate-45 animate-bounce-slow"></div>
+          <div className="absolute top-1/2 left-10 w-24 h-24 bg-gradient-to-r from-green-200/30 to-emerald-200/30 rounded-full animate-pulse animation-delay-3s"></div>
         </div>
 
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8 py-20 text-center">
-          {/* Premium Badge */}
+          {/* Enhanced Premium Badge */}
           <motion.div
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 30, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 0.8, delay: 0.1 }}
             className="mb-8"
           >
-            <div className="inline-flex items-center gap-3 glass-strong rounded-full px-6 py-3 mb-12">
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span
-                style={{ color: "var(--text-primary)" }}
-                className="font-medium text-sm"
-              >
-                🎓 Trust sits at the heart of our platform
-              </span>
+            <div className="inline-flex items-center gap-4 glass-strong rounded-full px-8 py-4 mb-12 shadow-xl border border-white/20">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full flex items-center justify-center shadow-lg">
+                  <Star className="w-5 h-5 text-white" />
+                </div>
+                <span
+                  style={{ color: "var(--text-primary)" }}
+                  className="font-bold text-lg bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent"
+                >
+                  🎓 Trusted by 50,000+ Students Globally
+                </span>
+                <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                  <GraduationCap className="w-5 h-5 text-white" />
+                </div>
+              </div>
             </div>
           </motion.div>
 
-          {/* Hero Title - World-Class Typography */}
+          {/* Enhanced Hero Title with Professional Typography */}
           <motion.div
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 50, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 1, delay: 0.2 }}
             className="mb-8"
           >
-            <h1 className="text-display mb-6 leading-none">
+            <h1 className="text-6xl md:text-8xl font-black mb-6 leading-none">
               <span style={{ color: "var(--text-primary)" }}>Unlock Your</span>
               <br />
-              <span className="text-gradient animate-gradient">
-                Academic Future
+              <span className="relative">
+                <span className="text-gradient animate-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  Academic Future
+                </span>
+                {/* Professional underline effect */}
+                <div className="absolute -bottom-4 left-1/2 transform -translate-x-1/2 w-80 h-3 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-60 blur-sm"></div>
               </span>
             </h1>
 
             <p
-              className="text-subtitle max-w-4xl mx-auto leading-relaxed mb-12"
+              className="text-2xl md:text-3xl max-w-5xl mx-auto leading-relaxed mb-12 font-medium"
               style={{ color: "var(--text-secondary)" }}
             >
               Discover premium scholarship opportunities curated for ambitious
-              students. From local grants to prestigious international programs,
-              we connect you with funding that transforms dreams into reality.
+              students worldwide. From local grants to prestigious international
+              programs, we connect you with funding that transforms
+              <span className="bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent font-bold">
+                {" "}
+                dreams into reality
+              </span>
+              .
             </p>
           </motion.div>
 
-          {/* Clean Search Experience */}
+          {/* Professional Enhanced Search Experience */}
           <motion.form
             onSubmit={handleSearch}
-            className="max-w-4xl mx-auto mb-12"
+            className="max-w-5xl mx-auto mb-12"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 30, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="relative">
               <div
-                className="glass-strong rounded-2xl p-2 border"
+                className="glass-strong rounded-3xl p-4 border shadow-2xl hover:shadow-3xl transition-all duration-500 backdrop-blur-lg bg-white/95"
                 style={{ borderColor: "var(--border-primary)" }}
               >
-                <div className="flex items-center">
-                  <div className="flex items-center pl-6">
-                    <Search
-                      className="h-6 w-6 transition-colors duration-300"
-                      style={{
-                        color: searchQuery
-                          ? "var(--brand-primary)"
-                          : "var(--text-tertiary)",
-                      }}
-                    />
+                <div className="flex flex-col lg:flex-row items-center gap-6">
+                  <div className="flex items-center pl-6 flex-shrink-0">
+                    <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg mr-4">
+                      <Search className="h-6 w-6 text-white transition-colors duration-300" />
+                    </div>
                   </div>
 
                   <input
@@ -196,54 +223,134 @@ export default function Home() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     spellCheck="false"
                     autoComplete="off"
-                    className="input-google-search flex-1"
+                    className="flex-1 h-20 text-xl text-gray-800 placeholder-gray-500 bg-transparent border-0 rounded-2xl focus:outline-none focus:ring-0 font-medium px-4"
                     style={{
                       color: "var(--text-primary)",
                     }}
-                    placeholder="Search scholarships, universities, or study fields..."
+                    placeholder="Search scholarships, universities, programs, or study fields..."
                   />
 
                   <motion.button
                     type="submit"
-                    className="btn btn-primary btn-lg mr-2"
+                    className="lg:w-auto w-full h-20 px-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xl font-bold rounded-2xl border-0 shadow-2xl hover:shadow-3xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-4 relative overflow-hidden"
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                     disabled={!searchQuery.trim()}
                   >
-                    <Search className="w-5 h-5" />
-                    Search
+                    {/* Button background effect */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+
+                    <Search className="w-6 h-6 relative z-10" />
+                    <span className="relative z-10">Search Now</span>
+                    <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                      <ArrowRight className="w-5 h-5" />
+                    </div>
                   </motion.button>
                 </div>
               </div>
             </div>
+
+            {/* Enhanced Quick Search Tags */}
+            <div className="flex flex-wrap justify-center gap-4 mt-8">
+              {[
+                { label: "Undergraduate", color: "from-blue-500 to-cyan-500" },
+                { label: "Graduate", color: "from-purple-500 to-pink-500" },
+                { label: "PhD Programs", color: "from-indigo-500 to-blue-600" },
+                {
+                  label: "Need-based Aid",
+                  color: "from-green-500 to-emerald-500",
+                },
+                {
+                  label: "Merit Scholarships",
+                  color: "from-yellow-500 to-orange-500",
+                },
+                { label: "Study Abroad", color: "from-red-500 to-pink-500" },
+              ].map((tag, index) => (
+                <motion.button
+                  key={tag.label}
+                  onClick={() => setSearchQuery(tag.label)}
+                  className={`px-8 py-4 bg-white hover:bg-gradient-to-r hover:${tag.color} text-gray-700 hover:text-white rounded-full text-lg font-semibold transition-all duration-300 border-2 border-gray-200 hover:border-transparent shadow-lg hover:shadow-xl transform hover:-translate-y-1`}
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {tag.label}
+                </motion.button>
+              ))}
+            </div>
           </motion.form>
 
-          {/* Premium CTA Buttons */}
+          {/* Enhanced Premium CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            className="flex flex-col sm:flex-row gap-8 justify-center items-center"
             initial={{ y: 30, opacity: 0 }}
             animate={{ y: heroInView ? 0 : 30, opacity: heroInView ? 1 : 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link href="/opportunities" className="btn btn-primary btn-lg">
-                <Globe className="w-5 h-5" />
-                Explore Scholarships
-                <ArrowRight className="w-4 h-4" />
+            <motion.div
+              whileHover={{ scale: 1.05, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Link
+                href="/opportunities"
+                className="px-12 py-5 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center gap-4 relative overflow-hidden group"
+              >
+                {/* Button effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <Globe className="w-6 h-6" />
+                </div>
+                <span className="relative z-10">Explore Scholarships</span>
+                <ArrowRight className="w-5 h-5 relative z-10" />
               </Link>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Link href="/submit" className="btn btn-secondary btn-lg">
-                <Award className="w-5 h-5" />
-                Submit Opportunity
+            <motion.div
+              whileHover={{ scale: 1.05, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Link
+                href="/submit"
+                className="px-12 py-5 bg-white text-gray-800 text-xl font-bold rounded-2xl shadow-2xl hover:shadow-3xl border-2 border-gray-200 hover:border-blue-400 hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 transition-all duration-300 flex items-center gap-4 group"
+              >
+                <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full flex items-center justify-center shadow-lg group-hover:from-blue-600 group-hover:to-indigo-600 transition-all duration-300">
+                  <Award className="w-6 h-6 text-white" />
+                </div>
+                <span>Submit Opportunity</span>
               </Link>
             </motion.div>
+          </motion.div>
+
+          {/* Professional Scroll Indicator */}
+          <motion.div
+            className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            <div
+              className="flex flex-col items-center"
+              style={{ color: "var(--text-tertiary)" }}
+            >
+              <span className="text-lg font-semibold mb-4 tracking-wide">
+                Discover More
+              </span>
+              <motion.div
+                animate={{ y: [0, 12, 0] }}
+                transition={{ duration: 2.5, repeat: Infinity }}
+                className="w-14 h-14 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center shadow-xl"
+              >
+                <ChevronDown className="w-7 h-7 text-white" />
+              </motion.div>
+            </div>
           </motion.div>
         </div>
       </motion.section>
 
-      {/* Clean Stats Section */}
+      {/* Enhanced Professional Stats Section */}
       <motion.section
         ref={statsRef}
         className="py-32 relative overflow-hidden"
@@ -252,42 +359,221 @@ export default function Home() {
         animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 50 }}
         transition={{ duration: 0.8 }}
       >
+        {/* Professional Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-r from-blue-300 to-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-30 animate-pulse"></div>
+          <div className="absolute bottom-20 left-20 w-80 h-80 bg-gradient-to-r from-purple-300 to-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-25 animate-pulse animation-delay-3s"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-r from-green-200 to-emerald-200 rounded-full mix-blend-multiply filter blur-2xl opacity-20 animate-pulse animation-delay-5s"></div>
+        </div>
+
         <div className="relative max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Enhanced Section Header */}
           <motion.div
             className="text-center mb-20"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 30 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <div className="inline-flex items-center gap-2 glass rounded-full px-6 py-3 mb-8">
-              <TrendingUp
-                className="w-4 h-4"
-                style={{ color: "var(--brand-success)" }}
-              />
+            <div className="inline-flex items-center gap-3 glass rounded-full px-8 py-4 mb-8 shadow-xl border border-white/20">
+              <div className="w-10 h-10 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                <TrendingUp className="w-5 h-5 text-white" />
+              </div>
               <span
-                className="text-sm font-medium"
+                className="text-lg font-bold bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent"
                 style={{ color: "var(--text-primary)" }}
               >
                 Proven Track Record
               </span>
+              <div className="w-10 h-10 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-lg">
+                <Award className="w-5 h-5 text-white" />
+              </div>
             </div>
 
             <h2
-              className="text-hero mb-6"
+              className="text-5xl md:text-7xl font-black mb-8"
               style={{ color: "var(--text-primary)" }}
             >
               Empowering Dreams,
               <br />
-              <span className="text-gradient">Delivering Results</span>
+              <span className="relative">
+                <span className="text-gradient bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  Delivering Results
+                </span>
+                {/* Professional underline effect */}
+                <div className="absolute -bottom-3 left-1/2 transform -translate-x-1/2 w-72 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full opacity-60"></div>
+              </span>
             </h2>
 
             <p
-              className="text-subtitle max-w-3xl mx-auto"
+              className="text-2xl md:text-3xl max-w-4xl mx-auto font-medium leading-relaxed"
               style={{ color: "var(--text-secondary)" }}
             >
               Join thousands of successful students who&apos;ve transformed
-              their futures through our platform
+              their futures through our platform with
+              <span className="bg-gradient-to-r from-yellow-600 to-orange-600 bg-clip-text text-transparent font-bold">
+                {" "}
+                measurable success
+              </span>
             </p>
+          </motion.div>
+
+          {/* Professional Stats Grid */}
+          <motion.div
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 50 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+          >
+            {[
+              {
+                icon: Users,
+                number: "50,000+",
+                label: "Students Served",
+                description: "Global community of ambitious learners",
+                color: "from-blue-500 to-indigo-500",
+                bgColor: "from-blue-50 to-indigo-50",
+                iconBg: "from-blue-400 to-indigo-400",
+              },
+              {
+                icon: Award,
+                number: "$2.5M+",
+                label: "Scholarships Awarded",
+                description: "Total funding secured by our students",
+                color: "from-yellow-500 to-orange-500",
+                bgColor: "from-yellow-50 to-orange-50",
+                iconBg: "from-yellow-400 to-orange-400",
+              },
+              {
+                icon: GraduationCap,
+                number: "95%",
+                label: "Success Rate",
+                description: "Students who find suitable opportunities",
+                color: "from-green-500 to-emerald-500",
+                bgColor: "from-green-50 to-emerald-50",
+                iconBg: "from-green-400 to-emerald-400",
+              },
+              {
+                icon: Globe,
+                number: "120+",
+                label: "Countries Covered",
+                description: "Global scholarship opportunities",
+                color: "from-purple-500 to-pink-500",
+                bgColor: "from-purple-50 to-pink-50",
+                iconBg: "from-purple-400 to-pink-400",
+              },
+            ].map((stat, index) => (
+              <motion.div
+                key={stat.label}
+                className={`relative bg-white rounded-3xl p-8 shadow-2xl hover:shadow-3xl transition-all duration-500 border border-gray-100 group hover:-translate-y-2`}
+                initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                animate={{
+                  opacity: statsInView ? 1 : 0,
+                  y: statsInView ? 0 : 30,
+                  scale: statsInView ? 1 : 0.9,
+                }}
+                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                {/* Background gradient overlay */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${stat.bgColor} rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500`}
+                ></div>
+
+                {/* Content */}
+                <div className="relative z-10">
+                  {/* Icon */}
+                  <div
+                    className={`w-16 h-16 bg-gradient-to-r ${stat.iconBg} rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                  >
+                    <stat.icon className="w-8 h-8 text-white" />
+                  </div>
+
+                  {/* Number */}
+                  <div
+                    className={`text-4xl md:text-5xl font-black mb-3 bg-gradient-to-r ${stat.color} bg-clip-text text-transparent`}
+                  >
+                    {stat.number}
+                  </div>
+
+                  {/* Label */}
+                  <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    {stat.label}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-600 text-sm font-medium leading-relaxed">
+                    {stat.description}
+                  </p>
+                </div>
+
+                {/* Decorative corner elements */}
+                <div className="absolute top-4 right-4 w-8 h-8 bg-gradient-to-r from-white/50 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="absolute bottom-4 left-4 w-6 h-6 bg-gradient-to-r from-white/30 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              </motion.div>
+            ))}
+          </motion.div>
+
+          {/* Professional Trust Indicators */}
+          <motion.div
+            className="text-center"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: statsInView ? 1 : 0, y: statsInView ? 0 : 30 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+          >
+            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 p-8 max-w-4xl mx-auto">
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                Why Students Choose ScholarHunt
+              </h3>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: Shield,
+                    title: "Verified Opportunities",
+                    description:
+                      "Every scholarship is thoroughly vetted and verified",
+                    color: "from-blue-500 to-indigo-500",
+                  },
+                  {
+                    icon: Clock,
+                    title: "Real-time Updates",
+                    description:
+                      "Never miss a deadline with instant notifications",
+                    color: "from-green-500 to-emerald-500",
+                  },
+                  {
+                    icon: Heart,
+                    title: "Personalized Matching",
+                    description:
+                      "AI-powered recommendations based on your profile",
+                    color: "from-purple-500 to-pink-500",
+                  },
+                ].map((feature, index) => (
+                  <motion.div
+                    key={feature.title}
+                    className="text-center group"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{
+                      opacity: statsInView ? 1 : 0,
+                      y: statsInView ? 0 : 20,
+                    }}
+                    transition={{ duration: 0.6, delay: 1 + index * 0.2 }}
+                  >
+                    <div
+                      className={`w-12 h-12 bg-gradient-to-r ${feature.color} rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                    >
+                      <feature.icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h4 className="text-lg font-bold text-gray-800 mb-2">
+                      {feature.title}
+                    </h4>
+                    <p className="text-gray-600 text-sm">
+                      {feature.description}
+                    </p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
           </motion.div>
         </div>
       </motion.section>
@@ -507,17 +793,35 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Clean Newsletter CTA */}
+      {/* Enhanced Professional Newsletter CTA */}
       <motion.section
         className="py-32 relative overflow-hidden"
-        style={{ background: "var(--brand-primary)" }}
+        style={{
+          background:
+            "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)",
+        }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
+        {/* Professional Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Elegant gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+          {/* Professional floating elements */}
+          <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-r from-blue-200/30 to-indigo-200/30 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-purple-200/20 to-pink-200/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-3s"></div>
+
+          {/* Subtle geometric patterns */}
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-white/20 rounded-full animate-spin-slow"></div>
+          <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-gradient-to-r from-blue-100/30 to-indigo-100/30 rounded-lg rotate-45 animate-bounce-slow"></div>
+        </div>
+
         <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
-          {/* Hero Content */}
+          {/* Enhanced Hero Content */}
           <motion.div
             className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
@@ -525,29 +829,32 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            {/* Elegant Icon with Gradient Background */}
+            {/* Professional Icon with Enhanced Gradient Background */}
             <div
-              className="inline-flex items-center justify-center w-24 h-24 rounded-2xl mb-8 shadow-2xl"
+              className="inline-flex items-center justify-center w-28 h-28 rounded-3xl mb-8 shadow-2xl backdrop-blur-sm border border-white/20"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
+                  "linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4)",
                 transform: "rotate(-5deg)",
               }}
             >
-              <Calendar className="w-12 h-12 text-white transform rotate-5" />
+              <Calendar className="w-14 h-14 text-white transform rotate-5 drop-shadow-lg" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 bg-clip-text text-transparent">
               Stay Ahead of the Game
             </h2>
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-16 max-w-4xl mx-auto leading-relaxed font-light">
+            <p className="text-2xl md:text-3xl text-gray-700 mb-16 max-w-5xl mx-auto leading-relaxed font-medium">
               Get exclusive access to new scholarships, insider application
               tips, and deadline reminders delivered to your inbox every week.
+              <span className="block mt-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
+                Join our global community of successful scholars.
+              </span>
             </p>
           </motion.div>
 
-          {/* Premium Newsletter Card */}
+          {/* Enhanced Premium Newsletter Card */}
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ y: 50, opacity: 0 }}
@@ -555,30 +862,36 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-              {/* Card Header with Gradient */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-8 border-b border-gray-100">
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 overflow-hidden hover:shadow-3xl transition-all duration-500">
+              {/* Enhanced Card Header with Professional Gradient */}
+              <div className="bg-gradient-to-r from-blue-50/90 via-indigo-50/90 to-purple-50/90 px-8 py-8 border-b border-gray-100/50 backdrop-blur-sm">
                 <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
-                    <Mail className="w-6 h-6 text-white" />
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-xl">
+                    <Mail className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800">
+                  <h3 className="text-3xl font-black bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
                     Join Our Newsletter
                   </h3>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
+                    <Star className="w-7 h-7 text-white" />
+                  </div>
                 </div>
-                <p className="text-gray-600 text-center max-w-2xl mx-auto">
+                <p className="text-gray-700 text-center max-w-2xl mx-auto text-lg font-medium">
                   Be the first to know about new scholarship opportunities and
                   get expert tips delivered straight to your inbox.
+                  <span className="block mt-2 text-blue-600 font-bold">
+                    Plus exclusive content for our subscribers only!
+                  </span>
                 </p>
               </div>
 
-              {/* Newsletter Form */}
-              <div className="px-8 py-8">
+              {/* Enhanced Newsletter Form */}
+              <div className="px-8 py-8 bg-gradient-to-br from-white/80 to-gray-50/80 backdrop-blur-sm">
                 <form className="w-full">
-                  {/* Container with margin like scholarship card */}
+                  {/* Container with enhanced spacing */}
                   <div className="m-4">
                     <div className="flex flex-col lg:flex-row gap-6">
-                      {/* Email Input - Professional Design with Spacing */}
+                      {/* Enhanced Email Input */}
                       <div className="flex-1 relative">
                         <input
                           type="email"
@@ -589,50 +902,59 @@ export default function Home() {
                           spellCheck="false"
                           role="textbox"
                           aria-label="Email address for newsletter"
-                          className="input-google-lg"
+                          className="w-full h-16 px-6 text-lg text-gray-800 placeholder-gray-500 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
                         />
                       </div>
 
-                      {/* Subscribe Button - Professional Spacing */}
+                      {/* Enhanced Subscribe Button */}
                       <motion.button
                         type="submit"
-                        className="lg:w-auto w-full h-16 px-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold rounded-2xl border-0 shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-3"
-                        whileHover={{ scale: 1.02 }}
+                        className="lg:w-auto w-full h-16 px-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xl font-bold rounded-2xl border-0 shadow-2xl hover:shadow-3xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-4 relative overflow-hidden"
+                        whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        Subscribe Now
-                        <ArrowRight className="w-6 h-6" />
+                        {/* Button background effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+
+                        <span className="relative z-10">Subscribe Now</span>
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                          <ArrowRight className="w-5 h-5" />
+                        </div>
                       </motion.button>
                     </div>
                   </div>
                 </form>
 
-                {/* Trust Indicators */}
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-3 h-3 text-green-600" />
+                {/* Enhanced Trust Indicators */}
+                <div className="mt-8 pt-6 border-t border-gray-200/50">
+                  <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-700">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                        <CheckCircle className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">5,000+ Subscribers</span>
+                      <span className="font-bold text-lg">
+                        25,000+ Subscribers
+                      </span>
                     </div>
 
-                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full hidden sm:block"></div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Shield className="w-3 h-3 text-blue-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-lg">
+                        <Shield className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">No Spam Policy</span>
+                      <span className="font-bold text-lg">
+                        No Spam Guarantee
+                      </span>
                     </div>
 
-                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full hidden sm:block"></div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Zap className="w-3 h-3 text-purple-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                        <Zap className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">Weekly Updates</span>
+                      <span className="font-bold text-lg">Weekly Insights</span>
                     </div>
                   </div>
                 </div>
