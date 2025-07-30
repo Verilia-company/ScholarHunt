@@ -110,19 +110,21 @@ const ApplicationRequirement = ({
 
   if (hasStructuredContent || isStepByStep) {
     return (
-      <div className="flex items-start gap-4">
-        <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
-          <span className="text-green-700 font-bold text-sm">{index + 1}</span>
+      <div className="flex items-start gap-3 sm:gap-4">
+        <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
+          <span className="text-green-700 font-bold text-xs sm:text-sm">
+            {index + 1}
+          </span>
         </div>
-        <div className="flex-1">
-          <div className="bg-green-50 rounded-lg p-4 border border-green-200">
+        <div className="flex-1 min-w-0">
+          <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-200">
             <div className="prose prose-sm max-w-none">
               {isStepByStep ? (
-                <div className="space-y-4">
-                  <div className="bg-white rounded-lg p-4 border border-green-100">
-                    <div className="flex items-center gap-2 mb-3">
-                      <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                      <span className="text-sm font-semibold text-green-700 uppercase tracking-wide">
+                <div className="space-y-3 sm:space-y-4">
+                  <div className="bg-white rounded-lg p-3 sm:p-4 border border-green-100">
+                    <div className="flex items-center gap-2 mb-2 sm:mb-3">
+                      <div className="w-2 h-2 bg-green-500 rounded-full flex-shrink-0"></div>
+                      <span className="text-xs sm:text-sm font-semibold text-green-700 uppercase tracking-wide break-words">
                         Application Steps
                       </span>
                     </div>
@@ -1017,36 +1019,36 @@ export default function ScholarshipDetailPage() {
 
           {/* Glass overlay */}
           <div className="relative backdrop-blur-sm border-b border-white/20">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
+            <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
               {/* Breadcrumb Navigation */}
               <motion.div
-                className="mb-8"
+                className="mb-6 sm:mb-8"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
               >
                 <Link
                   href="/opportunities"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group text-sm sm:text-base"
                 >
                   <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
                   <span className="font-medium">Back to Opportunities</span>
                 </Link>
               </motion.div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
                 {/* Main Hero Content */}
                 <div className="lg:col-span-2">
                   {/* Status Badges */}
                   <motion.div
-                    className="flex flex-wrap gap-3 mb-6"
+                    className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.2 }}
                   >
                     {scholarship.type && (
                       <div
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
+                        className={`inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold ${
                           scholarship.type === "International"
                             ? "bg-blue-500/20 text-blue-200 border border-blue-400/30"
                             : scholarship.type === "Local"
@@ -1054,27 +1056,31 @@ export default function ScholarshipDetailPage() {
                             : "bg-purple-500/20 text-purple-200 border border-purple-400/30"
                         }`}
                       >
-                        <Globe className="h-4 w-4" />
+                        <Globe className="h-3 w-3 sm:h-4 sm:w-4" />
                         {scholarship.type}
                       </div>
                     )}
                     {isUrgent && !isExpired && !isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-sm font-semibold animate-pulse">
-                        <Clock className="h-4 w-4" />
-                        Urgent - {daysRemaining} days left
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-xs sm:text-sm font-semibold animate-pulse">
+                        <Clock className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="whitespace-nowrap">
+                          Urgent - {daysRemaining} days left
+                        </span>
                       </div>
                     )}
                     {isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-sm font-semibold">
-                        <CheckCircle className="h-4 w-4" />
-                        Open Application
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs sm:text-sm font-semibold">
+                        <CheckCircle className="h-3 w-3 sm:h-4 sm:w-4" />
+                        <span className="whitespace-nowrap">
+                          Open Application
+                        </span>
                       </div>
                     )}
                   </motion.div>
 
                   {/* Title */}
                   <motion.h1
-                    className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight"
+                    className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6 leading-tight"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
@@ -1087,13 +1093,13 @@ export default function ScholarshipDetailPage() {
                   {/* Provider */}
                   {scholarship.provider && (
                     <motion.div
-                      className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-8"
+                      className="inline-flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-xl sm:rounded-2xl bg-white/10 backdrop-blur-sm border border-white/20 mb-6 sm:mb-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <University className="h-5 w-5 text-blue-300" />
-                      <span className="text-white font-medium">
+                      <University className="h-4 w-4 sm:h-5 sm:w-5 text-blue-300 flex-shrink-0" />
+                      <span className="text-white font-medium text-sm sm:text-base">
                         Offered by{" "}
                         <span className="font-bold text-blue-200">
                           {scholarship.provider}
@@ -1104,34 +1110,34 @@ export default function ScholarshipDetailPage() {
 
                   {/* Quick Stats */}
                   <motion.div
-                    className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8"
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-6 sm:mb-8"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
                   >
-                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-                      <DollarSign className="h-6 w-6 text-green-400 mb-2" />
+                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4">
+                      <DollarSign className="h-5 w-5 sm:h-6 sm:w-6 text-green-400 mb-2" />
                       <div className="text-xs text-gray-300 mb-1">Value</div>
-                      <div className="text-sm font-bold text-white truncate">
+                      <div className="text-sm sm:text-base font-bold text-white break-words">
                         {scholarship.amount}
                       </div>
                     </div>
                     {scholarship.level && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-                        <GraduationCap className="h-6 w-6 text-purple-400 mb-2" />
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4">
+                        <GraduationCap className="h-5 w-5 sm:h-6 sm:w-6 text-purple-400 mb-2" />
                         <div className="text-xs text-gray-300 mb-1">Level</div>
-                        <div className="text-sm font-bold text-white truncate">
+                        <div className="text-sm sm:text-base font-bold text-white break-words">
                           {scholarship.level}
                         </div>
                       </div>
                     )}
                     {scholarship.location && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4">
-                        <MapPin className="h-6 w-6 text-orange-400 mb-2" />
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:p-4 sm:col-span-2 lg:col-span-1">
+                        <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-orange-400 mb-2" />
                         <div className="text-xs text-gray-300 mb-1">
                           Location
                         </div>
-                        <div className="text-sm font-bold text-white truncate">
+                        <div className="text-sm sm:text-base font-bold text-white break-words">
                           {scholarship.location}
                         </div>
                       </div>
@@ -1146,28 +1152,28 @@ export default function ScholarshipDetailPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  <div className="sticky top-24">
-                    <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-6 shadow-2xl">
-                      <div className="text-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-4">
-                          <Award className="h-4 w-4 text-green-400" />
-                          <span className="text-sm font-semibold text-green-300">
+                  <div className="lg:sticky lg:top-24">
+                    <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-4 sm:p-6 shadow-2xl">
+                      <div className="text-center mb-4 sm:mb-6">
+                        <div className="inline-flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-3 sm:mb-4">
+                          <Award className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
+                          <span className="text-xs sm:text-sm font-semibold text-green-300">
                             Scholarship Opportunity
                           </span>
                         </div>
-                        <h3 className="text-lg font-bold text-white mb-2">
+                        <h3 className="text-base sm:text-lg font-bold text-white mb-2">
                           Ready to Apply?
                         </h3>
-                        <p className="text-sm text-gray-300">
+                        <p className="text-xs sm:text-sm text-gray-300">
                           Take the next step towards your academic future
                         </p>
                       </div>
 
                       {/* Application Deadline */}
-                      <div className="bg-white/5 rounded-xl p-4 mb-6">
-                        <div className="flex items-center gap-3">
+                      <div className="bg-white/5 rounded-xl p-3 sm:p-4 mb-4 sm:mb-6">
+                        <div className="flex items-center gap-2 sm:gap-3">
                           <Calendar
-                            className={`h-5 w-5 ${
+                            className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${
                               isUndisclosed
                                 ? "text-gray-400"
                                 : isUrgent
@@ -1175,12 +1181,12 @@ export default function ScholarshipDetailPage() {
                                 : "text-blue-400"
                             }`}
                           />
-                          <div>
+                          <div className="min-w-0 flex-1">
                             <div className="text-xs text-gray-400 mb-1">
                               Application Deadline
                             </div>
                             <div
-                              className={`font-semibold ${
+                              className={`font-semibold text-xs sm:text-sm break-words ${
                                 isUndisclosed
                                   ? "text-gray-300"
                                   : isUrgent
@@ -1196,9 +1202,9 @@ export default function ScholarshipDetailPage() {
 
                       {/* Apply Button */}
                       {isExpired && !isUndisclosed ? (
-                        <div className="text-center p-4 bg-red-500/10 border border-red-400/30 rounded-xl">
-                          <AlertTriangle className="h-5 w-5 text-red-400 mx-auto mb-2" />
-                          <div className="text-sm font-medium text-red-300 mb-1">
+                        <div className="text-center p-3 sm:p-4 bg-red-500/10 border border-red-400/30 rounded-xl">
+                          <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-red-400 mx-auto mb-2" />
+                          <div className="text-xs sm:text-sm font-medium text-red-300 mb-1">
                             Application Period Closed
                           </div>
                           <div className="text-xs text-red-400">
@@ -1209,14 +1215,16 @@ export default function ScholarshipDetailPage() {
                       ) : (
                         <motion.button
                           onClick={handleApplyClick}
-                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
+                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 sm:py-4 px-4 sm:px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm sm:text-base"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <ExternalLink className="h-5 w-5" />
-                          {scholarship.applicationUrl
-                            ? "Apply Now"
-                            : "View Application Details"}
+                          <ExternalLink className="h-4 w-4 sm:h-5 sm:w-5" />
+                          <span className="break-words">
+                            {scholarship.applicationUrl
+                              ? "Apply Now"
+                              : "View Application Details"}
+                          </span>
                         </motion.button>
                       )}
                     </div>
@@ -1234,15 +1242,15 @@ export default function ScholarshipDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
               <div className="lg:col-span-2">
-                <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                  <BookOpen className="h-8 w-8 text-blue-600" />
-                  About This Scholarship
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+                  <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 flex-shrink-0" />
+                  <span className="break-words">About This Scholarship</span>
                 </h2>
-                <div className="bg-gray-50 rounded-2xl p-8 border border-gray-200">
-                  <div className="text-gray-700 leading-relaxed">
+                <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200">
+                  <div className="text-gray-700 leading-relaxed text-sm sm:text-base">
                     {formatRichContent(scholarship.description)}
                   </div>
                 </div>
@@ -1250,20 +1258,20 @@ export default function ScholarshipDetailPage() {
 
               {/* Additional Info Card */}
               <div className="lg:col-span-1">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-6 border border-blue-200">
-                  <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                    <Star className="h-5 w-5 text-yellow-500" />
-                    Key Details
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
+                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0" />
+                    <span className="break-words">Key Details</span>
                   </h3>
-                  <div className="space-y-4">
+                  <div className="space-y-3 sm:space-y-4">
                     {scholarship.fieldOfStudy && (
-                      <div className="flex items-center gap-3">
-                        <FileText className="h-5 w-5 text-indigo-600 flex-shrink-0" />
-                        <div>
-                          <div className="text-sm text-gray-600">
+                      <div className="flex items-start gap-3">
+                        <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
+                        <div className="min-w-0 flex-1">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Field of Study
                           </div>
-                          <div className="font-semibold text-gray-900">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
                             {scholarship.fieldOfStudy}
                           </div>
                         </div>
@@ -1283,8 +1291,8 @@ export default function ScholarshipDetailPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
               {/* Eligibility Criteria */}
               {scholarship.eligibility && (
                 <motion.div
@@ -1292,12 +1300,12 @@ export default function ScholarshipDetailPage() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 1.2 }}
                 >
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <Users className="h-8 w-8 text-purple-600" />
-                    Eligibility Criteria
+                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+                    <Users className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
+                    <span className="break-words">Eligibility Criteria</span>
                   </h2>
-                  <div className="bg-white rounded-2xl p-8 border border-purple-200 shadow-lg">
-                    <div className="space-y-4">
+                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-purple-200 shadow-lg">
+                    <div className="space-y-3 sm:space-y-4">
                       {scholarship.eligibility.map(
                         (criteria: string, index: number) =>
                           renderNumberedListItem(criteria, index, "purple")
@@ -1315,12 +1323,14 @@ export default function ScholarshipDetailPage() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 1.4 }}
                   >
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                      <CheckCircle className="h-8 w-8 text-green-600" />
-                      Application Requirements
+                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
+                      <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 flex-shrink-0" />
+                      <span className="break-words">
+                        Application Requirements
+                      </span>
                     </h2>
-                    <div className="bg-white rounded-2xl p-8 border border-green-200 shadow-lg">
-                      <div className="space-y-4">
+                    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-green-200 shadow-lg">
+                      <div className="space-y-3 sm:space-y-4">
                         {scholarship.requirements.map(
                           (requirement: string, index: number) => (
                             <ApplicationRequirement
