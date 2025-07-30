@@ -793,17 +793,35 @@ export default function Home() {
         </div>
       </motion.section>
 
-      {/* Clean Newsletter CTA */}
+      {/* Enhanced Professional Newsletter CTA */}
       <motion.section
         className="py-32 relative overflow-hidden"
-        style={{ background: "var(--brand-primary)" }}
+        style={{
+          background:
+            "linear-gradient(135deg, #f8fafc 0%, #e2e8f0 25%, #cbd5e1 50%, #94a3b8 75%, #64748b 100%)",
+        }}
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
+        {/* Professional Background Elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Elegant gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-50/80 via-indigo-50/60 to-purple-50/80"></div>
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+
+          {/* Professional floating elements */}
+          <div className="absolute top-20 left-10 w-64 h-64 bg-gradient-to-r from-blue-200/30 to-indigo-200/30 rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute bottom-20 right-10 w-80 h-80 bg-gradient-to-r from-purple-200/20 to-pink-200/20 rounded-full mix-blend-multiply filter blur-xl animate-pulse animation-delay-3s"></div>
+
+          {/* Subtle geometric patterns */}
+          <div className="absolute top-1/4 right-1/4 w-32 h-32 border border-white/20 rounded-full animate-spin-slow"></div>
+          <div className="absolute bottom-1/3 left-1/4 w-24 h-24 bg-gradient-to-r from-blue-100/30 to-indigo-100/30 rounded-lg rotate-45 animate-bounce-slow"></div>
+        </div>
+
         <div className="relative max-w-6xl mx-auto px-6 lg:px-8">
-          {/* Hero Content */}
+          {/* Enhanced Hero Content */}
           <motion.div
             className="text-center mb-16"
             initial={{ y: 30, opacity: 0 }}
@@ -811,29 +829,32 @@ export default function Home() {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            {/* Elegant Icon with Gradient Background */}
+            {/* Professional Icon with Enhanced Gradient Background */}
             <div
-              className="inline-flex items-center justify-center w-24 h-24 rounded-2xl mb-8 shadow-2xl"
+              className="inline-flex items-center justify-center w-28 h-28 rounded-3xl mb-8 shadow-2xl backdrop-blur-sm border border-white/20"
               style={{
                 background:
-                  "linear-gradient(135deg, var(--brand-primary), var(--brand-accent))",
+                  "linear-gradient(135deg, #3b82f6, #8b5cf6, #06b6d4)",
                 transform: "rotate(-5deg)",
               }}
             >
-              <Calendar className="w-12 h-12 text-white transform rotate-5" />
+              <Calendar className="w-14 h-14 text-white transform rotate-5 drop-shadow-lg" />
             </div>
 
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-r from-gray-900 via-gray-700 to-gray-900 bg-clip-text text-transparent">
+            <h2 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 bg-clip-text text-transparent">
               Stay Ahead of the Game
             </h2>
 
-            <p className="text-xl md:text-2xl text-gray-600 mb-16 max-w-4xl mx-auto leading-relaxed font-light">
+            <p className="text-2xl md:text-3xl text-gray-700 mb-16 max-w-5xl mx-auto leading-relaxed font-medium">
               Get exclusive access to new scholarships, insider application
               tips, and deadline reminders delivered to your inbox every week.
+              <span className="block mt-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent font-bold">
+                Join our global community of successful scholars.
+              </span>
             </p>
           </motion.div>
 
-          {/* Premium Newsletter Card */}
+          {/* Enhanced Premium Newsletter Card */}
           <motion.div
             className="max-w-4xl mx-auto"
             initial={{ y: 50, opacity: 0 }}
@@ -841,30 +862,36 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            <div className="bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
-              {/* Card Header with Gradient */}
-              <div className="bg-gradient-to-r from-blue-50 to-indigo-50 px-8 py-8 border-b border-gray-100">
+            <div className="bg-white/95 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/30 overflow-hidden hover:shadow-3xl transition-all duration-500">
+              {/* Enhanced Card Header with Professional Gradient */}
+              <div className="bg-gradient-to-r from-blue-50/90 via-indigo-50/90 to-purple-50/90 px-8 py-8 border-b border-gray-100/50 backdrop-blur-sm">
                 <div className="flex items-center justify-center gap-4 mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
-                    <Mail className="w-6 h-6 text-white" />
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 flex items-center justify-center shadow-xl">
+                    <Mail className="w-7 h-7 text-white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-gray-800">
+                  <h3 className="text-3xl font-black bg-gradient-to-r from-gray-800 to-gray-900 bg-clip-text text-transparent">
                     Join Our Newsletter
                   </h3>
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-r from-green-500 via-emerald-500 to-teal-500 flex items-center justify-center shadow-xl">
+                    <Star className="w-7 h-7 text-white" />
+                  </div>
                 </div>
-                <p className="text-gray-600 text-center max-w-2xl mx-auto">
+                <p className="text-gray-700 text-center max-w-2xl mx-auto text-lg font-medium">
                   Be the first to know about new scholarship opportunities and
                   get expert tips delivered straight to your inbox.
+                  <span className="block mt-2 text-blue-600 font-bold">
+                    Plus exclusive content for our subscribers only!
+                  </span>
                 </p>
               </div>
 
-              {/* Newsletter Form */}
-              <div className="px-8 py-8">
+              {/* Enhanced Newsletter Form */}
+              <div className="px-8 py-8 bg-gradient-to-br from-white/80 to-gray-50/80 backdrop-blur-sm">
                 <form className="w-full">
-                  {/* Container with margin like scholarship card */}
+                  {/* Container with enhanced spacing */}
                   <div className="m-4">
                     <div className="flex flex-col lg:flex-row gap-6">
-                      {/* Email Input - Professional Design with Spacing */}
+                      {/* Enhanced Email Input */}
                       <div className="flex-1 relative">
                         <input
                           type="email"
@@ -875,50 +902,59 @@ export default function Home() {
                           spellCheck="false"
                           role="textbox"
                           aria-label="Email address for newsletter"
-                          className="input-google-lg"
+                          className="w-full h-16 px-6 text-lg text-gray-800 placeholder-gray-500 bg-white/90 backdrop-blur-sm border-2 border-gray-200 rounded-2xl focus:outline-none focus:ring-0 focus:border-blue-500 transition-all duration-300 shadow-lg hover:shadow-xl font-medium"
                         />
                       </div>
 
-                      {/* Subscribe Button - Professional Spacing */}
+                      {/* Enhanced Subscribe Button */}
                       <motion.button
                         type="submit"
-                        className="lg:w-auto w-full h-16 px-12 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-lg font-bold rounded-2xl border-0 shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 flex items-center justify-center gap-3"
-                        whileHover={{ scale: 1.02 }}
+                        className="lg:w-auto w-full h-16 px-16 bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white text-xl font-bold rounded-2xl border-0 shadow-2xl hover:shadow-3xl hover:from-blue-700 hover:via-indigo-700 hover:to-purple-700 transition-all duration-300 flex items-center justify-center gap-4 relative overflow-hidden"
+                        whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                       >
-                        Subscribe Now
-                        <ArrowRight className="w-6 h-6" />
+                        {/* Button background effect */}
+                        <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+
+                        <span className="relative z-10">Subscribe Now</span>
+                        <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                          <ArrowRight className="w-5 h-5" />
+                        </div>
                       </motion.button>
                     </div>
                   </div>
                 </form>
 
-                {/* Trust Indicators */}
-                <div className="mt-8 pt-6 border-t border-gray-200">
-                  <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center">
-                        <CheckCircle className="w-3 h-3 text-green-600" />
+                {/* Enhanced Trust Indicators */}
+                <div className="mt-8 pt-6 border-t border-gray-200/50">
+                  <div className="flex flex-wrap items-center justify-center gap-8 text-sm text-gray-700">
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full flex items-center justify-center shadow-lg">
+                        <CheckCircle className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">5,000+ Subscribers</span>
+                      <span className="font-bold text-lg">
+                        25,000+ Subscribers
+                      </span>
                     </div>
 
-                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full hidden sm:block"></div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Shield className="w-3 h-3 text-blue-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full flex items-center justify-center shadow-lg">
+                        <Shield className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">No Spam Policy</span>
+                      <span className="font-bold text-lg">
+                        No Spam Guarantee
+                      </span>
                     </div>
 
-                    <div className="w-1 h-1 bg-gray-400 rounded-full hidden sm:block"></div>
+                    <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full hidden sm:block"></div>
 
-                    <div className="flex items-center gap-2">
-                      <div className="w-5 h-5 bg-purple-100 rounded-full flex items-center justify-center">
-                        <Zap className="w-3 h-3 text-purple-600" />
+                    <div className="flex items-center gap-3">
+                      <div className="w-6 h-6 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full flex items-center justify-center shadow-lg">
+                        <Zap className="w-4 h-4 text-white" />
                       </div>
-                      <span className="font-medium">Weekly Updates</span>
+                      <span className="font-bold text-lg">Weekly Insights</span>
                     </div>
                   </div>
                 </div>
