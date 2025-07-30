@@ -2,6 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import {
   Menu,
   X,
@@ -710,121 +711,418 @@ export default function Layout({ children }: LayoutProps) {
           position="bottom-right"
         />
         {/* Toast Notifications */}
-        <ToastContainer toasts={toasts} onClose={removeToast} /> {/* Footer */}
-        <footer
-          style={{
-            backgroundImage: `linear-gradient(to right, rgba(255, 255, 255, 0.3), rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6)), linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://cdn.pixabay.com/photo/2021/10/30/17/54/desert-6755127_1280.jpg')`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundColor: "var(--text-primary)", // Fallback color
-          }}
-          className="text-white relative"
-        >
-          <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-8 sm:py-12">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8">
-              {/* Company Info */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2">
-                <div className="flex items-center space-x-2 mb-3 sm:mb-4">
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 gradient-primary rounded-lg flex items-center justify-center">
-                    <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+        <ToastContainer toasts={toasts} onClose={removeToast} />
+        {/* Professional Footer */}
+        <footer className="relative overflow-hidden">
+          {/* Main Gradient Background */}
+          <div
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(135deg, #1e3a8a 0%, #3730a3 25%, #581c87 50%, #7c2d12 75%, #0f172a 100%)",
+            }}
+          />
+
+          {/* Overlay Pattern Background */}
+          <div
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(147, 51, 234, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(16, 185, 129, 0.3) 0%, transparent 50%)
+              `,
+              backgroundSize: "800px 800px, 600px 600px, 400px 400px",
+              animation: "float 25s ease-in-out infinite",
+            }}
+          />
+
+          {/* Geometric Pattern Overlay */}
+          <div
+            className="absolute inset-0 opacity-5"
+            style={{
+              backgroundImage: `
+                linear-gradient(30deg, transparent 48%, rgba(255, 255, 255, 0.1) 49%, rgba(255, 255, 255, 0.1) 51%, transparent 52%),
+                linear-gradient(60deg, transparent 48%, rgba(255, 255, 255, 0.05) 49%, rgba(255, 255, 255, 0.05) 51%, transparent 52%),
+                linear-gradient(90deg, transparent 48%, rgba(255, 255, 255, 0.03) 49%, rgba(255, 255, 255, 0.03) 51%, transparent 52%)
+              `,
+              backgroundSize: "120px 120px, 80px 80px, 60px 60px",
+            }}
+          />
+
+          {/* Professional Mesh Gradient Overlay */}
+          <div
+            className="absolute inset-0 opacity-40"
+            style={{
+              background: `
+                radial-gradient(ellipse at top left, rgba(37, 99, 235, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at top right, rgba(124, 58, 237, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom left, rgba(5, 150, 105, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse at bottom right, rgba(239, 68, 68, 0.1) 0%, transparent 50%)
+              `,
+            }}
+          />
+
+          {/* Subtle Texture Overlay */}
+          <div
+            className="absolute inset-0 opacity-30"
+            style={{
+              background:
+                "linear-gradient(135deg, transparent 25%, rgba(255, 255, 255, 0.02) 50%, transparent 75%)",
+              backgroundSize: "20px 20px",
+            }}
+          />
+
+          <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+            {/* Main Footer Content */}
+            <div className="py-16 lg:py-20">
+              <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-16">
+                {/* Brand Section */}
+                <div className="lg:col-span-2">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center"
+                        style={{ background: "var(--gradient-primary)" }}
+                      >
+                        <GraduationCap className="w-7 h-7 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="text-2xl font-bold text-white">
+                          ScholarHunt
+                        </h3>
+                        <p className="text-blue-200 text-sm">Uganda</p>
+                      </div>
+                    </div>
+
+                    <p className="text-slate-300 text-lg leading-relaxed mb-8 max-w-md">
+                      Empowering Ugandan students to achieve their academic
+                      dreams through comprehensive scholarship discovery and
+                      application support.
+                    </p>
+
+                    {/* Stats */}
+                    <div className="grid grid-cols-3 gap-6 mb-8">
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-white mb-1">
+                          500+
+                        </div>
+                        <div className="text-slate-400 text-sm">
+                          Scholarships
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-white mb-1">
+                          10K+
+                        </div>
+                        <div className="text-slate-400 text-sm">
+                          Students Helped
+                        </div>
+                      </div>
+                      <div className="text-center">
+                        <div className="text-2xl font-bold text-white mb-1">
+                          50+
+                        </div>
+                        <div className="text-slate-400 text-sm">Countries</div>
+                      </div>
+                    </div>
+
+                    {/* Social Links */}
+                    <div className="flex space-x-4">
+                      <a
+                        href="#"
+                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-blue-500 transition-all duration-300 group"
+                      >
+                        <svg
+                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                        </svg>
+                      </a>
+                      <a
+                        href="#"
+                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-blue-600 transition-all duration-300 group"
+                      >
+                        <svg
+                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                        </svg>
+                      </a>
+                      <a
+                        href="#"
+                        className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-green-500 transition-all duration-300 group"
+                      >
+                        <svg
+                          className="w-5 h-5 text-slate-300 group-hover:text-white"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488" />
+                        </svg>
+                      </a>
+                    </div>
+                  </motion.div>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="lg:col-span-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 lg:gap-12">
+                    {/* Opportunities */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.1 }}
+                      viewport={{ once: true }}
+                    >
+                      <h3 className="text-white font-semibold text-lg mb-6">
+                        Opportunities
+                      </h3>
+                      <div className="space-y-3">
+                        <Link
+                          href="/opportunities"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300 group"
+                        >
+                          <span className="flex items-center">
+                            Browse Scholarships
+                            <svg
+                              className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform duration-300"
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M9 5l7 7-7 7"
+                              />
+                            </svg>
+                          </span>
+                        </Link>
+                        <Link
+                          href="/opportunities?type=undergraduate"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Undergraduate Programs
+                        </Link>
+                        <Link
+                          href="/opportunities?type=graduate"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Graduate Programs
+                        </Link>
+                        <Link
+                          href="/opportunities?type=research"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Research Opportunities
+                        </Link>
+                        <Link
+                          href="/submit"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Submit Scholarship
+                        </Link>
+                      </div>
+                    </motion.div>
+
+                    {/* Resources */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      viewport={{ once: true }}
+                    >
+                      <h3 className="text-white font-semibold text-lg mb-6">
+                        Resources
+                      </h3>
+                      <div className="space-y-3">
+                        <Link
+                          href="/blog"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Success Stories
+                        </Link>
+                        <Link
+                          href="/blog?category=tips"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Application Tips
+                        </Link>
+                        <Link
+                          href="/blog?category=guides"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Study Guides
+                        </Link>
+                        <Link
+                          href="/about"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          About ScholarHunt
+                        </Link>
+                        <Link
+                          href="#"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Help Center
+                        </Link>
+                      </div>
+                    </motion.div>
+
+                    {/* Company */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.3 }}
+                      viewport={{ once: true }}
+                    >
+                      <h3 className="text-white font-semibold text-lg mb-6">
+                        Company
+                      </h3>
+                      <div className="space-y-3">
+                        <Link
+                          href="/about"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Our Mission
+                        </Link>
+                        <Link
+                          href="#"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Contact Us
+                        </Link>
+                        <Link
+                          href="/privacy-policy"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Privacy Policy
+                        </Link>
+                        <Link
+                          href="/terms-of-service"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Terms of Service
+                        </Link>
+                        <Link
+                          href="#"
+                          className="block text-slate-300 hover:text-blue-400 transition-colors duration-300"
+                        >
+                          Partnerships
+                        </Link>
+                      </div>
+                    </motion.div>
                   </div>
-                  <span className="text-lg sm:text-xl font-bold">
-                    ScholarHunt
+                </div>
+              </div>
+            </div>
+
+            {/* Newsletter Section */}
+            <motion.div
+              className="py-12 border-t border-slate-700/50"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-white mb-3">
+                  Never Miss an Opportunity
+                </h3>
+                <p className="text-slate-300 text-lg max-w-2xl mx-auto">
+                  Join 10,000+ students who get weekly scholarship alerts and
+                  exclusive application tips.
+                </p>
+              </div>
+
+              <div className="max-w-md mx-auto">
+                <NewsletterSubscription
+                  source="footer"
+                  placeholder="Enter your email address"
+                  buttonText="Get Weekly Updates"
+                  compact={false}
+                />
+              </div>
+
+              {/* Trust Indicators */}
+              <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-slate-400 text-sm">
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Secure & Private
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  No Spam Guarantee
+                </div>
+                <div className="flex items-center gap-2">
+                  <svg
+                    className="w-4 h-4"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                  24/7 Support
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Bottom Bar */}
+            <div className="py-6 border-t border-slate-700/50">
+              <div className="flex flex-col lg:flex-row justify-between items-center gap-4">
+                <div className="text-slate-400 text-sm">
+                  © 2025 ScholarHunt Uganda. All rights reserved. Made with ❤️
+                  for Ugandan students.
+                </div>
+                <div className="flex items-center gap-6 text-slate-400 text-sm">
+                  <span className="flex items-center gap-2">
+                    <svg
+                      className="w-4 h-4"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M4.083 9h1.946c.089-1.546.383-2.97.837-4.118A6.004 6.004 0 004.083 9zM10 2a8 8 0 100 16 8 8 0 000-16zm0 2c-.076 0-.232.032-.465.262-.238.234-.497.623-.737 1.182-.389.907-.673 2.142-.766 3.556h3.936c-.093-1.414-.377-2.649-.766-3.556-.24-.559-.5-.948-.737-1.182C10.232 4.032 10.076 4 10 4zm3.971 5c-.089-1.546-.383-2.97-.837-4.118A6.004 6.004 0 0115.917 9h-1.946zm-2.003 2H8.032c.093 1.414.377 2.649.766 3.556.24.559.5.948.737 1.182.233.23.389.262.465.262.076 0 .232-.032.465-.262.238-.234.498-.623.737-1.182.389-.907.673-2.142.766-3.556zm1.166 4.118c.454-1.147.748-2.572.837-4.118h1.946a6.004 6.004 0 01-2.783 4.118zm-6.268 0C6.412 13.97 6.118 12.546 6.03 11H4.083a6.004 6.004 0 002.783 4.118z"
+                        clipRule="evenodd"
+                      />
+                    </svg>
+                    Proudly Ugandan
                   </span>
+                  <span>•</span>
+                  <span>Status: All Systems Operational</span>
                 </div>
-                <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4 max-w-md">
-                  Connecting Ugandan students with scholarship opportunities
-                  worldwide. Your gateway to educational excellence and global
-                  opportunities.
-                </p>
-                <div className="text-xs sm:text-sm text-gray-400">
-                  © 2025 ScholarHunt. All rights reserved.
-                </div>
-              </div>
-
-              {/* Quick Links */}
-              <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
-                  Quick Links
-                </h3>
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Link
-                    href="/opportunities"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    Browse Scholarships
-                  </Link>
-                  <Link
-                    href="/submit"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    Submit Opportunity
-                  </Link>
-                  <Link
-                    href="/blog"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    Blog & Tips
-                  </Link>
-                  <Link
-                    href="/about"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    About Us
-                  </Link>
-                </div>
-              </div>
-
-              {/* Legal */}
-              <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-3 sm:mb-4">
-                  Legal
-                </h3>
-                <div className="space-y-1.5 sm:space-y-2">
-                  <Link
-                    href="/privacy-policy"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    Privacy Policy
-                  </Link>
-                  <Link
-                    href="/terms-of-service"
-                    className="block text-gray-300 hover:text-white transition-colors text-sm sm:text-base"
-                  >
-                    Terms of Service
-                  </Link>
-                </div>
-              </div>
-            </div>
-
-            {/* Newsletter Signup */}
-            <div className="mt-6 sm:mt-8 pt-6 sm:pt-8 border-t border-gray-700">
-              <div className="text-center">
-                <h3 className="text-base sm:text-lg font-semibold mb-2">
-                  Stay Updated
-                </h3>
-                <p className="text-gray-300 text-sm sm:text-base mb-4 max-w-lg mx-auto">
-                  Get the latest scholarship opportunities delivered to your
-                  inbox.
-                </p>
-                <div className="max-w-sm sm:max-w-md mx-auto">
-                  <NewsletterSubscription
-                    source="footer"
-                    placeholder="Enter your email"
-                    buttonText="Subscribe"
-                    compact={true}
-                  />
-                </div>
-              </div>
-            </div>
-            {/* AdSense Placeholder - Hidden on mobile to save space */}
-            <div className="hidden sm:block mt-6 sm:mt-8 text-center">
-              <div className="bg-gray-800 border border-gray-700 rounded-lg p-3 sm:p-4">
-                <small className="text-gray-500 text-xs sm:text-sm">
-                  {/* AdSense Footer Ad will go here after approval */}
-                  Advertisement Space
-                </small>
               </div>
             </div>
           </div>
