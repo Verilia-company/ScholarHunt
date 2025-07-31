@@ -848,10 +848,252 @@ export default function ScholarshipDetailPage() {
 
   return (
     <>
-      {/* Custom styles for glowing animation */}
+      {/* Custom styles for mobile text handling */}
       <style
         dangerouslySetInnerHTML={{
           __html: `
+          /* Ultra-aggressive mobile text handling for Samsung S8 and iPhone 11 */
+          @media (max-width: 375px) {
+            * {
+              box-sizing: border-box !important;
+            }
+            
+            .break-words {
+              word-wrap: break-word !important;
+              word-break: break-word !important;
+              hyphens: auto !important;
+              overflow-wrap: break-word !important;
+              white-space: normal !important;
+              max-width: 100% !important;
+            }
+            
+            .text-overflow-mobile {
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+              overflow: hidden !important;
+              word-break: break-word !important;
+              max-height: 2.6em !important;
+              text-overflow: ellipsis !important;
+            }
+            
+            /* Force container to be responsive with strict width control */
+            .mobile-container {
+              max-width: calc(100vw - 16px) !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              padding-left: 6px !important;
+              padding-right: 6px !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+            }
+            
+            /* Ultra-small mobile text with strict width limits */
+            .mobile-text {
+              font-size: 9px !important;
+              line-height: 1.1 !important;
+              max-width: 100% !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+            }
+            
+            /* Mobile card fixes with width constraints */
+            .mobile-card {
+              padding: 6px !important;
+              margin: 2px 0 !important;
+              border-radius: 6px !important;
+              max-width: 100% !important;
+              overflow: hidden !important;
+              width: 100% !important;
+            }
+            
+            /* Mobile button fixes with text truncation */
+            .mobile-button {
+              font-size: 9px !important;
+              padding: 6px 8px !important;
+              min-height: 32px !important;
+              max-width: 100% !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+            }
+            
+            /* Mobile title fixes with aggressive truncation */
+            .mobile-title {
+              font-size: 10px !important;
+              line-height: 1.0 !important;
+              max-height: 2.0em !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              display: -webkit-box !important;
+              -webkit-line-clamp: 2 !important;
+              -webkit-box-orient: vertical !important;
+            }
+            
+            /* Force all text elements to respect container width */
+            .mobile-text-force {
+              max-width: calc(100vw - 32px) !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+            }
+          }
+          
+          /* Specific fixes for Samsung Galaxy S8+ (360px-412px viewport) */
+          @media (min-width: 361px) and (max-width: 412px) {
+            .mobile-container {
+              max-width: calc(100vw - 20px) !important;
+              padding-left: 8px !important;
+              padding-right: 8px !important;
+            }
+            
+            .mobile-text-force {
+              max-width: calc(100vw - 40px) !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+            }
+            
+            .mobile-card {
+              padding: 8px !important;
+              max-width: calc(100% - 4px) !important;
+            }
+            
+            .mobile-button {
+              font-size: 10px !important;
+              padding: 8px 10px !important;
+              max-width: calc(100% - 4px) !important;
+            }
+            
+            .mobile-title {
+              font-size: 11px !important;
+              max-width: calc(100vw - 40px) !important;
+            }
+            
+            .mobile-text {
+              font-size: 10px !important;
+              max-width: calc(100% - 8px) !important;
+            }
+          }
+          
+          /* Additional fixes for very small viewports with right-side cutoff prevention */
+          @media (max-width: 320px) {
+            .break-words {
+              font-size: 8px !important;
+              line-height: 1.0 !important;
+              max-width: calc(100vw - 24px) !important;
+            }
+            
+            .mobile-container {
+              padding-left: 4px !important;
+              padding-right: 4px !important;
+              max-width: calc(100vw - 8px) !important;
+            }
+            
+            .mobile-card {
+              padding: 4px !important;
+              font-size: 8px !important;
+            }
+            
+            .mobile-button {
+              font-size: 8px !important;
+              padding: 4px 6px !important;
+              min-height: 28px !important;
+            }
+            
+            .mobile-title {
+              font-size: 9px !important;
+              line-height: 1.0 !important;
+              max-height: 1.8em !important;
+            }
+            
+            /* Force strict width on all mobile text elements */
+            .mobile-text-force {
+              max-width: calc(100vw - 16px) !important;
+            }
+          }
+          
+          /* Samsung Galaxy devices specific fixes - targeting S8, S8+, S9 */
+          @media screen and (min-device-width: 360px) and (max-device-width: 414px) and (-webkit-device-pixel-ratio: 3) {
+            .mobile-container {
+              max-width: calc(100vw - 24px) !important;
+              padding-left: 8px !important;
+              padding-right: 8px !important;
+              overflow-x: hidden !important;
+            }
+            
+            .mobile-text-force {
+              max-width: calc(100vw - 48px) !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+            }
+            
+            .mobile-card {
+              max-width: calc(100% - 8px) !important;
+              margin-left: 4px !important;
+              margin-right: 4px !important;
+            }
+            
+            .mobile-button {
+              max-width: calc(100% - 8px) !important;
+              margin-left: 4px !important;
+              margin-right: 4px !important;
+            }
+            
+            /* Force text to stay within boundaries */
+            .break-words, .mobile-title, .mobile-text {
+              max-width: calc(100vw - 48px) !important;
+              word-wrap: break-word !important;
+              word-break: break-all !important;
+            }
+          }
+          
+          /* Universal Samsung fix - catch all Samsung devices */
+          @media screen and (-webkit-device-pixel-ratio: 3) and (max-width: 450px) {
+            body, html {
+              overflow-x: hidden !important;
+            }
+            
+            * {
+              max-width: 100% !important;
+              box-sizing: border-box !important;
+            }
+            
+            .mobile-container {
+              max-width: calc(100vw - 20px) !important;
+              width: calc(100vw - 20px) !important;
+              padding-left: 6px !important;
+              padding-right: 6px !important;
+              margin: 0 auto !important;
+            }
+            
+            .mobile-text-force {
+              max-width: calc(100vw - 40px) !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+            }
+            
+            .mobile-card {
+              max-width: calc(100% - 12px) !important;
+              padding: 6px !important;
+              overflow: hidden !important;
+            }
+            
+            .mobile-button {
+              max-width: calc(100% - 12px) !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+            }
+            
+            /* Aggressive text wrapping for Samsung */
+            span, div, p, h1, h2, h3 {
+              word-wrap: break-word !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              max-width: 100% !important;
+            }
+          }
+          
           @keyframes glow-pulse {
             0%, 100% {
               box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3), 0 0 15px rgba(59, 130, 246, 0.2);
@@ -894,7 +1136,15 @@ export default function ScholarshipDetailPage() {
         `,
         }}
       />
-      <div className="min-h-screen" style={{ background: "var(--bg-primary)" }}>
+      <div
+        className="min-h-screen mobile-container"
+        style={{
+          background: "var(--bg-primary)",
+          maxWidth: "100vw",
+          overflowX: "hidden",
+          width: "100%",
+        }}
+      >
         {/* Fixed Share Button */}
         <motion.div
           className="fixed top-20 right-4 sm:right-6 z-50"
@@ -1019,7 +1269,7 @@ export default function ScholarshipDetailPage() {
 
           {/* Glass overlay */}
           <div className="relative backdrop-blur-sm border-b border-white/20">
-            <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-8 lg:py-12">
+            <div className="max-w-7xl mx-auto px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-4 sm:py-6 lg:py-8 mobile-container">
               {/* Breadcrumb Navigation */}
               <motion.div
                 className="mb-6 sm:mb-8"
@@ -1029,16 +1279,21 @@ export default function ScholarshipDetailPage() {
               >
                 <Link
                   href="/opportunities"
-                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group text-sm sm:text-base"
+                  className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group text-sm sm:text-base mobile-text mobile-text-force"
                 >
                   <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
-                  <span className="font-medium">Back to Opportunities</span>
+                  <span className="font-medium mobile-text mobile-text-force">
+                    Back to Opportunities
+                  </span>
                 </Link>
               </motion.div>
 
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-12">
+              <div
+                className="grid grid-cols-1 xl:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 xl:gap-8 mobile-container"
+                style={{ maxWidth: "100%", overflowX: "hidden" }}
+              >
                 {/* Main Hero Content */}
-                <div className="xl:col-span-2">
+                <div className="xl:col-span-2 min-w-0">
                   {/* Status Badges */}
                   <motion.div
                     className="flex flex-wrap gap-2 mb-3 sm:mb-4 lg:mb-6"
@@ -1048,7 +1303,7 @@ export default function ScholarshipDetailPage() {
                   >
                     {scholarship.type && (
                       <div
-                        className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold ${
+                        className={`inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs font-semibold flex-shrink-0 ${
                           scholarship.type === "International"
                             ? "bg-blue-500/20 text-blue-200 border border-blue-400/30"
                             : scholarship.type === "Local"
@@ -1056,34 +1311,38 @@ export default function ScholarshipDetailPage() {
                             : "bg-purple-500/20 text-purple-200 border border-purple-400/30"
                         }`}
                       >
-                        <Globe className="h-3 w-3" />
-                        <span className="truncate">{scholarship.type}</span>
+                        <Globe className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate min-w-0">
+                          {scholarship.type}
+                        </span>
                       </div>
                     )}
                     {isUrgent && !isExpired && !isUndisclosed && (
-                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-xs font-semibold animate-pulse">
-                        <Clock className="h-3 w-3" />
-                        <span className="truncate">
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-red-500/20 text-red-200 border border-red-400/30 text-xs font-semibold animate-pulse flex-shrink-0">
+                        <Clock className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate min-w-0">
                           Urgent - {daysRemaining} days left
                         </span>
                       </div>
                     )}
                     {isUndisclosed && (
-                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs font-semibold">
-                        <CheckCircle className="h-3 w-3" />
-                        <span className="truncate">Open Application</span>
+                      <div className="inline-flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-500/20 text-emerald-200 border border-emerald-400/30 text-xs font-semibold flex-shrink-0">
+                        <CheckCircle className="h-3 w-3 flex-shrink-0" />
+                        <span className="truncate min-w-0">
+                          Open Application
+                        </span>
                       </div>
                     )}
                   </motion.div>
 
                   {/* Title */}
                   <motion.h1
-                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-3 sm:mb-4 lg:mb-6 leading-tight break-words"
+                    className="text-xs sm:text-base md:text-lg lg:text-xl xl:text-2xl font-bold mb-2 sm:mb-3 lg:mb-4 leading-tight break-words mobile-title mobile-text-force"
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
                   >
-                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent break-words text-overflow-mobile mobile-text-force">
                       {scholarship.title}
                     </span>
                   </motion.h1>
@@ -1091,13 +1350,13 @@ export default function ScholarshipDetailPage() {
                   {/* Provider */}
                   {scholarship.provider && (
                     <motion.div
-                      className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 mb-4 sm:mb-6"
+                      className="inline-flex items-start gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 mb-4 sm:mb-6 max-w-full"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <University className="h-4 w-4 text-blue-300 flex-shrink-0" />
-                      <span className="text-white font-medium text-sm break-words">
+                      <University className="h-4 w-4 text-blue-300 flex-shrink-0 mt-0.5" />
+                      <span className="text-white font-medium text-sm break-words leading-tight min-w-0">
                         Offered by{" "}
                         <span className="font-bold text-blue-200">
                           {scholarship.provider}
@@ -1108,34 +1367,38 @@ export default function ScholarshipDetailPage() {
 
                   {/* Quick Stats */}
                   <motion.div
-                    className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4 sm:mb-6"
+                    className="grid grid-cols-1 gap-2 mb-3 sm:mb-4 mobile-container"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: 0.5 }}
                   >
-                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3">
-                      <DollarSign className="h-5 w-5 text-green-400 mb-2" />
-                      <div className="text-xs text-gray-300 mb-1">Value</div>
-                      <div className="text-sm font-bold text-white break-words">
+                    <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl mobile-card">
+                      <DollarSign className="h-3 w-3 sm:h-4 sm:w-4 text-green-400 mb-1 flex-shrink-0" />
+                      <div className="text-xs text-gray-300 mb-1 mobile-text">
+                        Value
+                      </div>
+                      <div className="text-xs font-bold text-white break-words leading-tight overflow-hidden text-overflow-mobile mobile-text-force">
                         {scholarship.amount}
                       </div>
                     </div>
                     {scholarship.level && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3">
-                        <GraduationCap className="h-5 w-5 text-purple-400 mb-2" />
-                        <div className="text-xs text-gray-300 mb-1">Level</div>
-                        <div className="text-sm font-bold text-white break-words">
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl mobile-card">
+                        <GraduationCap className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400 mb-1 flex-shrink-0" />
+                        <div className="text-xs text-gray-300 mb-1 mobile-text">
+                          Level
+                        </div>
+                        <div className="text-xs font-bold text-white break-words leading-tight overflow-hidden text-overflow-mobile mobile-text-force">
                           {scholarship.level}
                         </div>
                       </div>
                     )}
                     {scholarship.location && (
-                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-3 sm:col-span-2">
-                        <MapPin className="h-5 w-5 text-orange-400 mb-2" />
-                        <div className="text-xs text-gray-300 mb-1">
+                      <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-lg sm:rounded-xl mobile-card">
+                        <MapPin className="h-3 w-3 sm:h-4 sm:w-4 text-orange-400 mb-1 flex-shrink-0" />
+                        <div className="text-xs text-gray-300 mb-1 mobile-text">
                           Location
                         </div>
-                        <div className="text-sm font-bold text-white break-words">
+                        <div className="text-xs font-bold text-white break-words leading-tight overflow-hidden text-overflow-mobile mobile-text-force">
                           {scholarship.location}
                         </div>
                       </div>
@@ -1145,33 +1408,33 @@ export default function ScholarshipDetailPage() {
 
                 {/* Action Card */}
                 <motion.div
-                  className="xl:col-span-1"
+                  className="xl:col-span-1 w-full"
                   initial={{ opacity: 0, x: 50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  <div className="xl:sticky xl:top-24">
-                    <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-2xl p-4 sm:p-6 shadow-2xl">
-                      <div className="text-center mb-4 sm:mb-6">
-                        <div className="inline-flex items-center gap-1 sm:gap-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-3">
-                          <Award className="h-3 w-3 sm:h-4 sm:w-4 text-green-400" />
-                          <span className="text-xs sm:text-sm font-semibold text-green-300">
-                            Scholarship Opportunity
+                  <div className="xl:sticky xl:top-24 w-full mobile-container">
+                    <div className="bg-white/10 backdrop-blur-xl border border-white/30 rounded-lg sm:rounded-xl mobile-card shadow-2xl w-full">
+                      <div className="text-center mb-2 sm:mb-3">
+                        <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-400/30 mb-1 sm:mb-2 flex-shrink-0">
+                          <Award className="h-2 w-2 sm:h-3 sm:w-3 text-green-400 flex-shrink-0" />
+                          <span className="text-xs font-semibold text-green-300 whitespace-nowrap mobile-text">
+                            Scholarship
                           </span>
                         </div>
-                        <h3 className="text-base sm:text-lg font-bold text-white mb-2">
+                        <h3 className="text-xs sm:text-sm font-bold text-white mb-1 break-words mobile-text mobile-text-force">
                           Ready to Apply?
                         </h3>
-                        <p className="text-xs sm:text-sm text-gray-300">
+                        <p className="text-xs text-gray-300 break-words leading-tight hidden sm:block mobile-text-force">
                           Take the next step towards your academic future
                         </p>
                       </div>
 
                       {/* Application Deadline */}
-                      <div className="bg-white/5 rounded-xl p-3 mb-4 sm:mb-6">
-                        <div className="flex items-center gap-2 sm:gap-3">
+                      <div className="bg-white/5 rounded-lg mobile-card mb-2 sm:mb-3">
+                        <div className="flex items-start gap-1 sm:gap-2">
                           <Calendar
-                            className={`h-4 w-4 sm:h-5 sm:w-5 flex-shrink-0 ${
+                            className={`h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 mt-0.5 ${
                               isUndisclosed
                                 ? "text-gray-400"
                                 : isUrgent
@@ -1179,12 +1442,12 @@ export default function ScholarshipDetailPage() {
                                 : "text-blue-400"
                             }`}
                           />
-                          <div className="min-w-0 flex-1">
-                            <div className="text-xs text-gray-400 mb-1">
-                              Application Deadline
+                          <div className="min-w-0 flex-1 mobile-text-force">
+                            <div className="text-xs text-gray-400 mb-1 mobile-text">
+                              Deadline
                             </div>
                             <div
-                              className={`font-semibold text-xs sm:text-sm break-words ${
+                              className={`font-semibold text-xs break-words leading-tight text-overflow-mobile mobile-text-force ${
                                 isUndisclosed
                                   ? "text-gray-300"
                                   : isUrgent
@@ -1200,28 +1463,27 @@ export default function ScholarshipDetailPage() {
 
                       {/* Apply Button */}
                       {isExpired && !isUndisclosed ? (
-                        <div className="text-center p-3 bg-red-500/10 border border-red-400/30 rounded-xl">
-                          <AlertTriangle className="h-4 w-4 sm:h-5 sm:w-5 text-red-400 mx-auto mb-2" />
-                          <div className="text-xs sm:text-sm font-medium text-red-300 mb-1">
-                            Application Period Closed
+                        <div className="text-center mobile-card bg-red-500/10 border border-red-400/30 rounded-lg mobile-text-force">
+                          <AlertTriangle className="h-3 w-3 sm:h-4 sm:w-4 text-red-400 mx-auto mb-1 flex-shrink-0" />
+                          <div className="text-xs font-medium text-red-300 mb-1 break-words leading-tight mobile-text mobile-text-force">
+                            Closed
                           </div>
-                          <div className="text-xs text-red-400">
-                            This scholarship is no longer accepting
-                            applications.
+                          <div className="text-xs text-red-400 break-words leading-tight hidden sm:block mobile-text-force">
+                            No longer accepting applications
                           </div>
                         </div>
                       ) : (
                         <motion.button
                           onClick={handleApplyClick}
-                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 text-sm"
+                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold mobile-button rounded-lg sm:rounded-xl transition-all duration-300 flex items-center justify-center gap-1 text-overflow-mobile mobile-text-force"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          <ExternalLink className="h-4 w-4" />
-                          <span className="break-words">
+                          <ExternalLink className="h-3 w-3 flex-shrink-0" />
+                          <span className="break-words text-center leading-tight text-overflow-mobile mobile-text mobile-text-force">
                             {scholarship.applicationUrl
                               ? "Apply Now"
-                              : "View Application Details"}
+                              : "View Details"}
                           </span>
                         </motion.button>
                       )}
@@ -1242,34 +1504,38 @@ export default function ScholarshipDetailPage() {
         >
           <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-              <div className="lg:col-span-2">
-                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-                  <BookOpen className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600 flex-shrink-0" />
-                  <span className="break-words">About This Scholarship</span>
+              <div className="lg:col-span-2 min-w-0">
+                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+                  <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-blue-600 flex-shrink-0 mt-1" />
+                  <span className="break-words leading-tight min-w-0">
+                    About This Scholarship
+                  </span>
                 </h2>
                 <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200">
-                  <div className="text-gray-700 leading-relaxed text-sm sm:text-base">
+                  <div className="text-gray-700 leading-relaxed text-sm sm:text-base break-words">
                     {formatRichContent(scholarship.description)}
                   </div>
                 </div>
               </div>
 
               {/* Additional Info Card */}
-              <div className="lg:col-span-1">
+              <div className="lg:col-span-1 min-w-0">
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200">
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-center gap-2">
-                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0" />
-                    <span className="break-words">Key Details</span>
+                  <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-start gap-2 break-words">
+                    <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
+                    <span className="break-words leading-tight min-w-0">
+                      Key Details
+                    </span>
                   </h3>
                   <div className="space-y-3 sm:space-y-4">
                     {scholarship.fieldOfStudy && (
                       <div className="flex items-start gap-3">
-                        <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 flex-shrink-0 mt-0.5" />
+                        <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 flex-shrink-0 mt-1" />
                         <div className="min-w-0 flex-1">
                           <div className="text-xs sm:text-sm text-gray-600 mb-1">
                             Field of Study
                           </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words leading-tight">
                             {scholarship.fieldOfStudy}
                           </div>
                         </div>
@@ -1294,13 +1560,16 @@ export default function ScholarshipDetailPage() {
               {/* Eligibility Criteria */}
               {scholarship.eligibility && (
                 <motion.div
+                  className="min-w-0"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 1.2 }}
                 >
-                  <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-                    <Users className="h-6 w-6 sm:h-8 sm:w-8 text-purple-600 flex-shrink-0" />
-                    <span className="break-words">Eligibility Criteria</span>
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+                    <Users className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-purple-600 flex-shrink-0 mt-1" />
+                    <span className="break-words leading-tight min-w-0">
+                      Eligibility Criteria
+                    </span>
                   </h2>
                   <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-purple-200 shadow-lg">
                     <div className="space-y-3 sm:space-y-4">
@@ -1317,13 +1586,14 @@ export default function ScholarshipDetailPage() {
               {scholarship.requirements &&
                 scholarship.requirements.length > 0 && (
                   <motion.div
+                    className="min-w-0"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 1.4 }}
                   >
-                    <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-                      <CheckCircle className="h-6 w-6 sm:h-8 sm:w-8 text-green-600 flex-shrink-0" />
-                      <span className="break-words">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+                      <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 mt-1" />
+                      <span className="break-words leading-tight min-w-0">
                         Application Requirements
                       </span>
                     </h2>
