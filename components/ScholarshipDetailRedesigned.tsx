@@ -8,7 +8,7 @@ export default function ScholarshipDetailRedesigned() {
         href="/opportunities"
         className="btn btn-ghost mb-6 flex items-center gap-2 w-fit"
       >
-        {/* Replace with your icon system if needed */}
+        {/* Replace with icon system if needed */}
         <svg
           className="h-4 w-4"
           viewBox="0 0 24 24"
