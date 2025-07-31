@@ -15,7 +15,17 @@ import {
   setDoc,
   writeBatch,
 } from "firebase/firestore";
-import { db } from "../firebase";
+import { db, isFirebaseAvailable } from "../firebase";
+
+// Helper function to check if Firestore is available
+const ensureFirestore = () => {
+  if (!isFirebaseAvailable || !db) {
+    throw new Error(
+      "Firestore is not available. Please check your Firebase configuration."
+    );
+  }
+  return db;
+};
 
 // Types
 export interface User {
@@ -184,7 +194,7 @@ export const analyticsService = {
     resourceId?: string;
     metadata?: unknown;
   }): Promise<void> {
-    await addDoc(collection(db, "activities"), {
+    await addDoc(collection(ensureFirestore(), "activities"), {
       ...activity,
       timestamp: serverTimestamp(),
     });
@@ -192,7 +202,7 @@ export const analyticsService = {
 
   async getRecentActivities(limitCount: number = 10): Promise<Activity[]> {
     const q = query(
-      collection(db, "activities"),
+      collection(ensureFirestore(), "activities"),
       orderBy("timestamp", "desc"),
       limit(limitCount)
     );
@@ -259,7 +269,7 @@ export const analyticsService = {
     resourceType: string,
     resourceId: string
   ): Promise<void> {
-    await addDoc(collection(db, "pageViews"), {
+    await addDoc(collection(ensureFirestore(), "pageViews"), {
       resourceType,
       resourceId,
       timestamp: serverTimestamp(),
@@ -270,7 +280,7 @@ export const analyticsService = {
 // User Services
 export const userService = {
   async createUser(userData: Omit<User, "id" | "createdAt">): Promise<string> {
-    const docRef = await addDoc(collection(db, "users"), {
+    const docRef = await addDoc(collection(ensureFirestore(), "users"), {
       ...userData,
       createdAt: serverTimestamp(),
     });
@@ -278,7 +288,7 @@ export const userService = {
   },
 
   async getUser(userId: string): Promise<User | null> {
-    const docRef = doc(db, "users", userId);
+    const docRef = doc(ensureFirestore(), "users", userId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -288,7 +298,7 @@ export const userService = {
   },
 
   async updateUser(userId: string, updates: Partial<User>): Promise<void> {
-    const docRef = doc(db, "users", userId);
+    const docRef = doc(ensureFirestore(), "users", userId);
     await updateDoc(docRef, {
       ...updates,
       updatedAt: serverTimestamp(),
@@ -296,7 +306,7 @@ export const userService = {
   },
 
   async getAllUsers(): Promise<User[]> {
-    const querySnapshot = await getDocs(collection(db, "users"));
+    const querySnapshot = await getDocs(collection(ensureFirestore(), "users"));
     return querySnapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
@@ -304,7 +314,7 @@ export const userService = {
   },
 
   async deleteUser(userId: string): Promise<void> {
-    const docRef = doc(db, "users", userId);
+    const docRef = doc(ensureFirestore(), "users", userId);
     await deleteDoc(docRef);
   },
 };
@@ -315,7 +325,7 @@ export const scholarshipService = {
     scholarshipData: Omit<Scholarship, "id" | "createdAt" | "updatedAt">,
     createdBy?: { id: string; name: string }
   ): Promise<string> {
-    const docRef = await addDoc(collection(db, "scholarships"), {
+    const docRef = await addDoc(collection(ensureFirestore(), "scholarships"), {
       ...scholarshipData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -338,7 +348,7 @@ export const scholarshipService = {
   },
 
   async getScholarship(scholarshipId: string): Promise<Scholarship | null> {
-    const docRef = doc(db, "scholarships", scholarshipId);
+    const docRef = doc(ensureFirestore(), "scholarships", scholarshipId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -352,7 +362,7 @@ export const scholarshipService = {
     updates: Partial<Scholarship>,
     updatedBy?: { id: string; name: string }
   ): Promise<void> {
-    const docRef = doc(db, "scholarships", scholarshipId);
+    const docRef = doc(ensureFirestore(), "scholarships", scholarshipId);
     await updateDoc(docRef, {
       ...updates,
       updatedAt: serverTimestamp(),
@@ -375,7 +385,7 @@ export const scholarshipService = {
   },
 
   async deleteScholarship(scholarshipId: string): Promise<void> {
-    const docRef = doc(db, "scholarships", scholarshipId);
+    const docRef = doc(ensureFirestore(), "scholarships", scholarshipId);
     await deleteDoc(docRef);
   },
 
@@ -400,7 +410,7 @@ export const scholarshipService = {
       constraints.push(limit(filters.limit));
     }
 
-    const q = query(collection(db, "scholarships"), ...constraints);
+    const q = query(collection(ensureFirestore(), "scholarships"), ...constraints);
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
@@ -410,7 +420,7 @@ export const scholarshipService = {
   },
 
   async incrementViews(scholarshipId: string): Promise<void> {
-    const docRef = doc(db, "scholarships", scholarshipId);
+    const docRef = doc(ensureFirestore(), "scholarships", scholarshipId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -449,7 +459,7 @@ export const blogService = {
     blogData: Omit<BlogPost, "id" | "createdAt" | "updatedAt">,
     createdBy?: { id: string; name: string }
   ): Promise<string> {
-    const docRef = await addDoc(collection(db, "blog"), {
+    const docRef = await addDoc(collection(ensureFirestore(), "blog"), {
       ...blogData,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
@@ -590,7 +600,7 @@ export const blogService = {
   },
 
   async getBlogPost(postId: string): Promise<BlogPost | null> {
-    const docRef = doc(db, "blog", postId);
+    const docRef = doc(ensureFirestore(), "blog", postId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -601,7 +611,7 @@ export const blogService = {
   },
 
   async getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
-    const q = query(collection(db, "blog"), where("slug", "==", slug));
+    const q = query(collection(ensureFirestore(), "blog"), where("slug", "==", slug));
     const querySnapshot = await getDocs(q);
 
     if (!querySnapshot.empty) {
@@ -616,7 +626,7 @@ export const blogService = {
     postId: string,
     updates: Partial<BlogPost>
   ): Promise<void> {
-    const docRef = doc(db, "blog", postId);
+    const docRef = doc(ensureFirestore(), "blog", postId);
     const updateData: Partial<BlogPost> = {
       ...updates,
       updatedAt: serverTimestamp(),
@@ -630,7 +640,7 @@ export const blogService = {
   },
 
   async deleteBlogPost(postId: string): Promise<void> {
-    const docRef = doc(db, "blog", postId);
+    const docRef = doc(ensureFirestore(), "blog", postId);
     await deleteDoc(docRef);
   },
 
@@ -643,7 +653,7 @@ export const blogService = {
 
     // If no filters, just order by createdAt
     if (!filters?.status && !filters?.category) {
-      q = query(collection(db, "blog"), orderBy("createdAt", "desc"));
+      q = query(collection(ensureFirestore(), "blog"), orderBy("createdAt", "desc"));
     } else {
       // Use simple queries to avoid index requirements
       const constraints: QueryConstraint[] = [];
@@ -658,7 +668,7 @@ export const blogService = {
         constraints.push(limit(filters.limit));
       }
 
-      q = query(collection(db, "blog"), ...constraints);
+      q = query(collection(ensureFirestore(), "blog"), ...constraints);
     }
 
     const querySnapshot = await getDocs(q);
@@ -840,7 +850,7 @@ export const blogService = {
   },
 
   async incrementViews(postId: string): Promise<void> {
-    const docRef = doc(db, "blog", postId);
+    const docRef = doc(ensureFirestore(), "blog", postId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -855,7 +865,7 @@ export const blogService = {
 // Newsletter Services
 export const newsletterService = {
   async subscribe(email: string, source?: string): Promise<void> {
-    const docRef = doc(db, "newsletter", email);
+    const docRef = doc(ensureFirestore(), "newsletter", email);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists() && docSnap.data().isActive) {
@@ -875,7 +885,7 @@ export const newsletterService = {
   },
 
   async unsubscribe(email: string): Promise<void> {
-    const docRef = doc(db, "newsletter", email);
+    const docRef = doc(ensureFirestore(), "newsletter", email);
     await updateDoc(docRef, {
       isActive: false,
       unsubscribedAt: serverTimestamp(),
@@ -884,7 +894,7 @@ export const newsletterService = {
 
   async getAllSubscriptions(): Promise<NewsletterSubscription[]> {
     const q = query(
-      collection(db, "newsletter"),
+      collection(ensureFirestore(), "newsletter"),
       where("isActive", "==", true),
       orderBy("subscribedAt", "desc")
     );
@@ -907,7 +917,7 @@ export const submissionService = {
   async createSubmission(
     submissionData: Omit<ScholarshipSubmission, "id" | "submittedAt" | "status">
   ): Promise<string> {
-    const docRef = await addDoc(collection(db, "scholarshipSubmissions"), {
+    const docRef = await addDoc(collection(ensureFirestore(), "scholarshipSubmissions"), {
       ...submissionData,
       status: "pending",
       submittedAt: serverTimestamp(),
@@ -918,7 +928,7 @@ export const submissionService = {
   async getSubmission(
     submissionId: string
   ): Promise<ScholarshipSubmission | null> {
-    const docRef = doc(db, "scholarshipSubmissions", submissionId);
+    const docRef = doc(ensureFirestore(), "scholarshipSubmissions", submissionId);
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -931,7 +941,7 @@ export const submissionService = {
     submissionId: string,
     updates: Partial<ScholarshipSubmission>
   ): Promise<void> {
-    const docRef = doc(db, "scholarshipSubmissions", submissionId);
+    const docRef = doc(ensureFirestore(), "scholarshipSubmissions", submissionId);
     const updateData: Partial<ScholarshipSubmission> = { ...updates };
 
     if (updates.status && ["approved", "rejected"].includes(updates.status)) {
@@ -948,7 +958,7 @@ export const submissionService = {
       constraints.push(where("status", "==", status));
     }
 
-    const q = query(collection(db, "scholarshipSubmissions"), ...constraints);
+    const q = query(collection(ensureFirestore(), "scholarshipSubmissions"), ...constraints);
     const querySnapshot = await getDocs(q);
 
     return querySnapshot.docs.map((doc) => ({
@@ -985,7 +995,7 @@ export const submissionService = {
 // Settings Service
 export const settingsService = {
   async getSettings(): Promise<SiteSettings | null> {
-    const docRef = doc(db, "settings", "site");
+    const docRef = doc(ensureFirestore(), "settings", "site");
     const docSnap = await getDoc(docRef);
 
     if (docSnap.exists()) {
@@ -996,7 +1006,7 @@ export const settingsService = {
   async updateSettings(
     settings: Partial<Omit<SiteSettings, "id" | "updatedAt">>
   ): Promise<void> {
-    const docRef = doc(db, "settings", "site");
+    const docRef = doc(ensureFirestore(), "settings", "site");
     await setDoc(
       docRef,
       {
@@ -1046,7 +1056,7 @@ export const settingsService = {
       updatedBy: "system",
     };
 
-    const docRef = doc(db, "settings", "site");
+    const docRef = doc(ensureFirestore(), "settings", "site");
     await setDoc(docRef, defaultSettings);
     return { id: "site", ...defaultSettings };
   },
@@ -1078,9 +1088,9 @@ export const backupService = {
   },
 
   async importScholarships(scholarships: Scholarship[]): Promise<void> {
-    const batch = writeBatch(db);
+    const batch = writeBatch(ensureFirestore());
     scholarships.forEach((scholarship) => {
-      const docRef = doc(collection(db, "scholarships"));
+      const docRef = doc(collection(ensureFirestore(), "scholarships"));
       batch.set(docRef, {
         ...scholarship,
         createdAt: serverTimestamp(),
@@ -1091,9 +1101,9 @@ export const backupService = {
   },
 
   async importBlogPosts(blogPosts: BlogPost[]): Promise<void> {
-    const batch = writeBatch(db);
+    const batch = writeBatch(ensureFirestore());
     blogPosts.forEach((post) => {
-      const docRef = doc(collection(db, "blog"));
+      const docRef = doc(collection(ensureFirestore(), "blog"));
       batch.set(docRef, {
         ...post,
         createdAt: serverTimestamp(),
