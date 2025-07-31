@@ -14,7 +14,9 @@ import { db, isFirebaseAvailable } from "./firebase";
 // Helper function to check if Firestore is available
 const ensureFirestore = () => {
   if (!isFirebaseAvailable || !db) {
-    throw new Error("Firestore is not available. Please check your Firebase configuration.");
+    throw new Error(
+      "Firestore is not available. Please check your Firebase configuration."
+    );
   }
   return db;
 };
@@ -46,7 +48,7 @@ export interface UserSession {
   duration?: number;
   pageViews: number;
   actions: number;
-  deviceType: 'mobile' | 'tablet' | 'desktop';
+  deviceType: "mobile" | "tablet" | "desktop";
   browser?: string;
   os?: string;
   referrer?: string;
@@ -66,14 +68,17 @@ class UserTrackingService {
   }
 
   private generateSessionId(): string {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    return (
+      Math.random().toString(36).substring(2, 15) +
+      Math.random().toString(36).substring(2, 15)
+    );
   }
 
   private async initializeSession() {
-    if (typeof window === 'undefined') return;
+    if (typeof window === "undefined") return;
 
     try {
-      const sessionData: Omit<UserSession, 'id'> = {
+      const sessionData: Omit<UserSession, "id"> = {
         sessionId: this.sessionId,
         startTime: this.sessionStartTime,
         pageViews: 0,
@@ -81,60 +86,61 @@ class UserTrackingService {
         deviceType: this.getDeviceType(),
         browser: this.getBrowser(),
         os: this.getOS(),
-        referrer: document.referrer || 'direct',
+        referrer: document.referrer || "direct",
       };
 
-      await addDoc(collection(ensureFirestore(), 'userSessions'), {
+      await addDoc(collection(ensureFirestore(), "userSessions"), {
         ...sessionData,
         startTime: serverTimestamp(),
       });
 
       // Store session ID for cross-tab tracking
-      sessionStorage.setItem('userSessionId', this.sessionId);
+      sessionStorage.setItem("userSessionId", this.sessionId);
     } catch (error) {
-      console.error('Error initializing user session:', error);
+      console.error("Error initializing user session:", error);
     }
   }
 
-  private getDeviceType(): 'mobile' | 'tablet' | 'desktop' {
-    if (typeof window === 'undefined') return 'desktop';
+  private getDeviceType(): "mobile" | "tablet" | "desktop" {
+    if (typeof window === "undefined") return "desktop";
     const width = window.innerWidth;
-    if (width < 768) return 'mobile';
-    if (width < 1024) return 'tablet';
-    return 'desktop';
+    if (width < 768) return "mobile";
+    if (width < 1024) return "tablet";
+    return "desktop";
   }
 
   private getBrowser(): string {
-    if (typeof navigator === 'undefined') return 'unknown';
+    if (typeof navigator === "undefined") return "unknown";
     const userAgent = navigator.userAgent;
-    if (userAgent.includes('Chrome')) return 'Chrome';
-    if (userAgent.includes('Firefox')) return 'Firefox';
-    if (userAgent.includes('Safari')) return 'Safari';
-    if (userAgent.includes('Edge')) return 'Edge';
-    return 'Other';
+    if (userAgent.includes("Chrome")) return "Chrome";
+    if (userAgent.includes("Firefox")) return "Firefox";
+    if (userAgent.includes("Safari")) return "Safari";
+    if (userAgent.includes("Edge")) return "Edge";
+    return "Other";
   }
 
   private getOS(): string {
-    if (typeof navigator === 'undefined') return 'unknown';
+    if (typeof navigator === "undefined") return "unknown";
     const userAgent = navigator.userAgent;
-    if (userAgent.includes('Windows')) return 'Windows';
-    if (userAgent.includes('Mac')) return 'macOS';
-    if (userAgent.includes('Linux')) return 'Linux';
-    if (userAgent.includes('Android')) return 'Android';
-    if (userAgent.includes('iOS')) return 'iOS';
-    return 'Other';
+    if (userAgent.includes("Windows")) return "Windows";
+    if (userAgent.includes("Mac")) return "macOS";
+    if (userAgent.includes("Linux")) return "Linux";
+    if (userAgent.includes("Android")) return "Android";
+    if (userAgent.includes("iOS")) return "iOS";
+    return "Other";
   }
 
-  async trackActivity(activity: Omit<UserActivity, 'sessionId' | 'timestamp'>) {
+  async trackActivity(activity: Omit<UserActivity, "sessionId" | "timestamp">) {
     try {
-      const activityData: Omit<UserActivity, 'id'> = {
+      const activityData: Omit<UserActivity, "id"> = {
         ...activity,
         sessionId: this.sessionId,
         timestamp: new Date(),
-        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
+        userAgent:
+          typeof navigator !== "undefined" ? navigator.userAgent : undefined,
       };
 
-      await addDoc(collection(ensureFirestore(), 'userActivities'), {
+      await addDoc(collection(ensureFirestore(), "userActivities"), {
         ...activityData,
         timestamp: serverTimestamp(),
       });
@@ -150,50 +156,62 @@ class UserTrackingService {
       //   success: true,
       // });
     } catch (error) {
-      console.error('Error tracking user activity:', error);
+      console.error("Error tracking user activity:", error);
     }
   }
 
   async trackPageView(page: string) {
     try {
       await this.trackActivity({
-        action: 'page_view',
-        resource: 'page',
+        action: "page_view",
+        resource: "page",
         resourceId: page,
         metadata: {
-          url: typeof window !== 'undefined' ? window.location.href : page,
-          title: typeof document !== 'undefined' ? document.title : undefined,
+          url: typeof window !== "undefined" ? window.location.href : page,
+          title: typeof document !== "undefined" ? document.title : undefined,
         },
       });
 
       this.pageViews++;
     } catch (error) {
-      console.error('Error tracking page view:', error);
+      console.error("Error tracking page view:", error);
     }
   }
 
-  async trackScholarshipInteraction(action: string, scholarshipId: string, metadata?: Record<string, unknown>) {
+  async trackScholarshipInteraction(
+    action: string,
+    scholarshipId: string,
+    metadata?: Record<string, unknown>
+  ) {
     await this.trackActivity({
       action: `scholarship_${action}`,
-      resource: 'scholarship',
+      resource: "scholarship",
       resourceId: scholarshipId,
       metadata,
     });
   }
 
-  async trackBlogInteraction(action: string, blogId: string, metadata?: Record<string, unknown>) {
+  async trackBlogInteraction(
+    action: string,
+    blogId: string,
+    metadata?: Record<string, unknown>
+  ) {
     await this.trackActivity({
       action: `blog_${action}`,
-      resource: 'blog',
+      resource: "blog",
       resourceId: blogId,
       metadata,
     });
   }
 
-  async trackSearchActivity(searchTerm: string, resultsCount: number, filters?: Record<string, unknown>) {
+  async trackSearchActivity(
+    searchTerm: string,
+    resultsCount: number,
+    filters?: Record<string, unknown>
+  ) {
     await this.trackActivity({
-      action: 'search',
-      resource: 'search',
+      action: "search",
+      resource: "search",
       metadata: {
         searchTerm,
         resultsCount,
@@ -202,23 +220,26 @@ class UserTrackingService {
     });
   }
 
-  async trackWhatsAppInteraction(action: string, metadata?: Record<string, unknown>) {
+  async trackWhatsAppInteraction(
+    action: string,
+    metadata?: Record<string, unknown>
+  ) {
     await this.trackActivity({
       action: `whatsapp_${action}`,
-      resource: 'whatsapp',
+      resource: "whatsapp",
       metadata,
     });
   }
 
   private async updateSession() {
     try {
-      const sessionsRef = collection(ensureFirestore(), 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), "userSessions");
       const q = query(
         sessionsRef,
-        where('sessionId', '==', this.sessionId),
+        where("sessionId", "==", this.sessionId),
         limit(1)
       );
-      
+
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const sessionDoc = querySnapshot.docs[0];
@@ -229,19 +250,19 @@ class UserTrackingService {
         });
       }
     } catch (error) {
-      console.error('Error updating session:', error);
+      console.error("Error updating session:", error);
     }
   }
 
   async endSession(exitPage?: string) {
     try {
-      const sessionsRef = collection(ensureFirestore(), 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), "userSessions");
       const q = query(
         sessionsRef,
-        where('sessionId', '==', this.sessionId),
+        where("sessionId", "==", this.sessionId),
         limit(1)
       );
-      
+
       const querySnapshot = await getDocs(q);
       if (!querySnapshot.empty) {
         const sessionDoc = querySnapshot.docs[0];
@@ -254,50 +275,54 @@ class UserTrackingService {
         });
       }
     } catch (error) {
-      console.error('Error ending session:', error);
+      console.error("Error ending session:", error);
     }
   }
 
   // Admin methods for retrieving analytics
-  static async getRecentActivities(limitCount: number = 50): Promise<UserActivity[]> {
+  static async getRecentActivities(
+    limitCount: number = 50
+  ): Promise<UserActivity[]> {
     try {
-      const activitiesRef = collection(ensureFirestore(), 'userActivities');
+      const activitiesRef = collection(ensureFirestore(), "userActivities");
       const q = query(
         activitiesRef,
-        orderBy('timestamp', 'desc'),
+        orderBy("timestamp", "desc"),
         limit(limitCount)
       );
-      
+
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({
+      return querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
         timestamp: doc.data().timestamp?.toDate() || new Date(),
       })) as UserActivity[];
     } catch (error) {
-      console.error('Error getting recent activities:', error);
+      console.error("Error getting recent activities:", error);
       return [];
     }
   }
 
-  static async getUserSessions(limitCount: number = 50): Promise<UserSession[]> {
+  static async getUserSessions(
+    limitCount: number = 50
+  ): Promise<UserSession[]> {
     try {
-      const sessionsRef = collection(ensureFirestore(), 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), "userSessions");
       const q = query(
         sessionsRef,
-        orderBy('startTime', 'desc'),
+        orderBy("startTime", "desc"),
         limit(limitCount)
       );
-      
+
       const querySnapshot = await getDocs(q);
-      return querySnapshot.docs.map(doc => ({
+      return querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
         startTime: doc.data().startTime?.toDate() || new Date(),
         endTime: doc.data().endTime?.toDate(),
       })) as UserSession[];
     } catch (error) {
-      console.error('Error getting user sessions:', error);
+      console.error("Error getting user sessions:", error);
       return [];
     }
   }
@@ -320,7 +345,7 @@ class UserTrackingService {
         deviceBreakdown: {},
       };
     } catch (error) {
-      console.error('Error getting activity stats:', error);
+      console.error("Error getting activity stats:", error);
       return {
         totalActivities: 0,
         totalSessions: 0,
@@ -338,16 +363,28 @@ export const userTracker = new UserTrackingService();
 // Hook for React components
 export function useUserTracking() {
   const trackPageView = (page: string) => userTracker.trackPageView(page);
-  const trackActivity = (activity: Omit<UserActivity, 'sessionId' | 'timestamp'>) => 
-    userTracker.trackActivity(activity);
-  const trackScholarshipInteraction = (action: string, scholarshipId: string, metadata?: Record<string, unknown>) =>
-    userTracker.trackScholarshipInteraction(action, scholarshipId, metadata);
-  const trackBlogInteraction = (action: string, blogId: string, metadata?: Record<string, unknown>) =>
-    userTracker.trackBlogInteraction(action, blogId, metadata);
-  const trackSearchActivity = (searchTerm: string, resultsCount: number, filters?: Record<string, unknown>) =>
-    userTracker.trackSearchActivity(searchTerm, resultsCount, filters);
-  const trackWhatsAppInteraction = (action: string, metadata?: Record<string, unknown>) =>
-    userTracker.trackWhatsAppInteraction(action, metadata);
+  const trackActivity = (
+    activity: Omit<UserActivity, "sessionId" | "timestamp">
+  ) => userTracker.trackActivity(activity);
+  const trackScholarshipInteraction = (
+    action: string,
+    scholarshipId: string,
+    metadata?: Record<string, unknown>
+  ) => userTracker.trackScholarshipInteraction(action, scholarshipId, metadata);
+  const trackBlogInteraction = (
+    action: string,
+    blogId: string,
+    metadata?: Record<string, unknown>
+  ) => userTracker.trackBlogInteraction(action, blogId, metadata);
+  const trackSearchActivity = (
+    searchTerm: string,
+    resultsCount: number,
+    filters?: Record<string, unknown>
+  ) => userTracker.trackSearchActivity(searchTerm, resultsCount, filters);
+  const trackWhatsAppInteraction = (
+    action: string,
+    metadata?: Record<string, unknown>
+  ) => userTracker.trackWhatsAppInteraction(action, metadata);
 
   return {
     trackPageView,
@@ -360,13 +397,13 @@ export function useUserTracking() {
 }
 
 // Auto-track page unload
-if (typeof window !== 'undefined') {
-  window.addEventListener('beforeunload', () => {
+if (typeof window !== "undefined") {
+  window.addEventListener("beforeunload", () => {
     userTracker.endSession(window.location.pathname);
   });
 
   // Track page visibility changes
-  document.addEventListener('visibilitychange', () => {
+  document.addEventListener("visibilitychange", () => {
     if (document.hidden) {
       userTracker.endSession(window.location.pathname);
     }

@@ -5,7 +5,9 @@ import { db, isFirebaseAvailable } from "../lib/firebase";
 // Helper function to check if Firestore is available
 const ensureFirestore = () => {
   if (!isFirebaseAvailable || !db) {
-    throw new Error("Firestore is not available. Please check your Firebase configuration.");
+    throw new Error(
+      "Firestore is not available. Please check your Firebase configuration."
+    );
   }
   return db;
 };
