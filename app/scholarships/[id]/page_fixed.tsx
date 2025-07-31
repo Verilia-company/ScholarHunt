@@ -433,17 +433,19 @@ const renderNumberedListItem = (
   const colors = colorClasses[colorScheme];
 
   return (
-    <div key={index} className="flex items-start gap-4">
+    <div key={index} className="flex items-start gap-4 mobile-container">
       <div
         className={`flex-shrink-0 w-8 h-8 ${colors.bg} rounded-full flex items-center justify-center mt-1`}
       >
-        <span className={`${colors.text} font-bold text-sm`}>{index + 1}</span>
+        <span className={`${colors.text} font-bold text-sm mobile-text`}>
+          {index + 1}
+        </span>
       </div>
-      <div className="flex-1">
+      <div className="flex-1 mobile-container">
         <div
-          className={`${colors.bgSection} rounded-lg p-4 border ${colors.border}`}
+          className={`${colors.bgSection} rounded-lg p-4 border ${colors.border} mobile-card`}
         >
-          {formatRichContent(content)}
+          <div className="mobile-text-force">{formatRichContent(content)}</div>
         </div>
       </div>
     </div>
@@ -471,6 +473,63 @@ export default function ScholarshipDetailPage() {
   useEffect(() => {
     setIsClient(true);
     setCurrentUrl(window.location.href);
+
+    // Force viewport handling for mobile devices
+    let viewportMeta = document.querySelector(
+      'meta[name="viewport"]'
+    ) as HTMLMetaElement;
+    if (viewportMeta) {
+      viewportMeta.setAttribute(
+        "content",
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no"
+      );
+    } else {
+      viewportMeta = document.createElement("meta") as HTMLMetaElement;
+      viewportMeta.name = "viewport";
+      viewportMeta.content =
+        "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, shrink-to-fit=no";
+      document.head.appendChild(viewportMeta);
+    }
+
+    // Force body styles for mobile
+    document.body.style.overflowX = "hidden";
+    document.body.style.maxWidth = "100vw";
+    document.body.style.width = "100vw";
+    document.body.style.margin = "0";
+    document.body.style.padding = "0";
+
+    // Force html styles for mobile
+    document.documentElement.style.overflowX = "hidden";
+    document.documentElement.style.maxWidth = "100vw";
+    document.documentElement.style.width = "100vw";
+
+    // Add emergency CSS injection for Samsung devices
+    const isSamsung =
+      /samsung/i.test(navigator.userAgent) || /SM-/i.test(navigator.userAgent);
+    const isSmallScreen = window.innerWidth <= 414;
+
+    if (isSamsung || isSmallScreen) {
+      const emergencyStyle = document.createElement("style");
+      emergencyStyle.textContent = `
+        * { 
+          max-width: 100% !important; 
+          overflow-x: hidden !important; 
+          word-wrap: break-word !important; 
+          box-sizing: border-box !important; 
+        }
+        div, section, article { 
+          max-width: 96% !important; 
+          width: 96% !important; 
+          margin: 0 auto !important; 
+        }
+        h1, h2, h3, p, span {
+          max-width: 94% !important;
+          word-break: break-word !important;
+          overflow-wrap: anywhere !important;
+        }
+      `;
+      document.head.appendChild(emergencyStyle);
+    }
   }, []);
 
   // Function to handle apply button click
@@ -1094,6 +1153,898 @@ export default function ScholarshipDetailPage() {
             }
           }
           
+          /* ULTRA-AGGRESSIVE Global fixes for ALL content - prevent ANY right-side cutoff */
+          @media (max-width: 450px) {
+            /* Force viewport to never exceed screen width */
+            html, body {
+              max-width: 100vw !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force EVERY single element to respect boundaries */
+            * {
+              max-width: 100% !important;
+              box-sizing: border-box !important;
+              word-wrap: break-word !important;
+              overflow-wrap: anywhere !important;
+              word-break: break-word !important;
+            }
+            
+            /* SPECIFIC FIXES for the problematic HTML structure you provided */
+            
+            /* Target the main container: max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12 */
+            div[class*="max-w-7xl"][class*="mx-auto"] {
+              max-width: calc(100vw - 16px) !important;
+              width: calc(100vw - 16px) !important;
+              margin: 0 auto !important;
+              padding: 8px !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target grid containers: grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 */
+            div[class*="grid"][class*="grid-cols-1"] {
+              max-width: calc(100vw - 24px) !important;
+              gap: 6px !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target the scholarship title: text-3xl sm:text-4xl lg:text-5xl */
+            h1[class*="text-3xl"], h1[class*="text-4xl"], h1[class*="text-5xl"] {
+              font-size: 14px !important;
+              line-height: 1.2 !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              max-width: calc(100vw - 48px) !important;
+              hyphens: auto !important;
+              display: block !important;
+            }
+            
+            /* Target the info cards: bg-gray-50 border border-gray-200 rounded-xl p-4 */
+            div[class*="bg-gray-50"][class*="border"][class*="rounded-xl"] {
+              max-width: calc(100% - 8px) !important;
+              padding: 6px !important;
+              margin: 2px auto !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target the sticky sidebar: sticky top-24 */
+            div[class*="sticky"] {
+              max-width: calc(100vw - 32px) !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target the apply button: w-full bg-gradient-to-r */
+            button[class*="w-full"][class*="bg-gradient-to-r"] {
+              max-width: calc(100% - 8px) !important;
+              padding: 8px !important;
+              font-size: 12px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target breadcrumb links: inline-flex items-center gap-2 */
+            a[class*="inline-flex"][class*="items-center"] {
+              max-width: calc(100% - 16px) !important;
+              padding: 6px 8px !important;
+              font-size: 11px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              flex-wrap: wrap !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target status badges: inline-flex items-center gap-2 px-4 py-2 rounded-full */
+            div[class*="inline-flex"][class*="rounded-full"] {
+              max-width: calc(100% - 16px) !important;
+              padding: 4px 8px !important;
+              font-size: 10px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              margin: 2px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target all SVG icons to be smaller */
+            svg {
+              width: 12px !important;
+              height: 12px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            /* Target truncated text specifically */
+            div[class*="truncate"], span[class*="truncate"] {
+              max-width: calc(100vw - 64px) !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              word-break: break-word !important;
+            }
+            
+            /* Force all containers to be ultra-restrictive */
+            .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .max-w-xl, .max-w-lg, .max-w-md, .max-w-sm {
+              max-width: calc(100vw - 32px) !important;
+              width: calc(100vw - 32px) !important;
+              margin: 0 auto !important;
+              padding-left: 12px !important;
+              padding-right: 12px !important;
+              overflow-x: hidden !important;
+            }
+            
+            /* Apply ultra-mobile styles to ALL containers */
+            div, section, article, main, aside, header, footer, nav {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL text elements to stay within bounds */
+            h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, label {
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              max-width: calc(100vw - 48px) !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Ultra-restrictive card elements */
+            div[class*="bg-"], div[class*="border"], div[class*="rounded"], div[class*="shadow"] {
+              max-width: calc(100vw - 24px) !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Ultra-restrictive button elements */
+            button, a[class*="btn"], div[class*="button"], input[type="button"], input[type="submit"] {
+              max-width: calc(100vw - 32px) !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL grid and flex containers to be restrictive */
+            div[class*="grid"], div[class*="flex"], .grid, .flex {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Ultra-force ALL gradient text */
+            span[class*="gradient"], span[class*="bg-clip-text"], .bg-gradient-to-r, .bg-clip-text {
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              max-width: calc(100vw - 48px) !important;
+              display: block !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL formatted content to be ultra-mobile-friendly */
+            .formatRichContent *, [class*="formatRichContent"] * {
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              max-width: calc(100vw - 48px) !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Apply to ANY content with text classes */
+            [class*="text-"], [class*="leading-"], [class*="mb-"], [class*="mt-"], [class*="px-"], [class*="py-"] {
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              max-width: calc(100vw - 48px) !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force motion divs and animated elements */
+            [class*="motion"], .motion-div, div[style*="transform"] {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Ultra-force all Tailwind containers */
+            .container, .mx-auto, [class*="mx-auto"] {
+              max-width: calc(100vw - 32px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              padding-left: 12px !important;
+              padding-right: 12px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* FINAL NUCLEAR OPTION - Force EVERYTHING to stay within screen */
+            * {
+              position: relative !important;
+              right: auto !important;
+              left: auto !important;
+            }
+            
+            /* Prevent ANY horizontal overflow whatsoever */
+            body {
+              position: relative !important;
+              overflow-x: hidden !important;
+              width: 100vw !important;
+              max-width: 100vw !important;
+            }
+            
+            /* UNIVERSAL MOBILE CONTAINER FIXES - Target ALL possible containers */
+            .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .max-w-xl, .max-w-lg, .max-w-md, .max-w-sm,
+            div[class*="max-w-"], section[class*="max-w-"], article[class*="max-w-"] {
+              max-width: calc(100vw - 24px) !important;
+              width: calc(100vw - 24px) !important;
+              margin: 0 auto !important;
+              padding-left: 8px !important;
+              padding-right: 8px !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL mx-auto containers to be mobile-friendly */
+            .mx-auto, div[class*="mx-auto"], section[class*="mx-auto"] {
+              max-width: calc(100vw - 24px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              padding-left: 8px !important;
+              padding-right: 8px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Target ALL padding classes that might cause overflow */
+            .px-4, .px-6, .px-8, .sm\\:px-6, .lg\\:px-8, 
+            div[class*="px-4"], div[class*="px-6"], div[class*="px-8"] {
+              padding-left: 6px !important;
+              padding-right: 6px !important;
+            }
+            
+            /* Force ALL grid containers to be mobile-friendly */
+            .grid, .grid-cols-1, .grid-cols-2, .grid-cols-3, .lg\\:grid-cols-3, .lg\\:grid-cols-2,
+            div[class*="grid"], div[class*="grid-cols"] {
+              max-width: calc(100vw - 32px) !important;
+              overflow-x: hidden !important;
+              gap: 8px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL gap classes to be smaller on mobile */
+            .gap-8, .gap-12, .lg\\:gap-12, .gap-6, .gap-4, .gap-3,
+            div[class*="gap-"] {
+              gap: 6px !important;
+            }
+            
+            /* Force ALL card-like containers */
+            .bg-gray-50, .bg-gray-100, .bg-white, div[class*="bg-gray"], div[class*="bg-white"],
+            div[class*="border"], div[class*="rounded"], div[class*="shadow"] {
+              max-width: calc(100% - 12px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL text content to wrap properly */
+            h1, h2, h3, h4, h5, h6, p, span, div, a, button {
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              max-width: calc(100vw - 48px) !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL large text headings to be smaller and wrap */
+            .text-3xl, .text-4xl, .text-5xl, .sm\\:text-4xl, .lg\\:text-5xl,
+            h1[class*="text-"], h2[class*="text-"], h3[class*="text-"] {
+              font-size: 14px !important;
+              line-height: 1.2 !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              max-width: calc(100vw - 48px) !important;
+              display: block !important;
+            }
+            
+            /* Force ALL buttons to be mobile-friendly */
+            button, .btn, a[class*="bg-"], input[type="button"], input[type="submit"] {
+              max-width: calc(100vw - 32px) !important;
+              padding: 8px 12px !important;
+              font-size: 12px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL flex containers */
+            .flex, .inline-flex, div[class*="flex"] {
+              max-width: calc(100% - 8px) !important;
+              overflow-x: hidden !important;
+              flex-wrap: wrap !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL sticky/positioned elements */
+            .sticky, .fixed, .absolute, .relative, div[class*="sticky"], div[class*="fixed"] {
+              max-width: calc(100vw - 16px) !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL margin and padding classes */
+            .mb-6, .mb-8, .py-4, .py-8, .lg\\:py-12, .p-4, .p-6,
+            div[class*="mb-"], div[class*="py-"], div[class*="p-"] {
+              margin-bottom: 8px !important;
+              padding: 6px !important;
+            }
+            
+            /* ULTRA-AGGRESSIVE: Force every single div to be constrained */
+            div {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL text truncation where needed */
+            .truncate, span[class*="truncate"], div[class*="truncate"] {
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              max-width: calc(100vw - 48px) !important;
+              word-break: break-word !important;
+            }
+            
+            /* NUCLEAR OPTION: Override EVERYTHING with viewport width constraints */
+            * {
+              max-width: calc(100vw - 8px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              overflow-wrap: anywhere !important;
+              word-break: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force body and html to never exceed viewport */
+            html {
+              overflow-x: hidden !important;
+              max-width: 100vw !important;
+              width: 100vw !important;
+            }
+            
+            body {
+              overflow-x: hidden !important;
+              max-width: 100vw !important;
+              width: 100vw !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            
+            /* Force ALL possible container selectors */
+            div, span, p, h1, h2, h3, h4, h5, h6, section, article, main, aside, header, footer, nav, 
+            button, a, input, textarea, label, form, ul, ol, li, table, tr, td, th {
+              max-width: calc(100vw - 12px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              overflow-wrap: anywhere !important;
+              word-break: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL Tailwind utility classes */
+            [class*="max-w"], [class*="w-"], [class*="min-w"], [class*="flex"], [class*="grid"],
+            [class*="px-"], [class*="py-"], [class*="p-"], [class*="m-"], [class*="mx-"], [class*="my-"],
+            [class*="text-"], [class*="font-"], [class*="leading-"], [class*="tracking-"] {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL background and border classes */
+            [class*="bg-"], [class*="border"], [class*="rounded"], [class*="shadow"] {
+              max-width: calc(100vw - 20px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL positioning classes */
+            [class*="absolute"], [class*="relative"], [class*="fixed"], [class*="sticky"] {
+              max-width: calc(100vw - 12px) !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL display classes */
+            [class*="flex"], [class*="grid"], [class*="block"], [class*="inline"] {
+              max-width: calc(100vw - 16px) !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* EMERGENCY OVERRIDE: If NOTHING else works, use these */
+            * {
+              position: relative !important;
+              right: 0 !important;
+              left: 0 !important;
+              transform: none !important;
+              width: auto !important;
+              min-width: 0 !important;
+            }
+          }
+          
+          /* EMERGENCY MOBILE FIX - For devices where nothing else works */
+          @media (max-width: 480px) {
+            /* Nuclear option: Force EVERYTHING to be constrained */
+            *, *::before, *::after {
+              max-width: calc(100vw - 4px) !important;
+              width: auto !important;
+              min-width: 0 !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              overflow-wrap: anywhere !important;
+              word-break: break-all !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              margin-left: 0 !important;
+              margin-right: 0 !important;
+              padding-left: 2px !important;
+              padding-right: 2px !important;
+              position: relative !important;
+              right: 0 !important;
+              left: 0 !important;
+              transform: none !important;
+            }
+            
+            /* Force body and html to be ultra-constrained */
+            html, body {
+              max-width: 100vw !important;
+              width: 100vw !important;
+              overflow-x: hidden !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            
+            /* Force ALL containers to be micro-sized */
+            div, section, article, main, aside, header, footer {
+              max-width: calc(100vw - 8px) !important;
+              width: calc(100vw - 8px) !important;
+              margin: 0 auto !important;
+              padding: 1px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL text to be micro-sized and wrapped */
+            h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, label {
+              font-size: 10px !important;
+              line-height: 1.1 !important;
+              max-width: calc(100vw - 12px) !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              white-space: normal !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL buttons to be micro-sized */
+            button, input[type="button"], input[type="submit"], a[role="button"] {
+              max-width: calc(100vw - 16px) !important;
+              width: calc(100vw - 16px) !important;
+              font-size: 9px !important;
+              padding: 4px !important;
+              margin: 1px auto !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL flex and grid containers */
+            [class*="flex"], [class*="grid"], .flex, .grid {
+              max-width: calc(100vw - 12px) !important;
+              width: calc(100vw - 12px) !important;
+              margin: 0 auto !important;
+              gap: 2px !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+              flex-wrap: wrap !important;
+            }
+            
+            /* Force ALL cards and bordered elements */
+            [class*="border"], [class*="rounded"], [class*="shadow"], [class*="bg-"] {
+              max-width: calc(100vw - 16px) !important;
+              width: calc(100vw - 16px) !important;
+              margin: 1px auto !important;
+              padding: 2px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force SVGs to be tiny */
+            svg {
+              width: 8px !important;
+              height: 8px !important;
+              max-width: 8px !important;
+              max-height: 8px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            /* Force ALL positioning to be safe */
+            [class*="absolute"], [class*="fixed"], [class*="sticky"] {
+              max-width: calc(100vw - 8px) !important;
+              right: 4px !important;
+              left: auto !important;
+              top: auto !important;
+              bottom: auto !important;
+              transform: none !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+          }
+          
+          /* LAST RESORT: Ultra-tiny screen emergency fixes */
+          @media (max-width: 360px) {
+            /* Make EVERYTHING even smaller */
+            * {
+              max-width: calc(100vw - 2px) !important;
+              font-size: 8px !important;
+              padding: 1px !important;
+              margin: 0 !important;
+              overflow: hidden !important;
+              word-break: break-all !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Ultra-micro containers */
+            div, section {
+              max-width: calc(100vw - 4px) !important;
+              width: calc(100vw - 4px) !important;
+              margin: 0 auto !important;
+              overflow: hidden !important;
+            }
+            
+            /* Ultra-micro text */
+            h1, h2, h3, p, span {
+              font-size: 7px !important;
+              line-height: 1.0 !important;
+              max-width: calc(100vw - 6px) !important;
+              word-break: break-all !important;
+            }
+          }
+          
+          /* ULTIMATE SOLUTION: Force absolutely everything to fit within viewport */
+          @media screen and (max-width: 500px) {
+            /* Remove ALL potential sources of horizontal overflow */
+            html {
+              overflow-x: hidden !important;
+              max-width: 100vw !important;
+              width: 100vw !important;
+              position: relative !important;
+            }
+            
+            body {
+              overflow-x: hidden !important;
+              max-width: 100vw !important;
+              width: 100vw !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              position: relative !important;
+            }
+            
+            /* NUCLEAR: Force every element to be absolutely constrained */
+            * {
+              max-width: 100vw !important;
+              width: auto !important;
+              min-width: 0 !important;
+              overflow-x: hidden !important;
+              overflow-wrap: break-word !important;
+              word-wrap: break-word !important;
+              word-break: break-all !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              position: relative !important;
+              left: 0 !important;
+              right: 0 !important;
+              transform: none !important;
+              margin-left: 0 !important;
+              margin-right: 0 !important;
+              padding-left: 0 !important;
+              padding-right: 0 !important;
+            }
+            
+            /* Force containers to never exceed screen */
+            div, section, article, main, aside, header, footer, nav {
+              max-width: 100vw !important;
+              width: 100% !important;
+              overflow-x: hidden !important;
+              margin: 0 auto !important;
+              padding: 2px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force text elements to wrap aggressively */
+            h1, h2, h3, h4, h5, h6, p, span, div, a, button, input, textarea, label {
+              max-width: 95vw !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              white-space: normal !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              width: 100% !important;
+            }
+            
+            /* Force ALL Tailwind containers */
+            .container, .max-w-7xl, .max-w-6xl, .max-w-5xl, .max-w-4xl, .max-w-3xl, .max-w-2xl, .max-w-xl, .max-w-lg, .max-w-md, .max-w-sm,
+            [class*="max-w-"], [class*="container"] {
+              max-width: 95vw !important;
+              width: 95vw !important;
+              margin: 0 auto !important;
+              padding: 4px !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL margin/padding classes */
+            [class*="mx-auto"], [class*="px-"], [class*="py-"], [class*="p-"], [class*="m-"] {
+              margin-left: 2px !important;
+              margin-right: 2px !important;
+              padding-left: 2px !important;
+              padding-right: 2px !important;
+              max-width: 95vw !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL grid and flex layouts */
+            [class*="grid"], [class*="flex"], .grid, .flex {
+              max-width: 95vw !important;
+              width: 95vw !important;
+              margin: 0 auto !important;
+              gap: 4px !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+              flex-wrap: wrap !important;
+            }
+            
+            /* Force ALL cards and bordered elements */
+            [class*="bg-"], [class*="border"], [class*="rounded"], [class*="shadow"] {
+              max-width: 90vw !important;
+              width: 90vw !important;
+              margin: 2px auto !important;
+              padding: 4px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force ALL buttons */
+            button, [role="button"], input[type="button"], input[type="submit"], .btn {
+              max-width: 90vw !important;
+              width: 90vw !important;
+              margin: 2px auto !important;
+              padding: 6px !important;
+              font-size: 11px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+              display: block !important;
+            }
+            
+            /* Force ALL text sizing classes */
+            [class*="text-"], .text-3xl, .text-4xl, .text-5xl, .sm\\:text-4xl, .lg\\:text-5xl {
+              font-size: 12px !important;
+              line-height: 1.2 !important;
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              max-width: 90vw !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force positioning elements */
+            [class*="absolute"], [class*="fixed"], [class*="sticky"], [class*="relative"] {
+              max-width: 95vw !important;
+              left: 2.5vw !important;
+              right: auto !important;
+              transform: none !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force SVG icons */
+            svg {
+              width: 10px !important;
+              height: 10px !important;
+              max-width: 10px !important;
+              max-height: 10px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            /* Remove ALL transforms that might cause overflow */
+            [style*="transform"], .transform {
+              transform: none !important;
+              -webkit-transform: none !important;
+            }
+            
+            /* Remove ALL negative margins */
+            [class*="-m"], [style*="margin: -"] {
+              margin: 0 !important;
+            }
+            
+            /* Force viewport meta compliance */
+            @-ms-viewport {
+              width: device-width;
+            }
+          }
+          
+          /* Ultra-aggressive Samsung S8+ specific fix */
+          @media screen and (min-width: 360px) and (max-width: 412px) and (orientation: portrait) {
+            * {
+              max-width: 100% !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+            }
+            
+            body, html {
+              overflow-x: hidden !important;
+              max-width: 100vw !important;
+            }
+            
+            /* Force ALL containers */
+            div, section, article, main, aside {
+              max-width: calc(100vw - 20px) !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+            }
+            
+            /* Force ALL text content */
+            h1, h2, h3, h4, h5, h6, p, span, div, li, td, th {
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              max-width: calc(100vw - 40px) !important;
+            }
+          }
+          
+          /* SAMSUNG-SPECIFIC VIEWPORT FIXES - Target known Samsung viewport bugs */
+          @media screen and (min-width: 360px) and (max-width: 414px) and (orientation: portrait) {
+            /* Samsung devices have viewport calculation issues - force absolute constraints */
+            html {
+              overflow-x: hidden !important;
+              width: 100% !important;
+              max-width: 100% !important;
+            }
+            
+            body {
+              overflow-x: hidden !important;
+              width: 100% !important;
+              max-width: 100% !important;
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            
+            /* Samsung-specific container fixes */
+            * {
+              max-width: 100% !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Force all containers to use percentage widths instead of vw on Samsung */
+            div, section, article, main, aside {
+              max-width: 98% !important;
+              width: 98% !important;
+              margin: 0 auto !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Samsung text handling - use smaller units */
+            h1, h2, h3, h4, h5, h6, p, span, div, li, td, th {
+              word-break: break-all !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              max-width: 95% !important;
+              width: 95% !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Samsung button fixes */
+            button, .btn, [role="button"] {
+              max-width: 95% !important;
+              width: 95% !important;
+              margin: 2px auto !important;
+              display: block !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Samsung grid/flex fixes */
+            [class*="grid"], [class*="flex"] {
+              max-width: 98% !important;
+              width: 98% !important;
+              margin: 0 auto !important;
+              overflow-x: hidden !important;
+              gap: 4px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Samsung card fixes */
+            [class*="bg-"], [class*="border"], [class*="rounded"] {
+              max-width: 95% !important;
+              width: 95% !important;
+              margin: 2px auto !important;
+              overflow: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Samsung padding/margin overrides */
+            [class*="px-"], [class*="py-"], [class*="p-"], [class*="mx-"], [class*="my-"], [class*="m-"] {
+              padding-left: 4px !important;
+              padding-right: 4px !important;
+              margin-left: 2px !important;
+              margin-right: 2px !important;
+              box-sizing: border-box !important;
+            }
+          }
+          
+          /* IPHONE 11 SPECIFIC FIXES */
+          @media screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) {
+            /* iPhone 11 specific viewport handling */
+            * {
+              max-width: 100% !important;
+              overflow-x: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            div, section, article {
+              max-width: 96% !important;
+              width: 96% !important;
+              margin: 0 auto !important;
+              overflow-x: hidden !important;
+              box-sizing: border-box !important;
+            }
+            
+            h1, h2, h3, p, span {
+              max-width: 94% !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+            }
+          }
+          
           @keyframes glow-pulse {
             0%, 100% {
               box-shadow: 0 0 5px rgba(59, 130, 246, 0.5), 0 0 10px rgba(59, 130, 246, 0.3), 0 0 15px rgba(59, 130, 246, 0.2);
@@ -1133,6 +2084,660 @@ export default function ScholarshipDetailPage() {
           .modal-enter {
             animation: modal-in 0.2s ease-out;
           }
+          
+          /* SPECIFIC FIXES for problematic containers borrowing from working designs */
+          @media (max-width: 500px) {
+            /* Fix for the scholarship title - borrow from working h2 design */
+            h1[class*="text-3xl"] {
+              font-size: 16px !important;
+              line-height: 1.3 !important;
+              max-width: calc(100vw - 32px) !important;
+              padding: 8px !important;
+              margin: 8px auto !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              display: block !important;
+            }
+            
+            /* Fix for the apply now card - borrow from working rounded-2xl design */
+            div[class*="bg-gray-50"][class*="border"][class*="rounded-2xl"] {
+              max-width: calc(100vw - 32px) !important;
+              width: calc(100vw - 32px) !important;
+              margin: 8px auto !important;
+              padding: 12px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 12px !important;
+            }
+            
+            /* Fix for level and value info cards - borrow from working design */
+            div[class*="bg-gray-50"][class*="border"][class*="rounded-xl"][class*="p-4"] {
+              max-width: calc(100% - 16px) !important;
+              width: calc(100% - 16px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Fix for apply now button - borrow from working button styles */
+            button[class*="w-full"][class*="bg-gradient-to-r"] {
+              max-width: calc(100% - 16px) !important;
+              width: calc(100% - 16px) !important;
+              margin: 8px auto !important;
+              padding: 12px 8px !important;
+              font-size: 14px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Fix for scholarship opportunity badge */
+            div[class*="inline-flex"][class*="rounded-full"][class*="bg-green-100"] {
+              max-width: calc(100% - 32px) !important;
+              padding: 6px 12px !important;
+              font-size: 12px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              margin: 4px auto !important;
+              box-sizing: border-box !important;
+              display: inline-flex !important;
+              flex-wrap: wrap !important;
+            }
+            
+            /* Fix for deadline info container */
+            div[class*="bg-gray-100"][class*="rounded-xl"] {
+              max-width: calc(100% - 16px) !important;
+              width: calc(100% - 16px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Fix for icon and text combinations */
+            div[class*="flex"][class*="items-center"][class*="gap-3"] {
+              max-width: calc(100% - 8px) !important;
+              overflow: hidden !important;
+              flex-wrap: wrap !important;
+              gap: 6px !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for truncated text inside cards */
+            div[class*="truncate"] {
+              max-width: calc(100% - 16px) !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              word-break: break-word !important;
+              font-size: 12px !important;
+              line-height: 1.2 !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for SVG icons to be smaller */
+            svg[class*="lucide"] {
+              width: 14px !important;
+              height: 14px !important;
+              max-width: 14px !important;
+              max-height: 14px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            /* Fix for text content inside cards */
+            div[class*="text-center"] {
+              max-width: calc(100% - 8px) !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for heading text inside cards */
+            h3[class*="text-lg"] {
+              font-size: 14px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              margin: 4px 0 !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for paragraph text inside cards */
+            p[class*="text-sm"] {
+              font-size: 11px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              margin: 2px 0 !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for small label text */
+            div[class*="text-xs"] {
+              font-size: 10px !important;
+              line-height: 1.1 !important;
+              max-width: calc(100% - 4px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Fix for font-bold text inside cards */
+            div[class*="font-bold"], span[class*="font-bold"] {
+              font-size: 12px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 4px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* ULTRA-SPECIFIC FIXES for the exact containers mentioned */
+            
+            /* Title fix - University of Notre Dame Graduate Scholarships */
+            h1.text-3xl, h1[class*="text-3xl"] {
+              font-size: 16px !important;
+              line-height: 1.3 !important;
+              max-width: calc(100vw - 32px) !important;
+              padding: 8px !important;
+              margin: 8px auto !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              text-align: left !important;
+            }
+            
+            /* Apply card container fix */
+            div.bg-gray-50.border.border-gray-200.rounded-2xl {
+              max-width: calc(100vw - 24px) !important;
+              width: calc(100vw - 24px) !important;
+              margin: 8px auto !important;
+              padding: 12px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 12px !important;
+            }
+            
+            /* Level info card fix */
+            div.bg-gray-50.border.border-gray-200.rounded-xl.p-4:has(svg.lucide-graduation-cap) {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Value info card fix */
+            div.bg-gray-50.border.border-gray-200.rounded-xl.p-4:has(svg.lucide-dollar-sign) {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Apply button fix */
+            button.w-full.bg-gradient-to-r {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 8px auto !important;
+              padding: 12px 8px !important;
+              font-size: 14px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Scholarship opportunity badge fix */
+            div.inline-flex.items-center.gap-2.px-4.py-2.rounded-full.bg-green-100 {
+              max-width: calc(100% - 24px) !important;
+              padding: 6px 12px !important;
+              font-size: 12px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              margin: 4px auto !important;
+              box-sizing: border-box !important;
+              display: inline-flex !important;
+              flex-wrap: wrap !important;
+            }
+            
+            /* Deadline info fix */
+            div.bg-gray-100.rounded-xl.p-4 {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            /* Text content fixes for card internals */
+            div.text-center.mb-6 {
+              max-width: calc(100% - 8px) !important;
+              margin-bottom: 12px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            h3.text-lg.font-bold {
+              font-size: 14px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              margin: 4px 0 !important;
+              box-sizing: border-box !important;
+            }
+            
+            span.text-sm.font-semibold {
+              font-size: 11px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 4px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+            }
+            
+            div.text-sm.font-bold.text-gray-900.truncate {
+              font-size: 11px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              white-space: normal !important;
+              overflow: visible !important;
+              text-overflow: unset !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Icon fixes */
+            svg.lucide-award, svg.lucide-calendar, svg.lucide-graduation-cap, svg.lucide-dollar-sign, svg.lucide-external-link {
+              width: 12px !important;
+              height: 12px !important;
+              max-width: 12px !important;
+              max-height: 12px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            /* Apply mobile-friendly classes to problematic containers */
+            .mobile-apply-card {
+              max-width: calc(100vw - 24px) !important;
+              width: calc(100vw - 24px) !important;
+              margin: 8px auto !important;
+              padding: 12px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 12px !important;
+            }
+            
+            .mobile-info-card {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 4px auto !important;
+              padding: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              border-radius: 8px !important;
+            }
+            
+            .mobile-apply-button {
+              max-width: calc(100% - 12px) !important;
+              width: calc(100% - 12px) !important;
+              margin: 8px auto !important;
+              padding: 12px 8px !important;
+              font-size: 14px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              border-radius: 8px !important;
+            }
+            
+            .mobile-badge {
+              max-width: calc(100% - 24px) !important;
+              padding: 6px 12px !important;
+              font-size: 12px !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              white-space: nowrap !important;
+              margin: 4px auto !important;
+              box-sizing: border-box !important;
+              display: inline-flex !important;
+              flex-wrap: wrap !important;
+            }
+            
+            .mobile-title-large {
+              font-size: 16px !important;
+              line-height: 1.3 !important;
+              max-width: calc(100vw - 32px) !important;
+              padding: 8px !important;
+              margin: 8px auto !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              display: block !important;
+              text-align: left !important;
+            }
+            
+            .mobile-icon-small {
+              width: 12px !important;
+              height: 12px !important;
+              max-width: 12px !important;
+              max-height: 12px !important;
+              flex-shrink: 0 !important;
+            }
+            
+            .mobile-text-truncate-fix {
+              font-size: 11px !important;
+              line-height: 1.2 !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              white-space: normal !important;
+              overflow: visible !important;
+              text-overflow: unset !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* EXACT REPLICATION CSS - Copy working design patterns precisely */
+            
+            /* Make h1 title exactly like working h2 "About This Scholarship" */
+            h1.text-3xl.sm\\:text-4xl.lg\\:text-5xl,
+            h1[class*="text-3xl"][class*="sm:text-4xl"][class*="lg:text-5xl"] {
+              /* Copy exact styles from working h2.text-3xl.font-bold */
+              font-size: 18px !important;
+              font-weight: bold !important;
+              color: rgb(17, 24, 39) !important; /* text-gray-900 */
+              margin-bottom: 24px !important; /* mb-6 */
+              display: flex !important;
+              align-items: center !important;
+              gap: 12px !important;
+              max-width: calc(100vw - 32px) !important;
+              width: calc(100vw - 32px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              padding: 0 8px !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              line-height: 1.25 !important;
+              leading-tight: true !important;
+            }
+            
+            /* Apply cards - replicate working rounded-2xl design exactly */
+            div.bg-gray-50.border.border-gray-200.rounded-2xl.p-6.shadow-lg,
+            div[class*="bg-gray-50"][class*="border-gray-200"][class*="rounded-2xl"][class*="p-6"][class*="shadow-lg"] {
+              /* Copy exact styles from working bg-gray-50 rounded-2xl p-8 border border-gray-200 */
+              background-color: rgb(249, 250, 251) !important; /* bg-gray-50 */
+              border-radius: 16px !important; /* rounded-2xl */
+              padding: 16px !important; /* p-4 for mobile instead of p-8 */
+              border: 1px solid rgb(229, 231, 235) !important; /* border-gray-200 */
+              max-width: calc(100vw - 32px) !important;
+              width: calc(100vw - 32px) !important;
+              margin: 0 auto !important;
+              margin-bottom: 16px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important; /* shadow-lg */
+            }
+            
+            /* Info cards - replicate working rounded-xl design exactly */
+            div.bg-gray-50.border.border-gray-200.rounded-xl.p-4:has(svg.lucide-graduation-cap),
+            div.bg-gray-50.border.border-gray-200.rounded-xl.p-4:has(svg.lucide-dollar-sign),
+            div[class*="bg-gray-50"][class*="border-gray-200"][class*="rounded-xl"][class*="p-4"]:has(svg[class*="lucide-graduation-cap"]),
+            div[class*="bg-gray-50"][class*="border-gray-200"][class*="rounded-xl"][class*="p-4"]:has(svg[class*="lucide-dollar-sign"]) {
+              /* Copy exact styles from working rounded-2xl containers */
+              background-color: rgb(249, 250, 251) !important; /* bg-gray-50 */
+              border-radius: 12px !important; /* rounded-xl */
+              padding: 12px !important; /* p-3 for mobile instead of p-4 */
+              border: 1px solid rgb(229, 231, 235) !important; /* border-gray-200 */
+              max-width: calc(100% - 16px) !important;
+              width: calc(100% - 16px) !important;
+              margin: 0 auto !important;
+              margin-bottom: 8px !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Center content in apply cards - replicate working text layout */
+            div.text-center.mb-6 {
+              text-align: center !important;
+              margin-bottom: 16px !important; /* reduce from 24px to 16px for mobile */
+              max-width: calc(100% - 16px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Badge styling - replicate working design */
+            div.inline-flex.items-center.gap-2.px-4.py-2.rounded-full.bg-green-100.border.border-green-300,
+            div[class*="inline-flex"][class*="items-center"][class*="gap-2"][class*="px-4"][class*="py-2"][class*="rounded-full"][class*="bg-green-100"] {
+              display: inline-flex !important;
+              align-items: center !important;
+              gap: 6px !important; /* reduce from 8px to 6px for mobile */
+              padding: 6px 12px !important; /* reduce from 16px 16px to 6px 12px */
+              border-radius: 9999px !important; /* rounded-full */
+              background-color: rgb(220, 252, 231) !important; /* bg-green-100 */
+              border: 1px solid rgb(134, 239, 172) !important; /* border-green-300 */
+              margin-bottom: 12px !important; /* reduce from 16px to 12px */
+              max-width: calc(100% - 24px) !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+              flex-wrap: wrap !important;
+            }
+            
+            /* Card headings - replicate working text styling */
+            h3.text-lg.font-bold.text-gray-900.mb-2,
+            h3[class*="text-lg"][class*="font-bold"][class*="text-gray-900"][class*="mb-2"] {
+              font-size: 16px !important; /* reduce from 18px to 16px for mobile */
+              font-weight: bold !important;
+              color: rgb(17, 24, 39) !important; /* text-gray-900 */
+              margin-bottom: 8px !important; /* reduce from 8px to 6px */
+              max-width: calc(100% - 16px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              line-height: 1.25 !important;
+            }
+            
+            /* Card paragraphs - replicate working text styling */
+            p.text-sm.text-gray-600,
+            p[class*="text-sm"][class*="text-gray-600"] {
+              font-size: 13px !important; /* reduce from 14px to 13px for mobile */
+              color: rgb(75, 85, 99) !important; /* text-gray-600 */
+              max-width: calc(100% - 16px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              box-sizing: border-box !important;
+              line-height: 1.4 !important;
+            }
+            
+            /* Deadline info container - replicate working design */
+            div.bg-gray-100.rounded-xl.p-4.mb-6,
+            div[class*="bg-gray-100"][class*="rounded-xl"][class*="p-4"][class*="mb-6"] {
+              background-color: rgb(243, 244, 246) !important; /* bg-gray-100 */
+              border-radius: 12px !important; /* rounded-xl */
+              padding: 12px !important; /* reduce from 16px to 12px for mobile */
+              margin-bottom: 16px !important; /* reduce from 24px to 16px */
+              max-width: calc(100% - 16px) !important;
+              margin-left: auto !important;
+              margin-right: auto !important;
+              overflow: hidden !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Apply button - replicate working button design */
+            button.w-full.bg-gradient-to-r.from-blue-600.to-indigo-600,
+            button[class*="w-full"][class*="bg-gradient-to-r"][class*="from-blue-600"][class*="to-indigo-600"] {
+              width: calc(100% - 16px) !important;
+              max-width: calc(100% - 16px) !important;
+              margin: 0 auto !important;
+              display: block !important;
+              background: linear-gradient(to right, rgb(37, 99, 235), rgb(79, 70, 229)) !important; /* bg-gradient-to-r from-blue-600 to-indigo-600 */
+              color: white !important;
+              font-weight: bold !important;
+              padding: 12px 16px !important; /* reduce from 16px 24px to 12px 16px */
+              border-radius: 12px !important; /* rounded-xl */
+              transition: all 0.3s ease !important;
+              border: none !important;
+              cursor: pointer !important;
+              overflow: hidden !important;
+              text-overflow: ellipsis !important;
+              word-break: break-word !important;
+              white-space: normal !important;
+              box-sizing: border-box !important;
+              font-size: 14px !important;
+              line-height: 1.25 !important;
+            }
+            
+            /* Flex containers inside cards - replicate working flex design */
+            div.flex.items-center.gap-3,
+            div[class*="flex"][class*="items-center"][class*="gap-3"] {
+              display: flex !important;
+              align-items: center !important;
+              gap: 8px !important; /* reduce from 12px to 8px for mobile */
+              max-width: calc(100% - 8px) !important;
+              overflow: hidden !important;
+              flex-wrap: wrap !important;
+              word-wrap: break-word !important;
+              box-sizing: border-box !important;
+            }
+            
+            /* Small label text - replicate working text styling */
+            div.text-xs.text-gray-500.mb-1,
+            div[class*="text-xs"][class*="text-gray-500"][class*="mb-1"] {
+              font-size: 11px !important; /* reduce from 12px to 11px for mobile */
+              color: rgb(107, 114, 128) !important; /* text-gray-500 */
+              margin-bottom: 4px !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+              line-height: 1.3 !important;
+            }
+            
+            /* Bold text values - replicate working text styling and fix truncation */
+            div.text-sm.font-bold.text-gray-900.truncate,
+            div[class*="text-sm"][class*="font-bold"][class*="text-gray-900"][class*="truncate"] {
+              font-size: 12px !important; /* reduce from 14px to 12px for mobile */
+              font-weight: bold !important;
+              color: rgb(17, 24, 39) !important; /* text-gray-900 */
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              hyphens: auto !important;
+              white-space: normal !important; /* override truncate */
+              overflow: visible !important; /* override truncate */
+              text-overflow: unset !important; /* override truncate */
+              box-sizing: border-box !important;
+              line-height: 1.3 !important;
+            }
+            
+            /* Badge text - replicate working text styling */
+            span.text-sm.font-semibold.text-green-700,
+            span[class*="text-sm"][class*="font-semibold"][class*="text-green-700"] {
+              font-size: 12px !important; /* reduce from 14px to 12px for mobile */
+              font-weight: 600 !important; /* font-semibold */
+              color: rgb(21, 128, 61) !important; /* text-green-700 */
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+              line-height: 1.3 !important;
+            }
+            
+            /* Semibold text - replicate working text styling */
+            div.font-semibold.text-gray-700,
+            div[class*="font-semibold"][class*="text-gray-700"] {
+              font-weight: 600 !important; /* font-semibold */
+              color: rgb(55, 65, 81) !important; /* text-gray-700 */
+              font-size: 13px !important;
+              max-width: calc(100% - 8px) !important;
+              word-break: break-word !important;
+              overflow-wrap: anywhere !important;
+              box-sizing: border-box !important;
+              line-height: 1.3 !important;
+            }
+            
+            /* SVG icons - replicate working icon sizes */
+            svg.lucide-award, svg.lucide-calendar, svg.lucide-graduation-cap, 
+            svg.lucide-dollar-sign, svg.lucide-external-link,
+            svg[class*="lucide-award"], svg[class*="lucide-calendar"], 
+            svg[class*="lucide-graduation-cap"], svg[class*="lucide-dollar-sign"], 
+            svg[class*="lucide-external-link"] {
+              width: 14px !important; /* reduce from original size */
+              height: 14px !important;
+              max-width: 14px !important;
+              max-height: 14px !important;
+              flex-shrink: 0 !important;
+              display: inline-block !important;
+            }
+            
+            /* Button flex content - replicate working flex design */
+            button[class*="flex"][class*="items-center"][class*="justify-center"][class*="gap-2"] {
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              gap: 6px !important; /* reduce from 8px to 6px for mobile */
+              flex-wrap: wrap !important;
+              max-width: calc(100% - 16px) !important;
+              margin: 0 auto !important;
+              box-sizing: border-box !important;
+            }
+          }
+          }
+          }
+          }
         `,
         }}
       />
@@ -1140,9 +2745,12 @@ export default function ScholarshipDetailPage() {
         className="min-h-screen mobile-container"
         style={{
           background: "var(--bg-primary)",
-          maxWidth: "100vw",
+          maxWidth: "calc(100vw - 8px)",
+          width: "calc(100vw - 8px)",
           overflowX: "hidden",
-          width: "100%",
+          margin: "0 auto",
+          padding: "0 4px",
+          boxSizing: "border-box",
         }}
       >
         {/* Fixed Share Button */}
@@ -1269,20 +2877,46 @@ export default function ScholarshipDetailPage() {
 
           {/* Glass overlay */}
           <div className="relative backdrop-blur-sm border-b border-white/20">
-            <div className="max-w-7xl mx-auto px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-4 sm:py-6 lg:py-8 mobile-container">
+            <div
+              className="max-w-7xl mx-auto px-2 sm:px-3 md:px-4 lg:px-6 xl:px-8 py-4 sm:py-6 lg:py-8 mobile-container"
+              style={{
+                maxWidth: "calc(100vw - 16px)",
+                overflowX: "hidden",
+                margin: "0 auto",
+                boxSizing: "border-box",
+              }}
+            >
               {/* Breadcrumb Navigation */}
               <motion.div
                 className="mb-6 sm:mb-8"
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
+                style={{
+                  maxWidth: "calc(100vw - 32px)",
+                  overflowX: "hidden",
+                  boxSizing: "border-box",
+                }}
               >
                 <Link
                   href="/opportunities"
                   className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white hover:bg-white/20 transition-all duration-200 group text-sm sm:text-base mobile-text mobile-text-force"
+                  style={{
+                    maxWidth: "calc(100% - 8px)",
+                    overflowX: "hidden",
+                    wordWrap: "break-word",
+                    boxSizing: "border-box",
+                  }}
                 >
                   <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
-                  <span className="font-medium mobile-text mobile-text-force">
+                  <span
+                    className="font-medium mobile-text mobile-text-force"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      maxWidth: "calc(100% - 24px)",
+                    }}
+                  >
                     Back to Opportunities
                   </span>
                 </Link>
@@ -1290,7 +2924,12 @@ export default function ScholarshipDetailPage() {
 
               <div
                 className="grid grid-cols-1 xl:grid-cols-3 gap-2 sm:gap-4 lg:gap-6 xl:gap-8 mobile-container"
-                style={{ maxWidth: "100%", overflowX: "hidden" }}
+                style={{
+                  maxWidth: "calc(100vw - 32px)",
+                  overflowX: "hidden",
+                  margin: "0 auto",
+                  boxSizing: "border-box",
+                }}
               >
                 {/* Main Hero Content */}
                 <div className="xl:col-span-2 min-w-0">
@@ -1341,8 +2980,25 @@ export default function ScholarshipDetailPage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.3 }}
+                    style={{
+                      maxWidth: "calc(100vw - 64px)",
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      hyphens: "auto",
+                      boxSizing: "border-box",
+                      overflow: "hidden",
+                    }}
                   >
-                    <span className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent break-words text-overflow-mobile mobile-text-force">
+                    <span
+                      className="bg-gradient-to-r from-white via-blue-100 to-purple-100 bg-clip-text text-transparent break-words text-overflow-mobile mobile-text-force"
+                      style={{
+                        wordBreak: "break-all",
+                        overflowWrap: "anywhere",
+                        maxWidth: "calc(100vw - 64px)",
+                        display: "block",
+                        boxSizing: "border-box",
+                      }}
+                    >
                       {scholarship.title}
                     </span>
                   </motion.h1>
@@ -1497,33 +3153,120 @@ export default function ScholarshipDetailPage() {
 
         {/* About Section */}
         <motion.div
-          className="relative bg-white"
+          className="relative bg-white mobile-container"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.8 }}
+          style={{
+            maxWidth: "calc(100vw - 8px)",
+            overflowX: "hidden",
+            margin: "0 auto",
+            boxSizing: "border-box",
+          }}
         >
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12">
-              <div className="lg:col-span-2 min-w-0">
-                <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+          <div
+            className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12 mobile-container"
+            style={{
+              maxWidth: "calc(100vw - 32px)",
+              overflowX: "hidden",
+              margin: "0 auto",
+              boxSizing: "border-box",
+            }}
+          >
+            <div
+              className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 lg:gap-12 mobile-container"
+              style={{
+                maxWidth: "calc(100vw - 48px)",
+                overflowX: "hidden",
+                boxSizing: "border-box",
+              }}
+            >
+              <div
+                className="lg:col-span-2 min-w-0 mobile-container"
+                style={{
+                  maxWidth: "calc(100% - 16px)",
+                  overflowX: "hidden",
+                  boxSizing: "border-box",
+                }}
+              >
+                <h2
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force"
+                  style={{
+                    wordBreak: "break-word",
+                    overflowWrap: "anywhere",
+                    maxWidth: "calc(100vw - 64px)",
+                    boxSizing: "border-box",
+                  }}
+                >
                   <BookOpen className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-blue-600 flex-shrink-0 mt-1" />
-                  <span className="break-words leading-tight min-w-0">
+                  <span
+                    className="break-words leading-tight min-w-0 mobile-text-force"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      maxWidth: "calc(100% - 32px)",
+                    }}
+                  >
                     About This Scholarship
                   </span>
                 </h2>
-                <div className="bg-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200">
-                  <div className="text-gray-700 leading-relaxed text-sm sm:text-base break-words">
+                <div
+                  className="bg-gray-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-gray-200 mobile-card"
+                  style={{
+                    maxWidth: "calc(100% - 8px)",
+                    overflowX: "hidden",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <div
+                    className="text-gray-700 leading-relaxed text-sm sm:text-base break-words mobile-text-force"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      maxWidth: "calc(100vw - 80px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
                     {formatRichContent(scholarship.description)}
                   </div>
                 </div>
               </div>
 
               {/* Additional Info Card */}
-              <div className="lg:col-span-1 min-w-0">
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200">
-                  <h3 className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-start gap-2 break-words">
+              <div
+                className="lg:col-span-1 min-w-0 mobile-container"
+                style={{
+                  maxWidth: "calc(100% - 16px)",
+                  overflowX: "hidden",
+                  boxSizing: "border-box",
+                }}
+              >
+                <div
+                  className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl sm:rounded-2xl p-4 sm:p-6 border border-blue-200 mobile-card"
+                  style={{
+                    maxWidth: "calc(100% - 8px)",
+                    overflowX: "hidden",
+                    boxSizing: "border-box",
+                  }}
+                >
+                  <h3
+                    className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-3 sm:mb-4 flex items-start gap-2 break-words mobile-text-force"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      maxWidth: "calc(100vw - 64px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
                     <Star className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-500 flex-shrink-0 mt-0.5" />
-                    <span className="break-words leading-tight min-w-0">
+                    <span
+                      className="break-words leading-tight min-w-0 mobile-text-force"
+                      style={{
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
+                        maxWidth: "calc(100% - 24px)",
+                      }}
+                    >
                       Key Details
                     </span>
                   </h3>
@@ -1531,11 +3274,11 @@ export default function ScholarshipDetailPage() {
                     {scholarship.fieldOfStudy && (
                       <div className="flex items-start gap-3">
                         <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-indigo-600 flex-shrink-0 mt-1" />
-                        <div className="min-w-0 flex-1">
-                          <div className="text-xs sm:text-sm text-gray-600 mb-1">
+                        <div className="min-w-0 flex-1 mobile-container">
+                          <div className="text-xs sm:text-sm text-gray-600 mb-1 mobile-text">
                             Field of Study
                           </div>
-                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words leading-tight">
+                          <div className="font-semibold text-gray-900 text-sm sm:text-base break-words leading-tight mobile-text-force">
                             {scholarship.fieldOfStudy}
                           </div>
                         </div>
@@ -1550,28 +3293,62 @@ export default function ScholarshipDetailPage() {
 
         {/* Eligibility and Requirements Section */}
         <motion.div
-          className="bg-gradient-to-br from-gray-50 to-blue-50/50"
+          className="bg-gradient-to-br from-gray-50 to-blue-50/50 mobile-container"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
+          style={{
+            maxWidth: "calc(100vw - 8px)",
+            overflowX: "hidden",
+            margin: "0 auto",
+            boxSizing: "border-box",
+          }}
         >
-          <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
+          <div
+            className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-8 sm:py-10 lg:py-12 mobile-container"
+            style={{
+              maxWidth: "calc(100vw - 32px)",
+              overflowX: "hidden",
+              margin: "0 auto",
+              boxSizing: "border-box",
+            }}
+          >
+            <div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mobile-container"
+              style={{
+                maxWidth: "calc(100vw - 48px)",
+                overflowX: "hidden",
+                boxSizing: "border-box",
+              }}
+            >
               {/* Eligibility Criteria */}
               {scholarship.eligibility && (
                 <motion.div
-                  className="min-w-0"
+                  className="min-w-0 mobile-container"
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.6, delay: 1.2 }}
+                  style={{
+                    maxWidth: "calc(100% - 16px)",
+                    overflowX: "hidden",
+                    boxSizing: "border-box",
+                  }}
                 >
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+                  <h2
+                    className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force"
+                    style={{
+                      wordBreak: "break-word",
+                      overflowWrap: "anywhere",
+                      maxWidth: "calc(100vw - 64px)",
+                      boxSizing: "border-box",
+                    }}
+                  >
                     <Users className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-purple-600 flex-shrink-0 mt-1" />
-                    <span className="break-words leading-tight min-w-0">
+                    <span className="break-words leading-tight min-w-0 mobile-text-force">
                       Eligibility Criteria
                     </span>
                   </h2>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-purple-200 shadow-lg">
+                  <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-purple-200 shadow-lg mobile-card">
                     <div className="space-y-3 sm:space-y-4">
                       {scholarship.eligibility.map(
                         (criteria: string, index: number) =>
@@ -1586,18 +3363,18 @@ export default function ScholarshipDetailPage() {
               {scholarship.requirements &&
                 scholarship.requirements.length > 0 && (
                   <motion.div
-                    className="min-w-0"
+                    className="min-w-0 mobile-container"
                     initial={{ opacity: 0, x: 50 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, delay: 1.4 }}
                   >
-                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words">
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force">
                       <CheckCircle className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 mt-1" />
-                      <span className="break-words leading-tight min-w-0">
+                      <span className="break-words leading-tight min-w-0 mobile-text-force">
                         Application Requirements
                       </span>
                     </h2>
-                    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-green-200 shadow-lg">
+                    <div className="bg-white rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 border border-green-200 shadow-lg mobile-card">
                       <div className="space-y-3 sm:space-y-4">
                         {scholarship.requirements.map(
                           (requirement: string, index: number) => (
