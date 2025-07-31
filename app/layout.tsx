@@ -1,9 +1,16 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import Layout from "../components/Layout";
 import { AuthProvider } from "../contexts/AuthContext";
 import { jsonLdWebsite, jsonLdOrganization } from "../lib/seo";
 import DynamicScripts from "../components/DynamicScripts";
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
 
 export const metadata: Metadata = {
   title: "ScholarHunt Uganda - Find Your Perfect Scholarship Opportunity",
@@ -37,12 +44,6 @@ export const metadata: Metadata = {
     ],
   },
   manifest: "/site.webmanifest",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
-  },
   robots: {
     index: true,
     follow: true,
