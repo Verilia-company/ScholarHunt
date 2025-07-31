@@ -9,7 +9,15 @@ import {
   limit,
   serverTimestamp,
 } from "firebase/firestore";
-import { db } from "./firebase";
+import { db, isFirebaseAvailable } from "./firebase";
+
+// Helper function to check if Firestore is available
+const ensureFirestore = () => {
+  if (!isFirebaseAvailable || !db) {
+    throw new Error("Firestore is not available. Please check your Firebase configuration.");
+  }
+  return db;
+};
 
 export interface UserActivity {
   id?: string;
@@ -76,7 +84,7 @@ class UserTrackingService {
         referrer: document.referrer || 'direct',
       };
 
-      await addDoc(collection(db, 'userSessions'), {
+      await addDoc(collection(ensureFirestore(), 'userSessions'), {
         ...sessionData,
         startTime: serverTimestamp(),
       });
@@ -126,7 +134,7 @@ class UserTrackingService {
         userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : undefined,
       };
 
-      await addDoc(collection(db, 'userActivities'), {
+      await addDoc(collection(ensureFirestore(), 'userActivities'), {
         ...activityData,
         timestamp: serverTimestamp(),
       });
@@ -204,7 +212,7 @@ class UserTrackingService {
 
   private async updateSession() {
     try {
-      const sessionsRef = collection(db, 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), 'userSessions');
       const q = query(
         sessionsRef,
         where('sessionId', '==', this.sessionId),
@@ -227,7 +235,7 @@ class UserTrackingService {
 
   async endSession(exitPage?: string) {
     try {
-      const sessionsRef = collection(db, 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), 'userSessions');
       const q = query(
         sessionsRef,
         where('sessionId', '==', this.sessionId),
@@ -253,7 +261,7 @@ class UserTrackingService {
   // Admin methods for retrieving analytics
   static async getRecentActivities(limitCount: number = 50): Promise<UserActivity[]> {
     try {
-      const activitiesRef = collection(db, 'userActivities');
+      const activitiesRef = collection(ensureFirestore(), 'userActivities');
       const q = query(
         activitiesRef,
         orderBy('timestamp', 'desc'),
@@ -274,7 +282,7 @@ class UserTrackingService {
 
   static async getUserSessions(limitCount: number = 50): Promise<UserSession[]> {
     try {
-      const sessionsRef = collection(db, 'userSessions');
+      const sessionsRef = collection(ensureFirestore(), 'userSessions');
       const q = query(
         sessionsRef,
         orderBy('startTime', 'desc'),

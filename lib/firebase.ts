@@ -1,22 +1,9 @@
 // Firebase configuration and initialization
 import { initializeApp, FirebaseApp } from "firebase/app";
-import {
-  getAuth,
-  GoogleAuthProvider,
-  Auth,
-} from "firebase/auth";
-import {
-  getFirestore,
-  Firestore,
-} from "firebase/firestore";
-import {
-  getDatabase,
-  Database,
-} from "firebase/database";
-import {
-  getStorage,
-  FirebaseStorage,
-} from "firebase/storage";
+import { getAuth, GoogleAuthProvider, Auth } from "firebase/auth";
+import { getFirestore, Firestore } from "firebase/firestore";
+import { getDatabase, Database } from "firebase/database";
+import { getStorage, FirebaseStorage } from "firebase/storage";
 import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 // Firebase configuration object using environment variables

@@ -72,6 +72,12 @@ export default function BlogPostPage({ params }: BlogPostPageProps) {
           process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID
         );
 
+        // Check if db is available
+        if (!db) {
+          console.warn("Firestore is not available");
+          return null;
+        }
+
         // Query Firestore for blog post by slug field
         const q = query(collection(db, "blog"), where("slug", "==", slug));
         console.log("Executing Firestore query...");

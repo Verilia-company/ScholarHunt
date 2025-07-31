@@ -1,6 +1,14 @@
 // Admin utilities for user management
 import { doc, updateDoc, getDoc } from "firebase/firestore";
-import { db } from "../lib/firebase";
+import { db, isFirebaseAvailable } from "../lib/firebase";
+
+// Helper function to check if Firestore is available
+const ensureFirestore = () => {
+  if (!isFirebaseAvailable || !db) {
+    throw new Error("Firestore is not available. Please check your Firebase configuration.");
+  }
+  return db;
+};
 
 /**
  * Promotes a user to admin role
@@ -8,7 +16,7 @@ import { db } from "../lib/firebase";
  */
 export async function promoteUserToAdmin(uid: string): Promise<boolean> {
   try {
-    const userDocRef = doc(db, "users", uid);
+    const userDocRef = doc(ensureFirestore(), "users", uid);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
@@ -33,7 +41,7 @@ export async function promoteUserToAdmin(uid: string): Promise<boolean> {
  */
 export async function demoteAdminToUser(uid: string): Promise<boolean> {
   try {
-    const userDocRef = doc(db, "users", uid);
+    const userDocRef = doc(ensureFirestore(), "users", uid);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
