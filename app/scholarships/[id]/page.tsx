@@ -284,7 +284,20 @@ export default function ScholarshipDetailPage() {
   }
 
   // --- Professional eligibility/requirements rendering ---
-  function renderCriteriaList(list: string[]) {
+  // --- Restored default criteria list renderers ---
+  function renderEligibilityList(list: string[]) {
+    return (
+      <ul className="list-disc pl-5 space-y-2 text-gray-800">
+        {list.map((item, idx) => (
+          <li key={idx} className="text-base sm:text-lg leading-relaxed">
+            {item}
+          </li>
+        ))}
+      </ul>
+    );
+  }
+
+  function renderRequirementsList(list: string[]) {
     return (
       <div className="space-y-4">
         {list.map((item, idx) => {
@@ -306,9 +319,12 @@ export default function ScholarshipDetailPage() {
                   );
                 }
                 return (
-                  <div key={i} className="flex items-start gap-2 ml-4">
-                    <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mt-2 mr-2 flex-shrink-0"></span>
-                    <span className="text-gray-700 text-base sm:text-base md:text-lg leading-relaxed">
+                  <div
+                    key={i}
+                    className="flex flex-row items-center gap-2 ml-4"
+                  >
+                    <span className="inline-block w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></span>
+                    <span className="text-gray-800 text-base sm:text-base md:text-lg leading-relaxed">
                       {trimmed.replace(/^(- |• |\s{2,}|\t)/, "")}
                     </span>
                   </div>
@@ -667,7 +683,7 @@ export default function ScholarshipDetailPage() {
                 }}
               >
                 <h2
-                  className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force"
+                  className="text-xl sm:text-2xl lg:text-3xl font-bold text-purple-800 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force"
                   style={{
                     wordBreak: "break-word",
                     overflowWrap: "anywhere",
@@ -685,7 +701,7 @@ export default function ScholarshipDetailPage() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="lucide lucide-users h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-blue-600 flex-shrink-0 mt-1"
+                    className="lucide lucide-users h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-purple-600 flex-shrink-0 mt-1"
                     aria-hidden="true"
                   >
                     <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
@@ -697,8 +713,8 @@ export default function ScholarshipDetailPage() {
                     Eligibility Criteria
                   </span>
                 </h2>
-                <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-blue-200 shadow-lg">
-                  {renderCriteriaList(scholarship.eligibility)}
+                <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-purple-200 shadow-lg">
+                  {renderEligibilityList(scholarship.eligibility)}
                 </div>
               </div>
             )}
@@ -715,7 +731,7 @@ export default function ScholarshipDetailPage() {
                     transform: "none",
                   }}
                 >
-                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force">
+                  <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-green-800 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="24"
@@ -726,7 +742,7 @@ export default function ScholarshipDetailPage() {
                       strokeWidth="2"
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      className="lucide lucide-circle-check-big h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-blue-600 flex-shrink-0 mt-1"
+                      className="lucide lucide-circle-check-big h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 mt-1"
                       aria-hidden="true"
                     >
                       <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
@@ -736,8 +752,8 @@ export default function ScholarshipDetailPage() {
                       Application Requirements
                     </span>
                   </h2>
-                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-blue-200 shadow-lg">
-                    {renderCriteriaList(scholarship.requirements)}
+                  <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-green-200 shadow-lg">
+                    {renderRequirementsList(scholarship.requirements)}
                   </div>
                 </div>
               )}
