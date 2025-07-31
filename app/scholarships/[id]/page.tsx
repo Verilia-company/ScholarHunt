@@ -285,57 +285,33 @@ export default function ScholarshipDetailPage() {
 
   // --- Professional eligibility/requirements rendering ---
   // --- Restored default criteria list renderers ---
-  function renderEligibilityList(list: string[]) {
+  // Universal bulletin renderer for both eligibility and requirements
+  // Professional paragraph renderer for both eligibility and requirements
+  function renderParagraphList(list: string[]) {
+    // Flatten all lines, remove dashes, and join as paragraphs
+    const paragraphs: string[] = [];
+    list.forEach((item) => {
+      item.split(/\n+/).forEach((line) => {
+        const trimmed = line.trim().replace(/^[-•]\s*/, "");
+        if (trimmed) paragraphs.push(trimmed);
+      });
+    });
     return (
-      <ul className="list-disc pl-5 space-y-2 text-gray-800">
-        {list.map((item, idx) => (
-          <li key={idx} className="text-base sm:text-lg leading-relaxed">
-            {item}
-          </li>
+      <div className="space-y-3">
+        {paragraphs.map((text, idx) => (
+          <p
+            key={idx}
+            className="text-gray-800 text-base sm:text-lg leading-relaxed"
+          >
+            {text}
+          </p>
         ))}
-      </ul>
-    );
-  }
-
-  function renderRequirementsList(list: string[]) {
-    return (
-      <div className="space-y-4">
-        {list.map((item, idx) => {
-          const lines = item.split(/\n+/);
-          return (
-            <div key={idx} className="mb-2">
-              {lines.map((line, i) => {
-                const trimmed = line.trim();
-                if (!trimmed) return null;
-                const isNested = /^(- |• |\s{2,}|\t)/.test(line);
-                if (i === 0 && !isNested) {
-                  return (
-                    <p
-                      key={i}
-                      className="text-gray-800 font-medium text-base sm:text-lg mb-1 leading-relaxed"
-                    >
-                      {trimmed}
-                    </p>
-                  );
-                }
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-row items-center gap-2 ml-4"
-                  >
-                    <span className="inline-block w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></span>
-                    <span className="text-gray-800 text-base sm:text-base md:text-lg leading-relaxed">
-                      {trimmed.replace(/^(- |• |\s{2,}|\t)/, "")}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
       </div>
     );
   }
+
+  const renderRequirementsList = renderParagraphList;
+  const renderEligibilityList = renderParagraphList;
 
   // --- End professional rendering ---
 
