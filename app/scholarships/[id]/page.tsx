@@ -594,221 +594,240 @@ export default function ScholarshipDetailPage() {
         )}
 
         {/* Enhanced Hero Section */}
-        <motion.div
-          className="relative overflow-hidden bg-white"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.8 }}
-        >
-          {/* Content overlay */}
-          <div className="relative">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-              {/* Breadcrumb Navigation */}
-              <motion.div
-                className="mb-8"
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6 }}
+        <div className="relative w-full max-w-full">
+          <div className="max-w-7xl w-full mx-auto px-3 sm:px-4 lg:px-8 py-8 lg:py-12">
+            <div
+              className="mb-8 w-full"
+              style={{ opacity: 1, transform: "none" }}
+            >
+              <Link
+                href="/opportunities"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-200 group w-full max-w-full"
+                style={{ wordBreak: "break-word", overflowWrap: "anywhere" }}
               >
-                <Link
-                  href="/opportunities"
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 border border-gray-300 text-gray-700 transition-all duration-200 group"
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="lucide lucide-arrow-left h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200"
+                  aria-hidden="true"
                 >
-                  <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform duration-200" />
-                  <span className="font-medium">Back to Opportunities</span>
-                </Link>
-              </motion.div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-                {/* Main Hero Content */}
-                <div className="lg:col-span-2">
-                  {/* Status Badges */}
-                  <motion.div
-                    className="flex flex-wrap gap-3 mb-6"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.2 }}
-                  >
-                    {scholarship.type && (
-                      <div
-                        className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
-                          scholarship.type === "International"
-                            ? "bg-blue-100 text-blue-700 border border-blue-300"
-                            : scholarship.type === "Local"
-                            ? "bg-green-100 text-green-700 border border-green-300"
-                            : "bg-purple-100 text-purple-700 border border-purple-300"
-                        }`}
-                      >
-                        <Globe className="h-4 w-4" />
-                        {scholarship.type}
-                      </div>
-                    )}
-                    {isUrgent && !isExpired && !isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 text-red-700 border border-red-300 text-sm font-semibold animate-pulse">
-                        <Clock className="h-4 w-4" />
-                        Urgent - {daysRemaining} days left
-                      </div>
-                    )}
-                    {isUndisclosed && (
-                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 text-sm font-semibold">
-                        <CheckCircle className="h-4 w-4" />
-                        Open Application
-                      </div>
-                    )}
-                  </motion.div>
-
-                  {/* Title */}
-                  <motion.h1
-                    className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-gray-900"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.3 }}
-                  >
-                    {scholarship.title}
-                  </motion.h1>
-
-                  {/* Provider */}
-                  {scholarship.provider && (
-                    <motion.div
-                      className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gray-100 border border-gray-300 mb-8"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: 0.4 }}
+                  <path d="m12 19-7-7 7-7"></path>
+                  <path d="M19 12H5"></path>
+                </svg>
+                <span className="font-medium">Back to Opportunities</span>
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12 w-full max-w-full">
+              <div className="lg:col-span-2 w-full max-w-full">
+                <div
+                  className="flex flex-wrap gap-3 mb-6 w-full max-w-full"
+                  style={{ opacity: 1, transform: "none" }}
+                >
+                  {scholarship.type && (
+                    <div
+                      className={`inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold ${
+                        scholarship.type === "International"
+                          ? "bg-blue-100 text-blue-700 border border-blue-300"
+                          : scholarship.type === "Local"
+                          ? "bg-green-100 text-green-700 border border-green-300"
+                          : "bg-purple-100 text-purple-700 border border-purple-300"
+                      }`}
                     >
-                      <University className="h-5 w-5 text-blue-600" />
-                      <span className="text-gray-700 font-medium">
-                        Offered by{" "}
-                        <span className="font-bold text-blue-600">
-                          {scholarship.provider}
-                        </span>
-                      </span>
-                    </motion.div>
-                  )}
-
-                  {/* Quick Stats */}
-                  <motion.div
-                    className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.5 }}
-                  >
-                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                      <DollarSign className="h-6 w-6 text-green-600 mb-2" />
-                      <div className="text-xs text-gray-500 mb-1">Value</div>
-                      <div className="text-sm font-bold text-gray-900 truncate">
-                        {scholarship.amount}
-                      </div>
+                      <Globe className="h-4 w-4" />
+                      {scholarship.type}
                     </div>
-                    {scholarship.level && (
-                      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                        <GraduationCap className="h-6 w-6 text-purple-600 mb-2" />
-                        <div className="text-xs text-gray-500 mb-1">Level</div>
-                        <div className="text-sm font-bold text-gray-900 truncate">
-                          {scholarship.level}
-                        </div>
-                      </div>
-                    )}
-                    {scholarship.location && (
-                      <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-                        <MapPin className="h-6 w-6 text-orange-600 mb-2" />
-                        <div className="text-xs text-gray-500 mb-1">
-                          Location
-                        </div>
-                        <div className="text-sm font-bold text-gray-900 truncate">
-                          {scholarship.location}
-                        </div>
-                      </div>
-                    )}
-                  </motion.div>
+                  )}
+                  {isUrgent && !isExpired && !isUndisclosed && (
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 text-red-700 border border-red-300 text-sm font-semibold animate-pulse">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-clock h-4 w-4"
+                        aria-hidden="true"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                      </svg>
+                      Urgent - {daysRemaining} days left
+                    </div>
+                  )}
+                  {isUndisclosed && (
+                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-300 text-sm font-semibold">
+                      <CheckCircle className="h-4 w-4" />
+                      Open Application
+                    </div>
+                  )}
                 </div>
-
-                {/* Action Card */}
-                <motion.div
-                  className="lg:col-span-1"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
+                <h1
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 leading-tight text-gray-900 w-full max-w-full break-words whitespace-normal"
+                  style={{
+                    opacity: 1,
+                    transform: "none",
+                    wordBreak: "break-word",
+                    overflowWrap: "anywhere",
+                  }}
                 >
-                  <div className="sticky top-24">
-                    <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-lg">
-                      <div className="text-center mb-6">
-                        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-300 mb-4">
-                          <Award className="h-4 w-4 text-green-600" />
-                          <span className="text-sm font-semibold text-green-700">
-                            Scholarship Opportunity
-                          </span>
-                        </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">
-                          Ready to Apply?
-                        </h3>
-                        <p className="text-sm text-gray-600">
-                          Take the next step towards your academic future
-                        </p>
-                      </div>
-
-                      {/* Application Deadline */}
-                      <div className="bg-gray-100 rounded-xl p-4 mb-6">
-                        <div className="flex items-center gap-3">
-                          <Calendar
-                            className={`h-5 w-5 ${
-                              isUndisclosed
-                                ? "text-gray-500"
-                                : isUrgent
-                                ? "text-red-600"
-                                : "text-blue-600"
-                            }`}
-                          />
-                          <div>
-                            <div className="text-xs text-gray-500 mb-1">
-                              Application Deadline
-                            </div>
-                            <div
-                              className={`font-semibold ${
-                                isUndisclosed
-                                  ? "text-gray-700"
-                                  : isUrgent
-                                  ? "text-red-700"
-                                  : "text-gray-900"
-                              }`}
-                            >
-                              {formatDeadline(scholarship.deadline)}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      {/* Apply Button */}
-                      {isExpired && !isUndisclosed ? (
-                        <div className="text-center p-4 bg-red-500/10 border border-red-400/30 rounded-xl">
-                          <AlertTriangle className="h-5 w-5 text-red-400 mx-auto mb-2" />
-                          <div className="text-sm font-medium text-red-300 mb-1">
-                            Application Period Closed
-                          </div>
-                          <div className="text-xs text-red-400">
-                            This scholarship is no longer accepting
-                            applications.
-                          </div>
-                        </div>
-                      ) : (
-                        <motion.button
-                          onClick={handleApplyClick}
-                          className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                        >
-                          <ExternalLink className="h-5 w-5" />
-                          {scholarship.applicationUrl
-                            ? "Apply Now"
-                            : "View Application Details"}
-                        </motion.button>
-                      )}
+                  {scholarship.title}
+                </h1>
+                <div
+                  className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8 w-full max-w-full"
+                  style={{ opacity: 1, transform: "none" }}
+                >
+                  <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 w-full max-w-full">
+                    <DollarSign className="h-6 w-6 text-green-600 mb-2" />
+                    <div className="text-xs text-gray-500 mb-1">Value</div>
+                    <div className="text-sm font-bold text-gray-900 break-words whitespace-normal w-full max-w-full">
+                      {scholarship.amount}
                     </div>
                   </div>
-                </motion.div>
+                  {scholarship.level && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 w-full max-w-full">
+                      <GraduationCap className="h-6 w-6 text-purple-600 mb-2" />
+                      <div className="text-xs text-gray-500 mb-1">Level</div>
+                      <div className="text-sm font-bold text-gray-900 break-words whitespace-normal w-full max-w-full">
+                        {scholarship.level}
+                      </div>
+                    </div>
+                  )}
+                  {scholarship.location && (
+                    <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 w-full max-w-full">
+                      <MapPin className="h-6 w-6 text-orange-600 mb-2" />
+                      <div className="text-xs text-gray-500 mb-1">Location</div>
+                      <div className="text-sm font-bold text-gray-900 break-words whitespace-normal w-full max-w-full">
+                        {scholarship.location}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div
+                className="lg:col-span-1 w-full max-w-full"
+                style={{ opacity: 1, transform: "none" }}
+              >
+                <div className="sticky top-24 w-full max-w-full">
+                  <div className="bg-gray-50 border border-gray-200 rounded-2xl p-6 shadow-lg w-full max-w-full">
+                    <div className="text-center mb-6 w-full max-w-full">
+                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 border border-green-300 mb-4">
+                        <Award className="h-4 w-4 text-green-600" />
+                        <span className="text-sm font-semibold text-green-700">
+                          Scholarship Opportunity
+                        </span>
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 mb-2 break-words whitespace-normal w-full max-w-full">
+                        Ready to Apply?
+                      </h3>
+                      <p className="text-sm text-gray-600 break-words whitespace-normal w-full max-w-full">
+                        Take the next step towards your academic future
+                      </p>
+                    </div>
+                    <div className="bg-gray-100 rounded-xl p-4 mb-6 w-full max-w-full">
+                      <div className="flex items-center gap-3 w-full max-w-full">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`lucide lucide-calendar h-5 w-5 ${
+                            isUndisclosed
+                              ? "text-gray-500"
+                              : isUrgent
+                              ? "text-red-600"
+                              : "text-blue-600"
+                          }`}
+                          aria-hidden="true"
+                        >
+                          <path d="M8 2v4"></path>
+                          <path d="M16 2v4"></path>
+                          <rect
+                            width="18"
+                            height="18"
+                            x="3"
+                            y="4"
+                            rx="2"
+                          ></rect>
+                          <path d="M3 10h18"></path>
+                        </svg>
+                        <div className="w-full max-w-full">
+                          <div className="text-xs text-gray-500 mb-1">
+                            Application Deadline
+                          </div>
+                          <div
+                            className={`font-semibold w-full max-w-full ${
+                              isUndisclosed
+                                ? "text-gray-700"
+                                : isUrgent
+                                ? "text-red-700"
+                                : "text-gray-900"
+                            }`}
+                          >
+                            {formatDeadline(scholarship.deadline)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    {isExpired && !isUndisclosed ? (
+                      <div className="text-center p-4 bg-red-500/10 border border-red-400/30 rounded-xl w-full max-w-full">
+                        <AlertTriangle className="h-5 w-5 text-red-400 mx-auto mb-2" />
+                        <div className="text-sm font-medium text-red-300 mb-1">
+                          Application Period Closed
+                        </div>
+                        <div className="text-xs text-red-400">
+                          This scholarship is no longer accepting applications.
+                        </div>
+                      </div>
+                    ) : (
+                      <button
+                        onClick={handleApplyClick}
+                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 flex items-center justify-center gap-2 break-words whitespace-normal max-w-full"
+                        tabIndex={0}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="lucide lucide-external-link h-5 w-5"
+                          aria-hidden="true"
+                        >
+                          <path d="M15 3h6v6"></path>
+                          <path d="M10 14 21 3"></path>
+                          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                        </svg>
+                        {scholarship.applicationUrl
+                          ? "Apply Now"
+                          : "View Application Details"}
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* About Section */}
         <motion.div
@@ -861,74 +880,191 @@ export default function ScholarshipDetailPage() {
 
         {/* Eligibility and Requirements Section */}
         <motion.div
-          className="bg-gradient-to-br from-gray-50 to-blue-50/50"
+          className=""
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1 }}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Eligibility Criteria */}
-              {scholarship.eligibility && (
-                <motion.div
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, delay: 1.2 }}
-                >
-                  <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                    <Users className="h-8 w-8 text-purple-600" />
-                    Eligibility Criteria
-                  </h2>
-                  <div className="bg-white rounded-2xl p-8 border border-purple-200 shadow-lg">
-                    <div className="space-y-4">
-                      {scholarship.eligibility.map(
-                        (criteria: string, index: number) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
-                              <span className="text-purple-700 font-bold text-sm">
-                                {index + 1}
-                              </span>
-                            </div>
-                            <p className="text-gray-700 leading-relaxed flex-1">
-                              {criteria}
-                            </p>
-                          </div>
-                        )
-                      )}
-                    </div>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Application Requirements */}
-              {scholarship.requirements &&
-                scholarship.requirements.length > 0 && (
-                  <motion.div
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 1.4 }}
+          <div
+            className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-6 sm:py-10 lg:py-12"
+            style={{
+              maxWidth: "100vw",
+              overflowX: "hidden",
+              margin: "0px auto",
+              boxSizing: "border-box",
+            }}
+          >
+            <div
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12"
+              style={{
+                maxWidth: "100vw",
+                overflowX: "hidden",
+                boxSizing: "border-box",
+              }}
+            >
+              {/* Eligibility Criteria Section (Purple, deeply nested, matches reference) */}
+              {scholarship.eligibility &&
+                scholarship.eligibility.length > 0 && (
+                  <div
+                    className="min-w-0 w-full"
+                    style={{
+                      maxWidth: "100%",
+                      overflowX: "hidden",
+                      boxSizing: "border-box",
+                      opacity: 1,
+                      transform: "none",
+                    }}
                   >
-                    <h2 className="text-3xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                      <CheckCircle className="h-8 w-8 text-green-600" />
-                      Application Requirements
+                    <h2
+                      className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force"
+                      style={{
+                        wordBreak: "break-word",
+                        overflowWrap: "anywhere",
+                        maxWidth: "100%",
+                        boxSizing: "border-box",
+                      }}
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-users h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-purple-600 flex-shrink-0 mt-1"
+                        aria-hidden="true"
+                      >
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                        <path d="M16 3.128a4 4 0 0 1 0 7.744"></path>
+                        <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                      </svg>
+                      <span className="break-words leading-tight min-w-0 mobile-text-force">
+                        Eligibility Criteria
+                      </span>
                     </h2>
-                    <div className="bg-white rounded-2xl p-8 border border-green-200 shadow-lg">
-                      <div className="space-y-4">
-                        {scholarship.requirements.map((requirement, index) => (
-                          <div key={index} className="flex items-start gap-4">
-                            <div className="flex-shrink-0 w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                              <span className="text-green-700 font-bold text-sm">
-                                {index + 1}
-                              </span>
+                    <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-purple-200 shadow-lg">
+                      <div className="space-y-3 sm:space-y-4">
+                        {scholarship.eligibility.map(
+                          (criteria: string, index: number) => (
+                            <div
+                              className="flex items-start gap-3 sm:gap-4 w-full"
+                              key={index}
+                            >
+                              <div className="flex-shrink-0 w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mt-1">
+                                <span className="text-purple-700 font-bold text-sm">
+                                  {index + 1}
+                                </span>
+                              </div>
+                              <div className="flex-1 w-full">
+                                <div className="bg-purple-50 rounded-lg p-3 sm:p-4 border border-purple-200">
+                                  <div className="mobile-text-force whitespace-normal break-words">
+                                    {criteria.split("\n").map((para, i) => (
+                                      <div className="mb-3" key={i}>
+                                        <p className="text-gray-700 leading-relaxed whitespace-normal break-words text-base sm:text-base md:text-lg">
+                                          {para}
+                                        </p>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                            <p className="text-gray-700 leading-relaxed flex-1">
-                              {requirement}
-                            </p>
-                          </div>
-                        ))}
+                          )
+                        )}
                       </div>
                     </div>
-                  </motion.div>
+                  </div>
+                )}
+              {/* Application Requirements Section (Green, deeply nested, matches reference) */}
+              {scholarship.requirements &&
+                scholarship.requirements.length > 0 && (
+                  <div
+                    className="min-w-0 w-full"
+                    style={{ opacity: 1, transform: "none", maxWidth: "100%" }}
+                  >
+                    <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900 mb-4 sm:mb-6 flex items-start gap-2 sm:gap-3 break-words mobile-text-force">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        className="lucide lucide-circle-check-big h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8 text-green-600 flex-shrink-0 mt-1"
+                        aria-hidden="true"
+                      >
+                        <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                        <path d="m9 11 3 3L22 4"></path>
+                      </svg>
+                      <span className="break-words leading-tight min-w-0 mobile-text-force">
+                        Application Requirements
+                      </span>
+                    </h2>
+                    <div className="bg-white rounded-xl sm:rounded-2xl p-3 sm:p-5 lg:p-8 border border-green-200 shadow-lg">
+                      <div className="space-y-3 sm:space-y-4">
+                        {scholarship.requirements.map(
+                          (requirement: string, index: number) => (
+                            <div
+                              className="flex items-start gap-3 sm:gap-4 w-full"
+                              key={index}
+                            >
+                              <div className="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 bg-green-100 rounded-full flex items-center justify-center mt-1">
+                                <span className="text-green-700 font-bold text-xs sm:text-sm">
+                                  {index + 1}
+                                </span>
+                              </div>
+                              <div className="flex-1 w-full">
+                                <div className="bg-green-50 rounded-lg p-3 sm:p-4 border border-green-200">
+                                  <div className="prose prose-sm max-w-none whitespace-normal break-words">
+                                    <div className="space-y-3 sm:space-y-4">
+                                      {/* Render each paragraph or indented step */}
+                                      {requirement
+                                        .split(/\n+/)
+                                        .map((para, i) => {
+                                          const isIndented = para
+                                            .trim()
+                                            .startsWith("[blue]");
+                                          if (isIndented) {
+                                            return (
+                                              <div
+                                                className="mb-3 pl-4 border-l-2 border-blue-200"
+                                                key={i}
+                                              >
+                                                <p className="text-gray-700 leading-relaxed whitespace-normal break-words text-base sm:text-base md:text-lg">
+                                                  <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+                                                  {para.replace(
+                                                    /^\[blue\]\s*/,
+                                                    ""
+                                                  )}
+                                                </p>
+                                              </div>
+                                            );
+                                          }
+                                          return (
+                                            <div className="mb-3" key={i}>
+                                              <p className="text-gray-700 leading-relaxed whitespace-normal break-words text-base sm:text-base md:text-lg">
+                                                {para}
+                                              </p>
+                                            </div>
+                                          );
+                                        })}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          )
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 )}
             </div>
           </div>
