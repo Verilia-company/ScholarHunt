@@ -21,15 +21,19 @@ const firebaseConfig = {
 // Check if we're in a valid Firebase environment
 const isValidFirebaseConfig = Boolean(
   firebaseConfig.apiKey &&
-  firebaseConfig.authDomain &&
-  firebaseConfig.projectId &&
-  firebaseConfig.storageBucket &&
-  firebaseConfig.messagingSenderId &&
-  firebaseConfig.appId
+    firebaseConfig.authDomain &&
+    firebaseConfig.projectId &&
+    firebaseConfig.storageBucket &&
+    firebaseConfig.messagingSenderId &&
+    firebaseConfig.appId
 );
 
 // Log configuration warnings only in development
-if (typeof window !== "undefined" && process.env.NODE_ENV === "development" && !isValidFirebaseConfig) {
+if (
+  typeof window !== "undefined" &&
+  process.env.NODE_ENV === "development" &&
+  !isValidFirebaseConfig
+) {
   console.warn(
     "Firebase configuration warning: Some environment variables are missing.",
     "Firebase features may not work properly."
