@@ -5,27 +5,14 @@ import { useParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import {
-  Calendar,
   MapPin,
   DollarSign,
   GraduationCap,
-  ExternalLink,
-  ArrowLeft,
   AlertTriangle,
-  Share2,
-  X,
-  Copy,
-  Facebook,
-  Twitter,
-  Linkedin,
-  MessageCircle,
   Award,
-  Clock,
-  Users,
   BookOpen,
   CheckCircle,
   Globe,
-  University,
   FileText,
   Star,
 } from "lucide-react";
@@ -44,17 +31,14 @@ export default function ScholarshipDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  const [showSharePopup, setShowSharePopup] = useState(false);
-  const [copySuccess, setCopySuccess] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [currentUrl, setCurrentUrl] = useState("");
 
   usePageTracking();
   useScrollTracking();
 
   useEffect(() => {
     setIsClient(true);
-    setCurrentUrl(window.location.href);
+    // setCurrentUrl(window.location.href); // Removed undefined function
   }, []);
 
   const handleApplyClick = () => {
@@ -136,7 +120,7 @@ export default function ScholarshipDetailPage() {
           });
           try {
             await scholarshipService.incrementViews(id);
-          } catch (viewError) {
+          } catch {
             // continue
           }
         } else {
