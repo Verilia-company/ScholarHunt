@@ -9,7 +9,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
 } from "firebase/auth";
-import { auth, googleProvider, db } from "../lib/firebase";
+import { auth, googleProvider, db, isFirebaseAvailable } from "../lib/firebase";
 import { doc, getDoc, setDoc, Timestamp } from "firebase/firestore";
 import { presenceService } from "../lib/firebase/presence";
 import { useRouter, usePathname } from "next/navigation";
@@ -92,6 +92,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const pathname = usePathname();
 
   useEffect(() => {
+    // Only set up auth listener if Firebase is available
+    if (!isFirebaseAvailable || !auth) {
+      console.warn("Firebase auth is not available");
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(
       auth,
       (user) => {
@@ -121,6 +128,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
   useEffect(() => {
     const fetchOrCreateUserProfile = async (firebaseUser: User) => {
+      if (!db) {
+        console.warn("Firestore is not available");
+        return;
+      }
+
       try {
         const userDocRef = doc(db, "users", firebaseUser.uid);
         const userDoc = await getDoc(userDocRef);
@@ -208,6 +220,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [user]);
   const signInWithGoogle = async () => {
     try {
+      if (!isFirebaseAvailable || !auth || !googleProvider) {
+        console.warn("Firebase auth or google provider is not available");
+        throw new Error("Authentication service is not available");
+      }
+
       setLoading(true);
 
       // Configure popup settings for better UX
@@ -285,6 +302,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         client_id: clientId,
         callback: async (response: any) => {
           try {
+            if (!auth) {
+              console.warn("Firebase auth is not available for One Tap");
+              return;
+            }
+
             setLoading(true);
             console.log("One Tap callback triggered on:", currentDomain);
 
@@ -401,8 +423,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       }
 
-      // Force sign out from Firebase
-      await signOut(auth);
+      // Force sign out from Firebase if available
+      if (auth) {
+        await signOut(auth);
+      }
 
       // Force state update
       setUser(null);

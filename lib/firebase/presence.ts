@@ -8,7 +8,7 @@ import {
   remove,
   DatabaseReference,
 } from "firebase/database";
-import { rtdb } from "../firebase";
+import { rtdb, isFirebaseAvailable } from "../firebase";
 
 export interface PresenceData {
   uid: string;
@@ -44,6 +44,13 @@ class PresenceService {
     photoURL?: string;
     role?: "admin" | "user";
   }): Promise<void> {
+    if (!isFirebaseAvailable || !rtdb) {
+      console.warn(
+        "Firebase Realtime Database is not available for presence tracking"
+      );
+      return;
+    }
+
     if (this.isInitialized) {
       await this.cleanup();
     }
@@ -109,7 +116,7 @@ class PresenceService {
    * Update user's current location/page
    */
   updateLocation(location: string): void {
-    if (this.presenceRef) {
+    if (this.presenceRef && rtdb) {
       set(ref(rtdb, `presence/${this.presenceRef.key}/location`), location);
     }
   }
@@ -118,7 +125,7 @@ class PresenceService {
    * Handle page visibility changes
    */
   private handleVisibilityChange = (): void => {
-    if (this.presenceRef) {
+    if (this.presenceRef && rtdb) {
       const isVisible = !document.hidden;
       set(ref(rtdb, `presence/${this.presenceRef.key}/isOnline`), isVisible);
 
@@ -150,6 +157,11 @@ class PresenceService {
    * Get all currently online users
    */
   getOnlineUsers(callback: (users: PresenceData[]) => void): () => void {
+    if (!rtdb) {
+      console.warn("Firebase Realtime Database is not available");
+      return () => {}; // Return empty unsubscribe function
+    }
+
     const presenceRef = ref(rtdb, "presence");
 
     const unsubscribe = onValue(presenceRef, (snapshot) => {
@@ -224,6 +236,11 @@ class PresenceService {
    * Update user's admin status in presence
    */
   updateUserRole(uid: string, role: "admin" | "user"): void {
+    if (!rtdb) {
+      console.warn("Firebase Realtime Database is not available");
+      return;
+    }
+
     const roleRef = ref(rtdb, `presence/${uid}/role`);
     set(roleRef, role);
   }
@@ -285,6 +302,11 @@ class PresenceService {
       presenceData: Record<string, { lastSeen: Date; isOnline: boolean }>
     ) => void
   ): () => void {
+    if (!rtdb) {
+      console.warn("Firebase Realtime Database is not available");
+      return () => {}; // Return empty unsubscribe function
+    }
+
     const presenceRef = ref(rtdb, "presence");
 
     const unsubscribe = onValue(presenceRef, (snapshot) => {
@@ -318,6 +340,11 @@ class PresenceService {
    * Force remove a user from presence (admin only)
    */
   async removeUserPresence(uid: string): Promise<void> {
+    if (!rtdb) {
+      console.warn("Firebase Realtime Database is not available");
+      return;
+    }
+
     try {
       const userPresenceRef = ref(rtdb, `presence/${uid}`);
       await remove(userPresenceRef);

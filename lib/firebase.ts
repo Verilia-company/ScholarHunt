@@ -1,10 +1,23 @@
 // Firebase configuration and initialization
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
-import { getStorage } from "firebase/storage";
-import { getAnalytics, isSupported } from "firebase/analytics";
+import { initializeApp, FirebaseApp } from "firebase/app";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  Auth,
+} from "firebase/auth";
+import {
+  getFirestore,
+  Firestore,
+} from "firebase/firestore";
+import {
+  getDatabase,
+  Database,
+} from "firebase/database";
+import {
+  getStorage,
+  FirebaseStorage,
+} from "firebase/storage";
+import { getAnalytics, isSupported, Analytics } from "firebase/analytics";
 
 // Firebase configuration object using environment variables
 const firebaseConfig = {
@@ -28,73 +41,83 @@ const isValidFirebaseConfig = Boolean(
     firebaseConfig.appId
 );
 
-// Log configuration warnings only in development
-if (
-  typeof window !== "undefined" &&
-  process.env.NODE_ENV === "development" &&
-  !isValidFirebaseConfig
-) {
+// Check if database URL is valid (needed for Realtime Database)
+const isValidDatabaseURL = Boolean(
+  firebaseConfig.databaseURL &&
+    firebaseConfig.databaseURL.includes("firebaseio.com")
+);
+
+// Initialize Firebase only if we have a valid configuration
+let app: FirebaseApp | null = null;
+let auth: Auth | null = null;
+let db: Firestore | null = null;
+let rtdb: Database | null = null;
+let storage: FirebaseStorage | null = null;
+let googleProvider: GoogleAuthProvider | null = null;
+
+if (isValidFirebaseConfig) {
+  try {
+    // Initialize Firebase app
+    app = initializeApp(firebaseConfig);
+
+    // Initialize Authentication
+    auth = getAuth(app);
+
+    // Initialize Google Auth Provider
+    googleProvider = new GoogleAuthProvider();
+    googleProvider.setCustomParameters({
+      prompt: "select_account",
+    });
+
+    // Initialize Firestore
+    db = getFirestore(app);
+
+    // Initialize Realtime Database only if URL is valid
+    if (isValidDatabaseURL) {
+      rtdb = getDatabase(app);
+    }
+
+    // Initialize Storage
+    storage = getStorage(app);
+
+    console.log("Firebase initialized successfully");
+  } catch (error) {
+    console.error("Failed to initialize Firebase:", error);
+    // Reset all services if initialization fails
+    app = null;
+    auth = null;
+    db = null;
+    rtdb = null;
+    storage = null;
+    googleProvider = null;
+  }
+} else {
   console.warn(
-    "Firebase configuration warning: Some environment variables are missing.",
-    "Firebase features may not work properly."
+    "Firebase configuration is invalid or missing. Firebase services will not be available."
   );
 }
 
-// Initialize Firebase with error handling
-let app: ReturnType<typeof initializeApp>;
-let auth: ReturnType<typeof getAuth>;
-let db: ReturnType<typeof getFirestore>;
-let rtdb: ReturnType<typeof getDatabase>;
-let storage: ReturnType<typeof getStorage>;
-let googleProvider: GoogleAuthProvider;
+// Export Firebase services (they can be null)
+export { app, auth, db, rtdb, storage, googleProvider };
 
-try {
-  // Initialize Firebase
-  app = initializeApp(firebaseConfig);
+// Analytics initialization (only if app is available)
+let analytics: Analytics | null = null;
 
-  // Initialize Firebase Authentication and get a reference to the service
-  auth = getAuth(app);
-
-  // Initialize Google Auth Provider
-  googleProvider = new GoogleAuthProvider();
-  googleProvider.setCustomParameters({
-    prompt: "select_account",
-  });
-
-  // Initialize Cloud Firestore and get a reference to the service
-  db = getFirestore(app);
-
-  // Initialize Realtime Database and get a reference to the service
-  rtdb = getDatabase(app);
-
-  // Initialize Cloud Storage and get a reference to the service
-  storage = getStorage(app);
-} catch (error) {
-  console.error("Failed to initialize Firebase:", error);
-  // Create mock objects to prevent runtime errors
-  app = {} as ReturnType<typeof initializeApp>;
-  auth = {} as ReturnType<typeof getAuth>;
-  db = {} as ReturnType<typeof getFirestore>;
-  rtdb = {} as ReturnType<typeof getDatabase>;
-  storage = {} as ReturnType<typeof getStorage>;
-  googleProvider = {} as GoogleAuthProvider;
-}
-
-// Export Firebase services
-export { auth, db, rtdb, storage, googleProvider };
-
-// Analytics initialization
-let analytics: ReturnType<typeof getAnalytics> | null = null;
-
-import type { FirebaseApp } from "firebase/app";
-
-export async function initAnalytics(firebaseApp: FirebaseApp) {
-  if (typeof window !== "undefined") {
-    const supported = await isSupported();
-    analytics = supported ? getAnalytics(firebaseApp) : null;
+export async function initAnalytics(): Promise<Analytics | null> {
+  if (typeof window !== "undefined" && app) {
+    try {
+      const supported = await isSupported();
+      analytics = supported ? getAnalytics(app) : null;
+    } catch (error) {
+      console.error("Failed to initialize Analytics:", error);
+      analytics = null;
+    }
   }
   return analytics;
 }
 
-// Export the app for use in other parts of the application
+// Helper function to check if Firebase is available
+export const isFirebaseAvailable = Boolean(app);
+
+// Default export
 export default app;
